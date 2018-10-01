@@ -1,0 +1,4 @@
+﻿  ColorShader.cpp
+d:\school\advanced technilogies\engine\engine\colorshader.cpp(18): warning C4066: characters beyond first in wide-character constant ignored
+d:\school\advanced technilogies\engine\engine\colorshader.cpp(19): warning C4066: characters beyond first in wide-character constant ignored
+  Engine.vcxproj -> D:\School\Advanced technilogies\Engine\Debug\Engine.exe
