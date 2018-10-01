@@ -65,49 +65,59 @@ bool ColorShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFil
 	unsigned int numElements;
 	D3D11_BUFFER_DESC matrixBufferDesc;
 
+	UINT flags = D3DCOMPILE_ENABLE_STRICTNESS;
+#if defined( DEBUG ) || defined( _DEBUG )
+	flags |= D3DCOMPILE_DEBUG;
+#endif
 
 	// Initialize the pointers this function will use to null.
-	errorMessage = 0;
-	vertexShaderBuffer = 0;
-	pixelShaderBuffer = 0;
+	errorMessage = nullptr;
+	vertexShaderBuffer = nullptr;
+	pixelShaderBuffer = nullptr;
+
+	const D3D_SHADER_MACRO defines[] =
+	{
+		"EXAMPLE_DEFINE", "1",
+		NULL, NULL
+	};
 
 	// Compile the vertex shader code.
-	//result = D3DCompileFromFile(vsFilename, NULL, NULL, NULL, "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, 
-	//	&vertexShaderBuffer, &errorMessage);
-	//if (FAILED(result))
-	//{
-	//	// If the shader failed to compile it should have writen something to the error message.
-	//	if (errorMessage)
-	//	{
-	//		OutputShaderErrorMessage(errorMessage, hwnd, vsFilename);
-	//	}
-	//	// If there was nothing in the error message then it simply could not find the shader file itself.
-	//	else
-	//	{
-	//		MessageBox(hwnd, "color.vs", "Missing Shader File", MB_OK);
-	//	}
+	result = D3DCompileFromFile(vsFilename, defines, D3D_COMPILE_STANDARD_FILE_INCLUDE, "ColorVertexShader", "vs_5_0", flags, 0,
+		&vertexShaderBuffer, &errorMessage);
+	if (FAILED(result))
+	{
+		// If the shader failed to compile it should have writen something to the error message.
+		if (errorMessage)
+		{
+			OutputShaderErrorMessage(errorMessage, hwnd, vsFilename);
+		}
+		// If there was nothing in the error message then it simply could not find the shader file itself.
+		else
+		{
+			MessageBox(hwnd, "color.vs", "Missing Shader File", MB_OK);
+		}
 
-	//	return false;
-	//}
+		return false;
+	}
 
-	//// Compile the pixel shader code.
-	//result = D3DCompileFromFile(psFilename, NULL, NULL, NULL, "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0,
-	//	&pixelShaderBuffer, &errorMessage);
-	//if (FAILED(result))
-	//{
-	//	// If the shader failed to compile it should have writen something to the error message.
-	//	if (errorMessage)
-	//	{
-	//		OutputShaderErrorMessage(errorMessage, hwnd, psFilename);
-	//	}
-	//	// If there was  nothing in the error message then it simply could not find the file itself.
-	//	else
-	//	{
-	//		MessageBox(hwnd, "color.ps", "Missing Shader File", MB_OK);
-	//	}
+	// Compile the pixel shader code.
+	result = D3DCompileFromFile(psFilename, defines, D3D_COMPILE_STANDARD_FILE_INCLUDE, "ColorPixelShader", "ps_5_0", flags, 0,
+		&pixelShaderBuffer, &errorMessage);
+	if (FAILED(result))
+	{
+		// If the shader failed to compile it should have writen something to the error message.
+		if (errorMessage)
+		{
+			OutputShaderErrorMessage(errorMessage, hwnd, psFilename);
+		}
+		// If there was  nothing in the error message then it simply could not find the file itself.
+		else
+		{
+			MessageBox(hwnd, "color.ps", "Missing Shader File", MB_OK);
+		}
 
-	//	return false;
-	//}
+		return false;
+	}
 
 	// Create the vertex shader from the buffer.
 	result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &m_vertexShader);
