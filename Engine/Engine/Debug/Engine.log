@@ -1,5 +1,2 @@
-﻿  ColorShader.cpp
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\colorshader.cpp(18): warning C4066: characters beyond first in wide-character constant ignored
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\colorshader.cpp(19): warning C4066: characters beyond first in wide-character constant ignored
-ColorShader.obj : error LNK2019: unresolved external symbol _D3DCompileFromFile@36 referenced in function "private: bool __thiscall ColorShader::InitializeShader(struct ID3D11Device *,struct HWND__ *,wchar_t *,wchar_t *)" (?InitializeShader@ColorShader@@AAE_NPAUID3D11Device@@PAUHWND__@@PA_W2@Z)
-D:\School\Advanced technilogies\Advanced-Technologies-Collision-detection\Engine\Debug\Engine.exe : fatal error LNK1120: 1 unresolved externals
+﻿  Application.cpp
+  Engine.vcxproj -> D:\Engine\Debug\Engine.exe

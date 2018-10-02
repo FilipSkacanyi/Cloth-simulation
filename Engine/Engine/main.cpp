@@ -1,34 +1,22 @@
-#include "System.h"
 
-
+#include "Application.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow)
 {
+	Application* app = nullptr;
+
+	app = new Application();
 	
-
-	System* system = nullptr;
-	bool result;
-
-
-	// Create the system object.
-	system = new System();
-	if (!system)
+	if (!app->Init())
 	{
-		MessageBox(NULL, "System not instantiated properly", "Error", NULL);
 		return 0;
 	}
 
-	// Initialize and run the system object.
-	result = system->Initialize();
-	if (result)
-	{
-		system->Run();
-	}
+	app->Run();
 
-	// Shutdown and release the system object.
-	system->Shutdown();
-	delete system;
-	system = nullptr;
+
+	delete app;
+	app = nullptr;
 
 	return 0;
 }
