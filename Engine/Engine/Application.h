@@ -25,5 +25,8 @@ private:
 	HWND m_hwnd;
 
 	std::unique_ptr<Renderer> m_renderer = nullptr;
+
+	Model* model = nullptr;
+	Model* model1 = nullptr;
 };
 

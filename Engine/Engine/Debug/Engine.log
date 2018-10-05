@@ -1,2 +1,8 @@
-﻿  Renderer.cpp
+﻿  Application.cpp
+  Model.cpp
+  Renderer.cpp
+  main.cpp
+  Generating Code...
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\renderer.cpp(154): warning C4715: 'Renderer::Init': not all control paths return a value
+  LINK : D:\School\Advanced technilogies\Advanced-Technologies-Collision-detection\Engine\Debug\Engine.exe not found or not built by the last incremental link; performing full link
   Engine.vcxproj -> D:\School\Advanced technilogies\Advanced-Technologies-Collision-detection\Engine\Debug\Engine.exe

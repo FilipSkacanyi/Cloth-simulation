@@ -16,10 +16,10 @@ public:
 
 	bool Init(HWND hwnd);
 
-	void Draw();
+	void Clear() /* Clear the backbuffer */;
 	void Render();
 
-	Model* createRawModel();
+	Model* createRawModel(Vertex vertices[], int vertexNum);
 
 	void renderModel(Model* model);
 	
@@ -39,5 +39,6 @@ private :
 
 	D3D_FEATURE_LEVEL selectedFeatureLevel;
 	
+	Model* model = nullptr;
 };
 

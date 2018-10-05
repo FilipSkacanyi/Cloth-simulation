@@ -15,10 +15,12 @@ public:
 	Model();
 	~Model();
 
-	bool Init(ID3D11Buffer* vertexBuffer);
+	bool Init(ID3D11Buffer* vertexBuffer, int vertexNum);
 
 	ID3D11Buffer* getVertexBuffer();
+	int getVertexNumber(); 
 private:
+	int m_vertexNumber = 0;
 	ID3D11Buffer* m_vertexBuffer = nullptr;
 };
 

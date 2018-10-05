@@ -28,6 +28,29 @@ bool Application::Init()
 	m_renderer = std::make_unique<Renderer>();
 	m_renderer->Init(m_hwnd);
 
+
+	// Create vertex buffer
+	Vertex vertices[] =
+	{
+		DirectX::XMFLOAT3(-0.5f, 0.5f, 0.5f),
+		DirectX::XMFLOAT3(0.0f, -0.5f, 0.5f),
+		DirectX::XMFLOAT3(-1.0f, -0.5f, 0.5f),
+	};
+
+	Vertex vertices1[] =
+	{
+		DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f),
+		DirectX::XMFLOAT3(1.0f, -0.5f, 0.5f),
+		DirectX::XMFLOAT3(0.0f, -0.5f, 0.5f),
+	};
+
+
+	
+
+	model = m_renderer->createRawModel(vertices, 3);
+
+	model1 = m_renderer->createRawModel(vertices1, 3);
+
 	return true;
 }
 
@@ -53,9 +76,12 @@ void Application::Run()
 
 bool Application::Tick()
 {
+	m_renderer->Clear();
+	
+	m_renderer->renderModel(model);
+	m_renderer->renderModel(model1);
 
 	m_renderer->Render();
-
 	return false;
 }
 

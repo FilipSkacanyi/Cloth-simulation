@@ -143,23 +143,40 @@ bool Renderer::Init(HWND hwnd)
 		return hr;
 
 
+	// Set primitive topology
+	m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	
+	//bind shaders
+	m_context->VSSetShader(m_vertexShader, NULL, 0);
+	m_context->PSSetShader(m_pixelShader, NULL, 0);
+	
+}
+
+void Renderer::Clear()
+{
+	
+	float ClearColor[4] = { 0.0f, 0.125f, 0.6f, 1.0f }; // RGBA
+	m_context->ClearRenderTargetView(m_renderTargetView, ClearColor);
+}
+
+void Renderer::Render()
+{
+		//renderModel(model);
+
+		//swap buffers/show back buffer
+		m_swapChain->Present(0, 0);
+}
+
+Model * Renderer::createRawModel(Vertex vertices[], int vertexNum)
+{
 	Model* model = new Model();
-
-
-
-	// Create vertex buffer
-	Vertex vertices[] =
-	{
-		DirectX::XMFLOAT3(0.0f, 0.5f, 0.5f),
-		DirectX::XMFLOAT3(0.5f, -0.5f, 0.5f),
-		DirectX::XMFLOAT3(-0.5f, -0.5f, 0.5f),
-	};
 
 	ID3D11Buffer* vertexBuffer = nullptr;
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(Vertex) * 3;
+	bd.ByteWidth = sizeof(Vertex) * vertexNum ;
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	bd.MiscFlags = 0;
@@ -169,54 +186,20 @@ bool Renderer::Init(HWND hwnd)
 	if (FAILED(m_device->CreateBuffer(&bd, &InitData, &vertexBuffer)))
 		return FALSE;
 
+	model->Init(vertexBuffer, vertexNum);
 
+	return model;
+}
+
+void Renderer::renderModel(Model* model)
+{
+	ID3D11Buffer* vertexBuffer = model->getVertexBuffer();
 
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
 	m_context->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 
-	// Set primitive topology
-	m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	// Render a triangle 
 
-	model->Init(vertexBuffer);
-
-	
-
-
-	return true;
-}
-
-void Renderer::Draw()
-{
-}
-
-void Renderer::Render()
-{
-
-	
-		//
-		// Clear the backbuffer
-		//
-		float ClearColor[4] = { 0.0f, 0.125f, 0.6f, 1.0f }; // RGBA
-		m_context->ClearRenderTargetView(m_renderTargetView, ClearColor);
-		
-		// Render a triangle 
-		m_context->VSSetShader(m_vertexShader, NULL, 0);
-		m_context->PSSetShader(m_pixelShader, NULL, 0);
-		m_context->Draw(3, 0);
-
-
-		m_swapChain->Present(0, 0);
-	
-
-}
-
-Model * Renderer::createRawModel()
-{
-	return nullptr;
-}
-
-void Renderer::renderModel(Model * model)
-{
-	
+	m_context->Draw(model->getVertexNumber(), 0);
 }
