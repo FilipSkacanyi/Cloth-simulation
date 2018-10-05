@@ -25,6 +25,9 @@ bool Application::Init()
 		return false;
 	}
 
+	m_renderer = std::make_unique<Renderer>();
+	m_renderer->Init(m_hwnd);
+
 	return true;
 }
 
@@ -42,6 +45,7 @@ void Application::Run()
 		else
 		{
 			Tick();
+			
 		}
 		
 	}
@@ -49,6 +53,9 @@ void Application::Run()
 
 bool Application::Tick()
 {
+
+	m_renderer->Render();
+
 	return false;
 }
 

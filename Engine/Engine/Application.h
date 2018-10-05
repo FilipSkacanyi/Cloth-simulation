@@ -1,10 +1,7 @@
 #pragma once
 
-#include "Windows.h"
-#include <d3d11.h>
-
-#pragma comment (lib, "d3d11.lib" )
-
+#include "Renderer.h"
+#include <memory>
 
 class Application
 {
@@ -27,6 +24,6 @@ private:
 	HINSTANCE m_hInstance;
 	HWND m_hwnd;
 
-
+	std::unique_ptr<Renderer> m_renderer = nullptr;
 };
 
