@@ -235,14 +235,14 @@ void Renderer::Tick()
 
 	//---------this code makes the cube spin----------
 	// well... it makes the entire world space spin
-	static float t = 0.0f;
+	/*static float t = 0.0f;
 
 	static ULONGLONG timeStart = 0;
 	ULONGLONG timeCur = GetTickCount64();
 	if (timeStart == 0)
 		timeStart = timeCur;
 	t = (timeCur - timeStart) / 1000.0f;
-	m_world = DirectX::XMMatrixRotationY(t);
+	m_world = DirectX::XMMatrixRotationY(t);*/
 
 	//clear back buffer 
 	float ClearColor[4] = { 0.0f, 0.125f, 0.6f, 1.0f }; // RGBA
@@ -295,6 +295,17 @@ void Renderer::renderModel(Model* model)
 
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
+
+	DirectX::XMMATRIX mSpin = DirectX::XMMatrixRotationRollPitchYaw(model->rotation.x, model->rotation.y, model->rotation.z);
+	DirectX::XMMATRIX mTranslate = DirectX::XMMatrixTranslation(model->position.x, model->position.y, model->position.z);
+	DirectX::XMMATRIX mScale = DirectX::XMMatrixScaling(model->scale.x,model->scale.y, model->scale.z);
+	DirectX::XMMATRIX modelMatrix = mScale * mSpin * mTranslate;
+
+	ConstantBuffer cb;
+	cb.mWorld = DirectX::XMMatrixTranspose(modelMatrix);
+	cb.mView = DirectX::XMMatrixTranspose(m_view);
+	cb.mProjection = DirectX::XMMatrixTranspose(m_projection);
+	m_context->UpdateSubresource(m_constantBuffer, 0, NULL, &cb, 0, 0);
 
 	m_context->VSSetConstantBuffers(0, 1, &m_constantBuffer);
 	m_context->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);

@@ -4,6 +4,9 @@
 
 Model::Model()
 {
+	position = DirectX::XMFLOAT3(2, 0, 0);
+	rotation = DirectX::XMFLOAT3(0, 0, 0);
+	scale = DirectX::XMFLOAT3(1, 1, 1);
 }
 
 
@@ -29,6 +32,15 @@ bool Model::Init(ID3D11Buffer* vertexBuffer, int vertexNum, ID3D11Buffer* indexB
 	m_indexBuffer = indexBuffer;
 	return false;
 }
+
+void Model::Tick()
+{
+	rotation.y += 0.0001;
+}
+
+//void Model::Render(Renderer * renderer)
+//{
+//}
 
 ID3D11Buffer * Model::getVertexBuffer()
 {

@@ -101,7 +101,7 @@ void Application::Run()
 bool Application::Tick()
 {
 	m_renderer->Tick();
-	
+	model->Tick();
 	m_renderer->renderModel(model);
 	
 
