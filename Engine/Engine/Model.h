@@ -7,6 +7,7 @@
 struct Vertex
 {
 	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT4 color;
 };
 
 class Model
@@ -15,12 +16,14 @@ public:
 	Model();
 	~Model();
 
-	bool Init(ID3D11Buffer* vertexBuffer, int vertexNum);
+	bool Init(ID3D11Buffer* vertexBuffer, int vertexNum, ID3D11Buffer* indexBuffer);
 
 	ID3D11Buffer* getVertexBuffer();
+	ID3D11Buffer* getIndexBuffer();
 	int getVertexNumber(); 
 private:
 	int m_vertexNumber = 0;
 	ID3D11Buffer* m_vertexBuffer = nullptr;
+	ID3D11Buffer* m_indexBuffer = nullptr;
 };
 

@@ -4,6 +4,12 @@
 
 Renderer::Renderer()
 {
+	
+}
+
+
+Renderer::~Renderer()
+{
 	if (m_swapChain)
 	{
 		m_swapChain->Release();
@@ -22,11 +28,6 @@ Renderer::Renderer()
 		m_context->Release();
 		m_context = nullptr;
 	}
-}
-
-
-Renderer::~Renderer()
-{
 }
 
 bool Renderer::Init(HWND hwnd)
@@ -113,6 +114,7 @@ bool Renderer::Init(HWND hwnd)
 	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 	UINT numElements = ARRAYSIZE(layout);
 
@@ -150,29 +152,79 @@ bool Renderer::Init(HWND hwnd)
 	//bind shaders
 	m_context->VSSetShader(m_vertexShader, NULL, 0);
 	m_context->PSSetShader(m_pixelShader, NULL, 0);
+
+	D3D11_BUFFER_DESC bd;
+	ZeroMemory(&bd, sizeof(bd));
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.ByteWidth = sizeof(ConstantBuffer);
+	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	bd.CPUAccessFlags = 0;
+	if (FAILED(m_device->CreateBuffer(&bd, NULL, &m_constantBuffer)))
+		return hr;
+
+	// Initialize the world matrix
+	m_world = DirectX::XMMatrixIdentity();
+
+	// Initialize the view matrix
+	DirectX::XMVECTOR Eye = DirectX::XMVectorSet(0.0f, 1.0f, -5.0f, 0.0f);
+	DirectX::XMVECTOR At = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	DirectX::XMVECTOR Up = DirectX::XMVectorSet(0.0f, 10.0f, 0.0f, 0.0f);
+	m_view = DirectX::XMMatrixLookAtLH(Eye, At, Up);
+
+	// Initialize the projection matrix
+	m_projection = DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, 800 / (FLOAT)600, 0.01f, 100.0f); //800 and 600 are window size
+
 	
 }
 
 void Renderer::Clear()
 {
 	
-	float ClearColor[4] = { 0.0f, 0.125f, 0.6f, 1.0f }; // RGBA
-	m_context->ClearRenderTargetView(m_renderTargetView, ClearColor);
+	
+	
+	
 }
 
 void Renderer::Render()
 {
-		//renderModel(model);
-
 		//swap buffers/show back buffer
 		m_swapChain->Present(0, 0);
 }
 
-Model * Renderer::createRawModel(Vertex vertices[], int vertexNum)
+void Renderer::Tick()
+{
+	//
+	// Update variables
+	//
+	ConstantBuffer cb;
+	cb.mWorld = DirectX::XMMatrixTranspose(m_world);
+	cb.mView = DirectX::XMMatrixTranspose(m_view);
+	cb.mProjection = DirectX::XMMatrixTranspose(m_projection);
+	m_context->UpdateSubresource(m_constantBuffer, 0, NULL, &cb, 0, 0);
+
+
+	//---------this code makes the cube spin----------
+	static float t = 0.0f;
+
+	static ULONGLONG timeStart = 0;
+	ULONGLONG timeCur = GetTickCount64();
+	if (timeStart == 0)
+		timeStart = timeCur;
+	t = (timeCur - timeStart) / 1000.0f;
+	m_world = DirectX::XMMatrixRotationY(t);
+
+	//clear back buffer 
+	float ClearColor[4] = { 0.0f, 0.125f, 0.6f, 1.0f }; // RGBA
+	m_context->ClearRenderTargetView(m_renderTargetView, ClearColor);
+}
+
+Model * Renderer::createRawModel(Vertex vertices[], int vertexNum, WORD indices[])
 {
 	Model* model = new Model();
 
 	ID3D11Buffer* vertexBuffer = nullptr;
+	ID3D11Buffer* indexBuffer = nullptr;
+
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 	bd.Usage = D3D11_USAGE_DEFAULT;
@@ -180,13 +232,28 @@ Model * Renderer::createRawModel(Vertex vertices[], int vertexNum)
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	bd.MiscFlags = 0;
+
 	D3D11_SUBRESOURCE_DATA InitData;
 	ZeroMemory(&InitData, sizeof(InitData));
 	InitData.pSysMem = vertices;
 	if (FAILED(m_device->CreateBuffer(&bd, &InitData, &vertexBuffer)))
 		return FALSE;
 
-	model->Init(vertexBuffer, vertexNum);
+
+
+	ZeroMemory(&bd, sizeof(bd));
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.ByteWidth = sizeof(WORD) * 36;        // 36 vertices needed for 12 triangles in a triangle list
+	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	bd.CPUAccessFlags = 0;
+	bd.MiscFlags = 0;
+	InitData.pSysMem = indices;
+	if (FAILED(m_device->CreateBuffer(&bd, &InitData, &indexBuffer)))
+		return FALSE;
+
+
+
+	model->Init(vertexBuffer, vertexNum, indexBuffer);
 
 	return model;
 }
@@ -197,9 +264,12 @@ void Renderer::renderModel(Model* model)
 
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
+
+	m_context->VSSetConstantBuffers(0, 1, &m_constantBuffer);
 	m_context->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
-
-	// Render a triangle 
-
-	m_context->Draw(model->getVertexNumber(), 0);
+	m_context->IASetIndexBuffer(model->getIndexBuffer(), DXGI_FORMAT_R16_UINT, 0);
+	
+	//render
+	m_context->DrawIndexed(36, 0, 0);
+	//m_context->Draw(model->getVertexNumber(), 0);
 }

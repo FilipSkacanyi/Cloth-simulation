@@ -29,27 +29,51 @@ bool Application::Init()
 	m_renderer->Init(m_hwnd);
 
 
-	// Create vertex buffer
+	 //Create vertex buffer
+	//Vertex vertices[] =
+	//{
+	//	DirectX::XMFLOAT3(-0.5f, 0.5f, 0.5f),
+	//	DirectX::XMFLOAT3(0.0f, -0.5f, 0.5f),
+	//	DirectX::XMFLOAT3(-1.0f, -0.5f, 0.5f),
+	//};
+
 	Vertex vertices[] =
 	{
-		DirectX::XMFLOAT3(-0.5f, 0.5f, 0.5f),
-		DirectX::XMFLOAT3(0.0f, -0.5f, 0.5f),
-		DirectX::XMFLOAT3(-1.0f, -0.5f, 0.5f),
+		{ DirectX::XMFLOAT3(-1.0f,  1.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(1.0f,  1.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(1.0f,  1.0f,  1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(-1.0f,  1.0f,  1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(1.0f, -1.0f, -1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(1.0f, -1.0f,  1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },
+		{ DirectX::XMFLOAT3(-1.0f, -1.0f,  1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
 	};
 
-	Vertex vertices1[] =
+	// Create index buffer
+	WORD indices[] =
 	{
-		DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f),
-		DirectX::XMFLOAT3(1.0f, -0.5f, 0.5f),
-		DirectX::XMFLOAT3(0.0f, -0.5f, 0.5f),
+		3,1,0,
+		2,1,3,
+
+		0,5,4,
+		1,5,0,
+
+		3,4,7,
+		0,4,3,
+
+		1,6,5,
+		2,6,1,
+
+		2,7,6,
+		3,7,2,
+
+		6,4,5,
+		7,4,6,
 	};
 
+	model = m_renderer->createRawModel(vertices, 8, indices);
 
 	
-
-	model = m_renderer->createRawModel(vertices, 3);
-
-	model1 = m_renderer->createRawModel(vertices1, 3);
 
 	return true;
 }
@@ -76,11 +100,12 @@ void Application::Run()
 
 bool Application::Tick()
 {
-	m_renderer->Clear();
+	m_renderer->Tick();
 	
 	m_renderer->renderModel(model);
-	m_renderer->renderModel(model1);
+	
 
+	//make sure renderer renders last
 	m_renderer->Render();
 	return false;
 }

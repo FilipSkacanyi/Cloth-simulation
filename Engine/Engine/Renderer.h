@@ -7,6 +7,12 @@
 
 #pragma comment (lib, "d3dcompiler.lib")
 
+struct ConstantBuffer
+{
+	DirectX::XMMATRIX mWorld;
+	DirectX::XMMATRIX mView;
+	DirectX::XMMATRIX mProjection;
+};
 
 class Renderer
 {
@@ -18,8 +24,9 @@ public:
 
 	void Clear() /* Clear the backbuffer */;
 	void Render();
+	void Tick();
 
-	Model* createRawModel(Vertex vertices[], int vertexNum);
+	Model* createRawModel(Vertex vertices[], int vertexNum, WORD indices[]);
 
 	void renderModel(Model* model);
 	
@@ -39,6 +46,12 @@ private :
 
 	D3D_FEATURE_LEVEL selectedFeatureLevel;
 	
+	ID3D11Buffer* m_constantBuffer = nullptr;
+	DirectX::XMMATRIX m_world;
+	DirectX::XMMATRIX m_view;
+	DirectX::XMMATRIX m_projection;
+
+
 	Model* model = nullptr;
 };
 
