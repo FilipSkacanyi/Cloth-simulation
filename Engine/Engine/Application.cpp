@@ -29,13 +29,7 @@ bool Application::Init()
 	m_renderer->Init(m_hwnd);
 
 
-	 //Create vertex buffer
-	//Vertex vertices[] =
-	//{
-	//	DirectX::XMFLOAT3(-0.5f, 0.5f, 0.5f),
-	//	DirectX::XMFLOAT3(0.0f, -0.5f, 0.5f),
-	//	DirectX::XMFLOAT3(-1.0f, -0.5f, 0.5f),
-	//};
+	
 
 	Vertex vertices[] =
 	{
@@ -71,7 +65,7 @@ bool Application::Init()
 		7,4,6,
 	};
 
-	model = m_renderer->createRawModel(vertices, 8, indices);
+	model = m_renderer->createRawModel(vertices, 8, indices, 36);
 
 	
 

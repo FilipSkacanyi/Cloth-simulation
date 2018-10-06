@@ -17,14 +17,15 @@ public:
 	Model();
 	~Model();
 
-	bool Init(ID3D11Buffer* vertexBuffer, int vertexNum, ID3D11Buffer* indexBuffer);
+	bool Init(ID3D11Buffer* vertexBuffer, int vertexNum, ID3D11Buffer* indexBuffer, int indexNum);
 
 	void Tick();
 	//void Render(Renderer* renderer);
 
 	ID3D11Buffer* getVertexBuffer();
 	ID3D11Buffer* getIndexBuffer();
-	int getVertexNumber(); 
+	int getVertexCount(); 
+	int getIndexCount();
 
 
 	DirectX::XMFLOAT3 position;
@@ -34,8 +35,8 @@ public:
 private:
 
 
-
-	int m_vertexNumber = 0;
+	int m_indexCount = 0;
+	int m_vertexCount = 0;
 	ID3D11Buffer* m_vertexBuffer = nullptr;
 	ID3D11Buffer* m_indexBuffer = nullptr;
 };

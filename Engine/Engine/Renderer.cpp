@@ -58,6 +58,12 @@ Renderer::~Renderer()
 		m_vertexLayout->Release();
 		m_vertexLayout = nullptr;
 	}
+
+	if (m_camera)
+	{
+		delete m_camera;
+		m_camera = nullptr;
+	}
 }
 
 bool Renderer::Init(HWND hwnd)
@@ -195,11 +201,11 @@ bool Renderer::Init(HWND hwnd)
 	// Initialize the world matrix
 	m_world = DirectX::XMMatrixIdentity();
 
-	// Initialize the view matrix
-	DirectX::XMVECTOR Eye = DirectX::XMVectorSet(0.0f, 2.0f, -5.0f, 0.0f);
-	DirectX::XMVECTOR At = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	DirectX::XMVECTOR Up = DirectX::XMVectorSet(0.0f, 10.0f, 0.0f, 0.0f);
-	m_view = DirectX::XMMatrixLookAtLH(Eye, At, Up);
+	
+	m_camera = new Camera();
+	m_camera->setPosition(1.0f, 2.0f, -6.0f);
+	m_camera->setRotation(0, 10, 0);
+	
 
 	// Initialize the projection matrix
 	m_projection = DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, 800 / (FLOAT)600, 0.01f, 100.0f); //800 and 600 are window size
@@ -223,33 +229,15 @@ void Renderer::Render()
 
 void Renderer::Tick()
 {
-	//
-	// Update variables
-	//
-	ConstantBuffer cb;
-	cb.mWorld = DirectX::XMMatrixTranspose(m_world);
-	cb.mView = DirectX::XMMatrixTranspose(m_view);
-	cb.mProjection = DirectX::XMMatrixTranspose(m_projection);
-	m_context->UpdateSubresource(m_constantBuffer, 0, NULL, &cb, 0, 0);
-
-
-	//---------this code makes the cube spin----------
-	// well... it makes the entire world space spin
-	/*static float t = 0.0f;
-
-	static ULONGLONG timeStart = 0;
-	ULONGLONG timeCur = GetTickCount64();
-	if (timeStart == 0)
-		timeStart = timeCur;
-	t = (timeCur - timeStart) / 1000.0f;
-	m_world = DirectX::XMMatrixRotationY(t);*/
+	
+	m_camera->Tick();
 
 	//clear back buffer 
 	float ClearColor[4] = { 0.0f, 0.125f, 0.6f, 1.0f }; // RGBA
 	m_context->ClearRenderTargetView(m_renderTargetView, ClearColor);
 }
 
-Model * Renderer::createRawModel(Vertex vertices[], int vertexNum, WORD indices[])
+Model * Renderer::createRawModel(Vertex vertices[], int vertexNum, WORD indices[], int indexNum)
 {
 	Model* model = new Model();
 
@@ -274,7 +262,7 @@ Model * Renderer::createRawModel(Vertex vertices[], int vertexNum, WORD indices[
 
 	ZeroMemory(&bd, sizeof(bd));
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(WORD) * 36;        // 36 vertices needed for 12 triangles in a triangle list
+	bd.ByteWidth = sizeof(WORD) * indexNum;        
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	bd.MiscFlags = 0;
@@ -284,7 +272,7 @@ Model * Renderer::createRawModel(Vertex vertices[], int vertexNum, WORD indices[
 
 
 
-	model->Init(vertexBuffer, vertexNum, indexBuffer);
+	model->Init(vertexBuffer, vertexNum, indexBuffer,indexNum);
 
 	return model;
 }
@@ -296,22 +284,30 @@ void Renderer::renderModel(Model* model)
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
 
+	//create the matrix from all info the model has
+	//could also do this in the model itself
 	DirectX::XMMATRIX mSpin = DirectX::XMMatrixRotationRollPitchYaw(model->rotation.x, model->rotation.y, model->rotation.z);
 	DirectX::XMMATRIX mTranslate = DirectX::XMMatrixTranslation(model->position.x, model->position.y, model->position.z);
 	DirectX::XMMATRIX mScale = DirectX::XMMatrixScaling(model->scale.x,model->scale.y, model->scale.z);
 	DirectX::XMMATRIX modelMatrix = mScale * mSpin * mTranslate;
 
+	//get vie matrix from camera
+	DirectX::XMMATRIX viewMatrix;
+	m_camera->getViewMatrix(viewMatrix);
+
+	//update our constant buffers
 	ConstantBuffer cb;
 	cb.mWorld = DirectX::XMMatrixTranspose(modelMatrix);
-	cb.mView = DirectX::XMMatrixTranspose(m_view);
+	cb.mView = DirectX::XMMatrixTranspose(viewMatrix);
 	cb.mProjection = DirectX::XMMatrixTranspose(m_projection);
 	m_context->UpdateSubresource(m_constantBuffer, 0, NULL, &cb, 0, 0);
 
+	//set buffers to the ones of this specific object
 	m_context->VSSetConstantBuffers(0, 1, &m_constantBuffer);
 	m_context->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 	m_context->IASetIndexBuffer(model->getIndexBuffer(), DXGI_FORMAT_R16_UINT, 0);
 	
 	//render
 	m_context->DrawIndexed(36, 0, 0);
-	//m_context->Draw(model->getVertexNumber(), 0);
+	
 }

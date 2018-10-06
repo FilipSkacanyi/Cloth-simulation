@@ -1,6 +1,11 @@
-﻿  Model.cpp
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\model.cpp(38): warning C4305: '+=': truncation from 'double' to 'float'
+﻿  Application.cpp
+  Camera.cpp
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\camera.cpp(18): warning C4101: 'rotationMatrix': unreferenced local variable
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\camera.cpp(30): warning C4101: 'groundWorld': unreferenced local variable
+  Model.cpp
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\model.cpp(39): warning C4305: '+=': truncation from 'double' to 'float'
   Renderer.cpp
+  main.cpp
   Generating Code...
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\renderer.cpp(208): warning C4715: 'Renderer::Init': not all control paths return a value
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\renderer.cpp(214): warning C4715: 'Renderer::Init': not all control paths return a value
   Engine.vcxproj -> D:\School\Advanced technilogies\Advanced-Technologies-Collision-detection\Engine\x64\Debug\Engine.exe

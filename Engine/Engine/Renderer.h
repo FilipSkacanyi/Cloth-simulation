@@ -4,6 +4,7 @@
 #include "Windows.h"
 #include <d3dcompiler.h>
 #include "Model.h"
+#include "Camera.h"
 
 #pragma comment (lib, "d3dcompiler.lib")
 
@@ -26,7 +27,7 @@ public:
 	void Render();
 	void Tick();
 
-	Model* createRawModel(Vertex vertices[], int vertexNum, WORD indices[]);
+	Model* createRawModel(Vertex vertices[], int vertexNum, WORD indices[], int indexNum);
 
 	void renderModel(Model* model);
 	
@@ -52,6 +53,8 @@ private :
 	DirectX::XMMATRIX m_projection;
 
 
+
+	Camera* m_camera = nullptr;
 	Model* model = nullptr;
 };
 

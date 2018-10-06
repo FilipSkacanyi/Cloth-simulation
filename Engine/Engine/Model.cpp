@@ -25,11 +25,12 @@ Model::~Model()
 	}
 }
 
-bool Model::Init(ID3D11Buffer* vertexBuffer, int vertexNum, ID3D11Buffer* indexBuffer)
+bool Model::Init(ID3D11Buffer* vertexBuffer, int vertexNum, ID3D11Buffer* indexBuffer, int indexNum)
 {
 	m_vertexBuffer = vertexBuffer;
-	m_vertexNumber = vertexNum;
+	m_vertexCount = vertexNum;
 	m_indexBuffer = indexBuffer;
+	m_indexCount = indexNum;
 	return false;
 }
 
@@ -52,7 +53,12 @@ ID3D11Buffer * Model::getIndexBuffer()
 	return m_indexBuffer;
 }
 
-int Model::getVertexNumber()
+int Model::getIndexCount()
 {
-	return m_vertexNumber;
+	return m_indexCount;
+}
+
+int Model::getVertexCount()
+{
+	return m_vertexCount;
 }
