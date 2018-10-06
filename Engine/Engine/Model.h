@@ -22,6 +22,12 @@ public:
 	ID3D11Buffer* getIndexBuffer();
 	int getVertexNumber(); 
 private:
+
+	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT3 rotation;
+	DirectX::XMFLOAT3 scale;
+
+
 	int m_vertexNumber = 0;
 	ID3D11Buffer* m_vertexBuffer = nullptr;
 	ID3D11Buffer* m_indexBuffer = nullptr;

@@ -28,6 +28,36 @@ Renderer::~Renderer()
 		m_context->Release();
 		m_context = nullptr;
 	}
+
+	if (m_constantBuffer)
+	{
+		m_constantBuffer->Release();
+		m_constantBuffer = nullptr;
+	}
+
+	if (m_vertexShader)
+	{
+		m_vertexShader->Release();
+		m_vertexShader = nullptr;
+	}
+
+	if (m_pixelShader)
+	{
+		m_pixelShader->Release();
+		m_pixelShader = nullptr;
+	}
+
+	if (m_renderTargetView)
+	{
+		m_renderTargetView->Release();
+		m_renderTargetView = nullptr;
+	}
+
+	if (m_vertexLayout)
+	{
+		m_vertexLayout->Release();
+		m_vertexLayout = nullptr;
+	}
 }
 
 bool Renderer::Init(HWND hwnd)
@@ -166,7 +196,7 @@ bool Renderer::Init(HWND hwnd)
 	m_world = DirectX::XMMatrixIdentity();
 
 	// Initialize the view matrix
-	DirectX::XMVECTOR Eye = DirectX::XMVectorSet(0.0f, 1.0f, -5.0f, 0.0f);
+	DirectX::XMVECTOR Eye = DirectX::XMVectorSet(0.0f, 2.0f, -5.0f, 0.0f);
 	DirectX::XMVECTOR At = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 	DirectX::XMVECTOR Up = DirectX::XMVectorSet(0.0f, 10.0f, 0.0f, 0.0f);
 	m_view = DirectX::XMMatrixLookAtLH(Eye, At, Up);
@@ -204,6 +234,7 @@ void Renderer::Tick()
 
 
 	//---------this code makes the cube spin----------
+	// well... it makes the entire world space spin
 	static float t = 0.0f;
 
 	static ULONGLONG timeStart = 0;
