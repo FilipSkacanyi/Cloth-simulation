@@ -22,18 +22,30 @@ public:
 	void Tick();
 	//void Render(Renderer* renderer);
 
+
+	void setPosition(float x, float y, float z);
+	void setPosition(DirectX::XMFLOAT3 pos);
+	void setRotation(float x, float y, float z);
+	void setRotation(DirectX::XMFLOAT3 rot);
+	void setScale(float x, float y, float z);
+
+	DirectX::XMFLOAT3 getPosition();
+	DirectX::XMFLOAT3 getRotation();
+	DirectX::XMFLOAT3 getScale();
+
 	ID3D11Buffer* getVertexBuffer();
 	ID3D11Buffer* getIndexBuffer();
 	int getVertexCount(); 
 	int getIndexCount();
 
 
-	DirectX::XMFLOAT3 position;
-	DirectX::XMFLOAT3 rotation;
-	DirectX::XMFLOAT3 scale;
+
 
 private:
 
+	DirectX::XMFLOAT3 m_position;
+	DirectX::XMFLOAT3 m_rotation;
+	DirectX::XMFLOAT3 m_scale;
 
 	int m_indexCount = 0;
 	int m_vertexCount = 0;

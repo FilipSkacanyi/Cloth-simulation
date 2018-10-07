@@ -15,6 +15,8 @@ Camera::~Camera()
 
 void Camera::Tick()
 {
+	//m_rotation.x += 0.01;
+
 	DirectX::XMMATRIX rotationMatrix;
 
 	DirectX::XMVECTOR camPosition = DirectX::XMVectorSet(m_position.x, m_position.y, m_position.z, 0.0f);;
@@ -52,9 +54,19 @@ void Camera::setPosition(float x, float y, float z)
 	m_position = DirectX::XMFLOAT3(x, y, z);
 }
 
+void Camera::setPosition(DirectX::XMFLOAT3 pos)
+{
+	m_position = pos;
+}
+
 void Camera::setRotation(float x, float y, float z)
 {
 	m_rotation = DirectX::XMFLOAT3(x, y, z);
+}
+
+void Camera::setRotation(DirectX::XMFLOAT3 rot)
+{
+	m_rotation = rot;
 }
 
 DirectX::XMFLOAT3 Camera::getPosition()

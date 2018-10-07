@@ -8,7 +8,7 @@
 
 #pragma comment (lib, "d3dcompiler.lib")
 
-struct ConstantBuffer
+struct MatrixBuffer
 {
 	DirectX::XMMATRIX mWorld;
 	DirectX::XMMATRIX mView;
@@ -27,6 +27,8 @@ public:
 	void Render();
 	void Tick();
 
+	void updateViewMatrix(DirectX::XMMATRIX view);
+
 	Model* createRawModel(Vertex vertices[], int vertexNum, WORD indices[], int indexNum);
 
 	void renderModel(Model* model);
@@ -38,7 +40,8 @@ private :
 	ID3D11Device* m_device = nullptr;
 	ID3D11DeviceContext* m_context = nullptr;
 	ID3D11RenderTargetView* m_renderTargetView = nullptr;
-
+	ID3D11Texture2D * m_depthStencil = nullptr;
+	ID3D11DepthStencilView* m_depthStencilView = nullptr;
 
 	ID3D11VertexShader*     m_vertexShader = nullptr;
 	ID3D11PixelShader*      m_pixelShader = nullptr;
@@ -47,14 +50,11 @@ private :
 
 	D3D_FEATURE_LEVEL selectedFeatureLevel;
 	
-	ID3D11Buffer* m_constantBuffer = nullptr;
+	ID3D11Buffer* m_matrixBuffer = nullptr;
+	
 	DirectX::XMMATRIX m_world;
 	DirectX::XMMATRIX m_view;
 	DirectX::XMMATRIX m_projection;
 
-
-
-	Camera* m_camera = nullptr;
-	Model* model = nullptr;
 };
 

@@ -9,6 +9,11 @@ Application::Application()
 
 Application::~Application()
 {
+	if (m_scene)
+	{
+		delete m_scene;
+		m_scene = nullptr;
+	}
 	// Remove the window.
 	DestroyWindow(m_hwnd);
 	m_hwnd = nullptr;
@@ -28,46 +33,8 @@ bool Application::Init()
 	m_renderer = std::make_unique<Renderer>();
 	m_renderer->Init(m_hwnd);
 
-
-	
-
-	Vertex vertices[] =
-	{
-		{ DirectX::XMFLOAT3(-1.0f,  1.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(1.0f,  1.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(1.0f,  1.0f,  1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(-1.0f,  1.0f,  1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(1.0f, -1.0f, -1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(1.0f, -1.0f,  1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(-1.0f, -1.0f,  1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
-	};
-
-	// Create index buffer
-	WORD indices[] =
-	{
-		3,1,0,
-		2,1,3,
-
-		0,5,4,
-		1,5,0,
-
-		3,4,7,
-		0,4,3,
-
-		1,6,5,
-		2,6,1,
-
-		2,7,6,
-		3,7,2,
-
-		6,4,5,
-		7,4,6,
-	};
-
-	model = m_renderer->createRawModel(vertices, 8, indices, 36);
-
-	
+	m_scene = new Scene();
+	m_scene->Init(m_renderer.get());
 
 	return true;
 }
@@ -86,7 +53,7 @@ void Application::Run()
 		else
 		{
 			Tick();
-			
+			Render();
 		}
 		
 	}
@@ -95,13 +62,16 @@ void Application::Run()
 bool Application::Tick()
 {
 	m_renderer->Tick();
-	model->Tick();
-	m_renderer->renderModel(model);
+	m_scene->Tick();
 	
+	return false;
+}
 
+void Application::Render()
+{
+	m_scene->Render();
 	//make sure renderer renders last
 	m_renderer->Render();
-	return false;
 }
 
 bool Application::InitWindow()

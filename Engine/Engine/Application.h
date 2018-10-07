@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Renderer.h"
-#include <memory>
 
+#include <memory>
+#include "Scene.h"
 
 
 class Application
@@ -17,6 +17,7 @@ public:
 
 private:
 	bool Tick();
+	void Render();
 	bool InitWindow();
 
 
@@ -28,7 +29,6 @@ private:
 
 	std::unique_ptr<Renderer> m_renderer = nullptr;
 
-	Model* model = nullptr;
-	Model* model1 = nullptr;
+	Scene* m_scene = nullptr;
 };
 
