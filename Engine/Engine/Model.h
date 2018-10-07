@@ -1,6 +1,7 @@
 #pragma once
 
 #include <DirectXMath.h>
+#include <DirectXCollision.h>
 #include <d3d11.h>
 //#include "Renderer.h"
 
@@ -28,6 +29,7 @@ public:
 	void setRotation(float x, float y, float z);
 	void setRotation(DirectX::XMFLOAT3 rot);
 	void setScale(float x, float y, float z);
+	void setScale(DirectX::XMFLOAT3 scale);
 
 	DirectX::XMFLOAT3 getPosition();
 	DirectX::XMFLOAT3 getRotation();
@@ -38,10 +40,11 @@ public:
 	int getVertexCount(); 
 	int getIndexCount();
 
-
+	
 
 
 private:
+	
 
 	DirectX::XMFLOAT3 m_position;
 	DirectX::XMFLOAT3 m_rotation;

@@ -15,17 +15,12 @@ Scene::~Scene()
 		m_camera = nullptr;
 	}
 
-	if (m_test_model)
+	for (int i = 0; i < m_objectsInScene.size(); i++)
 	{
-		delete m_test_model;
-		m_test_model = nullptr;
+		delete m_objectsInScene[i];
+		m_objectsInScene[i] = nullptr;
 	}
-
-	if (m_test_model1)
-	{
-		delete m_test_model1;
-		m_test_model1 = nullptr;
-	}
+	m_objectsInScene.clear();
 }
 
 bool Scene::Init(Renderer * renderer)
@@ -36,53 +31,42 @@ bool Scene::Init(Renderer * renderer)
 	m_camera->setPosition(1.0f, 2.0f, -6.0f);
 	m_camera->setRotation(0, 10, 0);
 
-	Vertex vertices[] =
-	{
-		{ DirectX::XMFLOAT3(-1.0f,  1.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(1.0f,  1.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(1.0f,  1.0f,  1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(-1.0f,  1.0f,  1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(1.0f, -1.0f, -1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(1.0f, -1.0f,  1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(-1.0f, -1.0f,  1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
-	};
+	
+	Object* obj = new Object();
+	obj->Init(renderer);
 
-	// Create index buffer
-	WORD indices[] =
-	{
-		3,1,0,
-		2,1,3,
+	Object* obj1 = new Object();
+	obj1->Init(renderer);
 
-		0,5,4,
-		1,5,0,
+	obj1->setPosition(4, 0.2, 0);
+	obj1->setRotation(0, 0, 0);
+	obj1->setScale(0.5, 0.5, 0.5);
+	
+	m_objectsInScene.push_back(obj);
+	m_objectsInScene.push_back(obj1);
 
-		3,4,7,
-		0,4,3,
-
-		1,6,5,
-		2,6,1,
-
-		2,7,6,
-		3,7,2,
-
-		6,4,5,
-		7,4,6,
-	};
-
-	m_test_model = m_renderer->createRawModel(vertices, 8, indices, 36);
-
-	m_test_model1 = m_renderer->createRawModel(vertices, 8, indices, 36);
-	m_test_model1->setPosition(3, 0, 0);
-	m_test_model1->setRotation(0, 90, 0);
-	m_test_model1->setScale(1, 1, 1.5);
 	return true;
 }
 
 void Scene::Tick()
 {
-	m_test_model->Tick();
-	m_test_model1->Tick();
+
+	DirectX::XMFLOAT3 tmp = DirectX::XMFLOAT3(m_objectsInScene[1]->getPosition().x - 0.0001f, m_objectsInScene[1]->getPosition().y, m_objectsInScene[1]->getPosition().z);
+	m_objectsInScene[1]->setPosition(tmp);
+
+	for (int i = 0; i < m_objectsInScene.size(); i++)
+	{
+		m_objectsInScene[i]->Tick();
+	}
+
+
+	DirectX::BoundingOrientedBox* box = m_objectsInScene[1]->getBoundingBox();
+	DirectX::ContainmentType type = m_objectsInScene[0]->getBoundingBox()->Contains(*box);
+
+	if (type == DirectX::ContainmentType::INTERSECTS)
+	{
+		m_objectsInScene[1]->setPosition(4, 0.2, 0);
+	}
 	//generate view matrix
 	m_camera->Tick();
 
@@ -96,6 +80,8 @@ void Scene::Tick()
 
 void Scene::Render()
 {
-	m_renderer->renderModel(m_test_model);
-	m_renderer->renderModel(m_test_model1);
+	for (int i = 0; i < m_objectsInScene.size(); i++)
+	{
+		m_objectsInScene[i]->Render(m_renderer);
+	}
 }

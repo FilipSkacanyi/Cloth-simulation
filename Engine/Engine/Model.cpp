@@ -23,6 +23,8 @@ Model::~Model()
 		m_indexBuffer->Release();
 		m_indexBuffer = nullptr;
 	}
+
+	
 }
 
 bool Model::Init(ID3D11Buffer* vertexBuffer, int vertexNum, ID3D11Buffer* indexBuffer, int indexNum)
@@ -31,12 +33,15 @@ bool Model::Init(ID3D11Buffer* vertexBuffer, int vertexNum, ID3D11Buffer* indexB
 	m_vertexCount = vertexNum;
 	m_indexBuffer = indexBuffer;
 	m_indexCount = indexNum;
+
+	
+
 	return false;
 }
 
 void Model::Tick()
 {
-	m_rotation.y += 0.0001;
+	
 }
 
 void Model::setPosition(float x, float y, float z)
@@ -62,6 +67,11 @@ void Model::setRotation(DirectX::XMFLOAT3 rot)
 void Model::setScale(float x, float y, float z)
 {
 	m_scale = DirectX::XMFLOAT3(x, y, z);
+}
+
+void Model::setScale(DirectX::XMFLOAT3 scale)
+{
+	m_scale = scale;
 }
 
 DirectX::XMFLOAT3 Model::getPosition()
@@ -97,6 +107,8 @@ int Model::getIndexCount()
 {
 	return m_indexCount;
 }
+
+
 
 int Model::getVertexCount()
 {

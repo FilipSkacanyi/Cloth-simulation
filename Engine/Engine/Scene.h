@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Renderer.h"
-
+#include "Object.h"
+#include <vector>
 class Scene
 {
 public:
@@ -15,10 +15,11 @@ public:
 
 private:
 
+	std::vector<Object*> m_objectsInScene;
+
 	Renderer* m_renderer = nullptr;
 	Camera* m_camera = nullptr;
-	Model* m_test_model = nullptr;
-	Model* m_test_model1 = nullptr;
+
 
 };
 
