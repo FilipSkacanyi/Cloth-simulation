@@ -19,8 +19,10 @@ public:
 
 	void getViewMatrix(DirectX::XMMATRIX& viewMatrix);
 
-private:
+	DirectX::XMFLOAT3 getForward();
 
+private:
+	DirectX::XMFLOAT3 m_cameraForward;
 	DirectX::XMFLOAT3 m_position, m_rotation;
 	DirectX::XMMATRIX m_viewMatrix;
 };

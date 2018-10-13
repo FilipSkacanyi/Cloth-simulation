@@ -73,7 +73,7 @@ void Object::Init(Renderer * renderer)
 	
 }
 
-void Object::Tick()
+void Object::Tick(double dt)
 {
 	m_rotation.y += 0.0001;
 

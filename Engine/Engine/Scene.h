@@ -2,6 +2,7 @@
 
 #include "Object.h"
 #include <vector>
+#include "Input.h"
 class Scene
 {
 public:
@@ -9,8 +10,8 @@ public:
 	~Scene();
 
 	bool Init(Renderer* renderer);
-
-	void Tick();
+	void input(Input* input, double dt);
+	void Tick(double dt);
 	void Render();
 
 private:

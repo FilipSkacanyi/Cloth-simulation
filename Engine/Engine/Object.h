@@ -11,7 +11,7 @@ public:
 
 	void Init(Renderer* renderer);
 
-	void Tick();
+	void Tick(double dt);
 	void Render(Renderer* renderer);
 
 	void setPosition(float x, float y, float z);

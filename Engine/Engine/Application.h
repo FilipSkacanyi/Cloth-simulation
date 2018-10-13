@@ -3,7 +3,8 @@
 
 #include <memory>
 #include "Scene.h"
-
+#include "Input.h"
+#include <chrono>
 
 class Application
 {
@@ -13,16 +14,16 @@ public:
 
 	bool Init();
 	void Run();
-		
+	
+	LRESULT CALLBACK MessageHandler(HWND, UINT, WPARAM, LPARAM);
 
 private:
-	bool Tick();
+	bool Tick(double dt);
 	void Render();
 	bool InitWindow();
 
+	std::chrono::duration<double> m_delta_time;
 
-	static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
-	
 	LPCSTR m_applicationName;
 	HINSTANCE m_hInstance;
 	HWND m_hwnd;
@@ -30,5 +31,11 @@ private:
 	std::unique_ptr<Renderer> m_renderer = nullptr;
 
 	Scene* m_scene = nullptr;
+	Input * m_input = nullptr;
+
+
 };
+
+LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+static Application* ApplicationHandle = nullptr;
 

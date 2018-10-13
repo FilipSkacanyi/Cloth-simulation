@@ -36,6 +36,10 @@ bool Application::Init()
 	m_scene = new Scene();
 	m_scene->Init(m_renderer.get());
 
+	m_input = new Input();
+	m_input->init();
+
+	ApplicationHandle = this;
 	return true;
 }
 
@@ -52,18 +56,46 @@ void Application::Run()
 		}
 		else
 		{
-			Tick();
+			auto start = std::chrono::system_clock::now();
+			Tick(m_delta_time.count() / 100);
 			Render();
+			auto end = std::chrono::system_clock::now();
+			m_delta_time = end - start;
+
 		}
 		
 	}
 }
 
-bool Application::Tick()
+LRESULT Application::MessageHandler(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	switch (message)
+	{
+	case WM_KEYDOWN:
+	{
+		m_input->keyDown((unsigned int)wParam);
+		m_input->setAction(Action::KEY_PRESSED);
+		break;
+	}
+	case WM_KEYUP:
+	{
+		m_input->keyUp((unsigned int)wParam);
+		m_input->setAction(Action::KEY_RELEASED);
+		break;
+	}
+	default:
+		return DefWindowProc(hWnd, message, wParam, lParam);
+	}
+	
+	return 0;
+}
+
+bool Application::Tick(double dt)
 {
 	m_renderer->Tick();
-	m_scene->Tick();
-	
+	m_scene->input(m_input, dt);
+	m_scene->Tick(dt);
+	m_input->setAction(Action::NONE);
 	return false;
 }
 
@@ -123,19 +155,19 @@ bool Application::InitWindow()
 	return true;
 }
 
-LRESULT Application::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 
 	switch (message)
 	{
-	case WM_DESTROY:
-	{
-		//PostQuitMessage(0);
-		PostMessage(hWnd, WM_QUIT, wParam, lParam);
-		break;
-	}
+		case WM_DESTROY:
+		{
+			//PostQuitMessage(0);
+			PostMessage(hWnd, WM_QUIT, wParam, lParam);
+			break;
+		}
 	default:
-		return DefWindowProc(hWnd, message, wParam, lParam);
+		return ApplicationHandle->MessageHandler(hWnd,message,wParam,lParam);
 	}
 
 	return 0;
