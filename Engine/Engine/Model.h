@@ -45,7 +45,6 @@ public:
 
 private:
 	
-
 	DirectX::XMFLOAT3 m_position;
 	DirectX::XMFLOAT3 m_rotation;
 	DirectX::XMFLOAT3 m_scale;

@@ -33,10 +33,10 @@ bool Scene::Init(Renderer * renderer)
 
 	
 	Object* obj = new Object();
-	obj->Init(renderer);
-
+	obj->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+	
 	Object* obj1 = new Object();
-	obj1->Init(renderer);
+	obj1->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
 
 	obj1->setPosition(4, 0.2, 0);
 	obj1->setRotation(0, 0, 0);
@@ -92,15 +92,14 @@ void Scene::input(Input * input, double dt)
 void Scene::Tick(double dt)
 {
 	
-	DirectX::XMFLOAT3 tmp = DirectX::XMFLOAT3(m_objectsInScene[1]->getPosition().x - 0.0001f, m_objectsInScene[1]->getPosition().y, m_objectsInScene[1]->getPosition().z);
-	m_objectsInScene[1]->setPosition(tmp);
+	//DirectX::XMFLOAT3 tmp = DirectX::XMFLOAT3(m_objectsInScene[1]->getPosition().x - 0.0001f, m_objectsInScene[1]->getPosition().y, m_objectsInScene[1]->getPosition().z);
+	//m_objectsInScene[1]->setPosition(tmp);
 
 	for (int i = 0; i < m_objectsInScene.size(); i++)
 	{
 		m_objectsInScene[i]->Tick(dt);
 	}
 	
-
 	DirectX::BoundingOrientedBox* box = m_objectsInScene[1]->getBoundingBox();
 	DirectX::ContainmentType type = m_objectsInScene[0]->getBoundingBox()->Contains(*box);
 

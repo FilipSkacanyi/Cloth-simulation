@@ -2,15 +2,16 @@
 
 
 #include "Renderer.h"
-
+#include <string>
+#include <fstream>
 class Object
 {
 public:
 	Object();
 	~Object();
 
-	void Init(Renderer* renderer);
-
+	void Init(Renderer* renderer, std::string fileName, DirectX::XMFLOAT4 color);
+	void objFile(std::string fileName);
 	void Tick(double dt);
 	void Render(Renderer* renderer);
 
