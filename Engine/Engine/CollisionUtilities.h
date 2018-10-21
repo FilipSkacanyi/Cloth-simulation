@@ -4,6 +4,7 @@
 
 class AlignedBoxCollider;
 class SphereCollider;
+class OrientedBoxCollider;
 
 class CollisionUtilities
 {
@@ -14,6 +15,7 @@ public:
 	static bool IntersectAlignedBoxes(AlignedBoxCollider* A, AlignedBoxCollider *B);
 	static bool IntersectSpheres(SphereCollider* A, SphereCollider* B);
 	static bool IntersectBoxSphere(AlignedBoxCollider* box, SphereCollider * sphere);
+	//static bool IntersectOrientedBoxes(OrientedBoxCollider* obox1, OrientedBoxCollider* obox2);
 
 private:
 

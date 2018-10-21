@@ -11,8 +11,9 @@ public:
 	~AlignedBoxCollider();
 
 	DirectX::XMFLOAT3 getExtends();
+	void setExtends(DirectX::XMFLOAT3 vector);
 
-private:
+protected:
 	DirectX::XMFLOAT3 m_extends;
 };
 

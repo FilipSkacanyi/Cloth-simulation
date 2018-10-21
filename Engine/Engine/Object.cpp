@@ -1,5 +1,5 @@
 #include "Object.h"
-#include <DirectXCollision.h>
+
 
 
 Object::Object()
@@ -160,7 +160,7 @@ void Object::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 c
 				objectfile >> x;
 				objectfile >> y;
 				objectfile >> z;
-				vertices[iv].position = DirectX::XMFLOAT3(x, y, z);
+				vertices[iv].position = DirectX::XMFLOAT3(x, y, -z);
 				vertices[iv].color = DirectX::XMFLOAT4(rand() % 2,rand() % 2,rand() % 2, 1.0f);
 				iv++;
 			}
@@ -178,9 +178,9 @@ void Object::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 c
 				objectfile >> ind2 >> garbage >> skip >> garbage >> skip;
 				objectfile >> ind3 >> garbage >> skip >> garbage >> skip;
 
-				indices[ii++] = ind1 - 1;
-				indices[ii++] = ind2 - 1;
 				indices[ii++] = ind3 - 1;
+				indices[ii++] = ind2 - 1;
+				indices[ii++] = ind1 - 1;
 			}
 		}
 		objectfile.get(input);
@@ -199,31 +199,62 @@ void Object::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 c
 
 	
 
-	//create bounding box
-	m_collider = new SphereCollider();
-	
-	SphereCollider* tmp = static_cast<SphereCollider*> (m_collider);
-	tmp->Init(ColliderType::SPHERE);
-
-	tmp->setRadius(m_scale.x / 2);
 }
 
 
 void Object::Tick(double dt)
 { 
-	//m_rotation.y += 100000 * dt;
+	//m_rotation.y += 3 * dt;
+	m_elapsed_time += dt;
 
 	m_position = DirectX::XMFLOAT3(m_position.x + dt * m_velocity.x, m_position.y + dt*1* m_velocity.y, m_position.z + dt* m_velocity.z);
 	
+	if (m_elapsed_time > 0.3)
+	{
+		m_elapsed_time = 0;
+		//velocity decay / air ressistance
+		m_velocity = DirectX::XMFLOAT3(m_velocity.x* 0.9, m_velocity.y*0.9, m_velocity.z*0.9);
+	}
+
 	//gravity
 	m_velocity = DirectX::XMFLOAT3(m_velocity.x, m_velocity.y + (-(dt * m_mass*9.80) * m_gravity), m_velocity.z);
 
-	if (m_position.y < -5)
+	if (m_position.y < -3)
 	{
 		//reset velocity
 		//m_velocity = DirectX::XMFLOAT3(0, 0, 0);
 		//m_position.y = 0;
-		m_velocity = DirectX::XMFLOAT3(-m_velocity.x, -m_velocity.y,- m_velocity.z);
+		//m_velocity = DirectX::XMFLOAT3(-m_velocity.x , -m_velocity.y,- m_velocity.z);
+		//AddForce(DirectX::XMFLOAT3(-m_velocity.x, -m_velocity.y, -m_velocity.z));
+
+		AddForce(DirectX::XMFLOAT3(0, 5, 0));
+	}
+	if (m_position.x < -5 )
+	{
+		//reset velocity
+		//m_velocity = DirectX::XMFLOAT3(0, 0, 0);
+		//m_position.y = 0;
+		//m_velocity =
+		AddForce(DirectX::XMFLOAT3(5, 0, 0));
+			
+	}
+	if (m_position.x > 5)
+	{
+		AddForce(DirectX::XMFLOAT3(-5, 0, 0));
+	}
+
+	if (m_position.z < -2)
+	{
+		//reset velocity
+		//m_velocity = DirectX::XMFLOAT3(0, 0, 0);
+		//m_position.y = 0;
+		//m_velocity =
+		AddForce(DirectX::XMFLOAT3(0, 0, 2));
+
+	}
+	if (m_position.z > 2)
+	{
+		AddForce(DirectX::XMFLOAT3(0, 0, -2));
 	}
 
 
@@ -231,9 +262,7 @@ void Object::Tick(double dt)
 	m_model->setRotation(m_rotation);
 	m_model->setScale(m_scale);
 
-	SphereCollider* tmp = static_cast<SphereCollider*> (m_collider);
-	tmp->setRadius(m_scale.x/2);
-	m_collider->setPosition(m_position);
+	
 
 }
 
@@ -301,6 +330,14 @@ void Object::resetVelocity(VelocityAxis axis)
 void Object::AddForce(DirectX::XMFLOAT3 force)
 {
 	m_velocity = DirectX::XMFLOAT3(m_velocity.x + force.x, m_velocity.y +  force.y, m_velocity.z + force.z);
+}
+
+void Object::collision(Object * other)
+{
+	//m_velocity = DirectX::XMFLOAT3(-m_velocity.x, -m_velocity.y, -m_velocity.z);
+	DirectX::XMFLOAT3 dir;
+	dir = DirectX::XMFLOAT3((other->getPosition().x - m_position.x) ,( other->getPosition().y - m_position.y) , (other->getPosition().z - m_position.z) );
+	other->AddForce(dir);
 }
 
 float Object::getMass()

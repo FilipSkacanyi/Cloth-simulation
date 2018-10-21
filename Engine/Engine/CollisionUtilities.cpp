@@ -1,6 +1,8 @@
 #include "CollisionUtilities.h"
 #include "AlignedBoxCollider.h"
 #include "SphereCollider.h"
+#include "OrientedBoxCollider.h"
+#include <DirectXCollision.h>
 
 CollisionUtilities::CollisionUtilities()
 {
@@ -108,6 +110,7 @@ bool CollisionUtilities::IntersectBoxSphere(AlignedBoxCollider * box, SphereColl
 
 }
 
+
 float CollisionUtilities::Min(float f1, float f2)
 {
 	if (f1 > f2)
@@ -139,6 +142,6 @@ float CollisionUtilities::dot(DirectX::XMFLOAT3 A, DirectX::XMFLOAT3 B)
 
 bool CollisionUtilities::intersectRange(float min0, float max0, float min1, float max1)
 {
-	return Max(min0, max0) >= Min(min1, max0) &&
+	return Max(min0, max0) >= Min(min1, max1) &&
 		Min(min0, max0) <= Max(min1, max1);
 }

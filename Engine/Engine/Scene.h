@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Object.h"
+#include "Cube.h"
+#include "Sphere.h"
 #include <vector>
 #include "Input.h"
 class Scene

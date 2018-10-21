@@ -4,7 +4,7 @@
 #include "Renderer.h"
 #include <string>
 #include <fstream>
-#include "SphereCollider.h"
+#include "Collider.h"
 
 enum VelocityAxis
 {
@@ -21,7 +21,7 @@ public:
 	~Object();
 
 	void Init(Renderer* renderer, std::string fileName, DirectX::XMFLOAT4 color);
-	void Tick(double dt);
+	virtual void Tick(double dt);
 	void Render(Renderer* renderer);
 
 	void setPosition(float x, float y, float z);
@@ -33,6 +33,7 @@ public:
 
 	void resetVelocity(VelocityAxis axis);
 	void AddForce(DirectX::XMFLOAT3 force);
+	void collision(Object* other);
 
 	float getMass();
 
@@ -47,7 +48,7 @@ public:
 
 	
 
-private:
+protected:
 	Model* m_model = nullptr;
 
 	DirectX::XMFLOAT3 m_position;
@@ -58,6 +59,8 @@ private:
 	float m_mass = 1;
 	DirectX::XMFLOAT3 m_velocity = DirectX::XMFLOAT3(0,0,0);
 	float m_gravity = 1;
+
+	float m_elapsed_time = 0;
 
 	Collider* m_collider = nullptr;
 	

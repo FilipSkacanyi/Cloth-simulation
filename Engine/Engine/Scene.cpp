@@ -32,20 +32,48 @@ bool Scene::Init(Renderer * renderer)
 	m_camera->setRotation(0, 10, 0);
 
 	
-	Object* obj = new Object();
+	Cube* obj = new Cube();
 	obj->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-	obj->setGravity(0);
-	obj->setRotation(45, 45, 45);
+	//obj->setGravity(0);
+	obj->setRotation(0, 0, 0);
 	
-	Object* obj1 = new Object();
+	Cube* obj1 = new Cube();
 	obj1->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
 
 	obj1->setPosition(0, 5, 0);
 	obj1->setRotation(0, 0, 0);
 	obj1->setScale(0.5, 0.5, 0.5);
+
+	Sphere* obj2 = new Sphere();
+	obj2->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+	//obj2->setGravity(0);
+	obj2->setRotation(0, 0, 0);
+	obj2->setPosition(2, 0, 0);
+
+	Sphere* obj3 = new Sphere();
+	obj3->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+	obj3->setRotation(0, 0, 0);
+	obj3->setPosition(2, 5, 0);
+
+	Cube* obj4 = new Cube();
+	obj4->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+	//obj4->setGravity(0);
+	obj4->setRotation(0, 0, 0);
+	obj4->setPosition(4, 0, 0);
+
+	Sphere* obj5 = new Sphere();
+	obj5->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+	obj5->setRotation(0, 0, 0);
+	obj5->setPosition(3.3, 5, 0.1);
+	obj5->setScale(0.5, 0.5, 0.5);
+
 	
 	m_objectsInScene.push_back(obj);
 	m_objectsInScene.push_back(obj1);
+	m_objectsInScene.push_back(obj2);
+	m_objectsInScene.push_back(obj3);
+	m_objectsInScene.push_back(obj4);
+	m_objectsInScene.push_back(obj5);
 
 	return true;
 }
@@ -109,7 +137,8 @@ void Scene::Tick(double dt)
 		{
 			if (m_objectsInScene[i]->getCollider()->Intersect(m_objectsInScene[j]->getCollider()))
 			{
-				m_objectsInScene[j]->resetVelocity(VelocityAxis::ALL_AXIS);
+				m_objectsInScene[i]->collision(m_objectsInScene[j]);
+				m_objectsInScene[j]->collision(m_objectsInScene[i]);
 				//m_objectsInScene[j]->AddForce(DirectX::XMFLOAT3(0, 5, 0));
 			}
 		}

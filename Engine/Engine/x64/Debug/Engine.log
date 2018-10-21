@@ -1,3 +1,7 @@
-﻿  Renderer.cpp
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\renderer.cpp(249): warning C4715: 'Renderer::Init': not all control paths return a value
+﻿  Object.cpp
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\object.cpp(164): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\object.cpp(208): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\object.cpp(210): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\object.cpp(216): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\object.cpp(220): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   Engine.vcxproj -> D:\School\Advanced technilogies\Advanced-Technologies-Collision-detection\Engine\x64\Debug\Engine.exe
