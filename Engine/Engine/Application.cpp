@@ -56,10 +56,10 @@ void Application::Run()
 		}
 		else
 		{
-			auto start = std::chrono::system_clock::now();
-			Tick(m_delta_time.count() / 100);
+			auto start = std::chrono::high_resolution_clock::now();
+			Tick(m_delta_time.count());
 			Render();
-			auto end = std::chrono::system_clock::now();
+			auto end = std::chrono::high_resolution_clock::now();
 			m_delta_time = end - start;
 
 		}

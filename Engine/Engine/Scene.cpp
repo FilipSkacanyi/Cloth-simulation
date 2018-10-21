@@ -34,11 +34,13 @@ bool Scene::Init(Renderer * renderer)
 	
 	Object* obj = new Object();
 	obj->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+	obj->setGravity(0);
+	obj->setRotation(45, 45, 45);
 	
 	Object* obj1 = new Object();
 	obj1->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
 
-	obj1->setPosition(4, 0.2, 0);
+	obj1->setPosition(0, 5, 0);
 	obj1->setRotation(0, 0, 0);
 	obj1->setScale(0.5, 0.5, 0.5);
 	
@@ -53,25 +55,25 @@ void Scene::input(Input * input, double dt)
 	if (input->IsKeyDown(VK_LEFT))
 	{
 		DirectX::XMFLOAT3 camerarot = m_camera->getRotation();
-		camerarot.x -= 3000*dt;
+		camerarot.x -= 30*dt;
 		m_camera->setRotation(camerarot);
 	}
 	if (input->IsKeyDown(VK_RIGHT))
 	{
 		DirectX::XMFLOAT3 camerarot = m_camera->getRotation();
-		camerarot.x += 3000 * dt;
+		camerarot.x +=  30*dt;
 		m_camera->setRotation(camerarot);
 	}
 	if (input->IsKeyDown(VK_UP))
 	{
 		DirectX::XMFLOAT3 camerarot = m_camera->getRotation();
-		camerarot.y -= 3000 * dt;
+		camerarot.y -= 30*dt;
 		m_camera->setRotation(camerarot);
 	}
 	if (input->IsKeyDown(VK_DOWN))
 	{
 		DirectX::XMFLOAT3 camerarot = m_camera->getRotation();
-		camerarot.y += 3000 * dt;
+		camerarot.y += 30*dt;
 		m_camera->setRotation(camerarot);
 	}
 
@@ -79,13 +81,13 @@ void Scene::input(Input * input, double dt)
 	{
 		DirectX::XMFLOAT3 camerapos = m_camera->getPosition();
 		DirectX::XMFLOAT3 forward = m_camera->getForward();
-		m_camera->setPosition(DirectX::XMFLOAT3((camerapos.x + forward.x *1000* dt), (camerapos.y + forward.y*1000* dt), (camerapos.z + forward.z*1000* dt)));
+		m_camera->setPosition(DirectX::XMFLOAT3((camerapos.x + forward.x *30* dt), (camerapos.y + forward.y* 30*dt), (camerapos.z + forward.z*30* dt)));
 	}
 	if (input->IsKeyDown(VK_NUMPAD2))
 	{
 		DirectX::XMFLOAT3 camerapos = m_camera->getPosition();
 		DirectX::XMFLOAT3 forward = m_camera->getForward();
-		m_camera->setPosition(DirectX::XMFLOAT3((camerapos.x - forward.x* 1000 * dt), (camerapos.y - forward.y* 1000 * dt), (camerapos.z - forward.z* 1000 * dt)));
+		m_camera->setPosition(DirectX::XMFLOAT3((camerapos.x - forward.x* 30* dt), (camerapos.y - forward.y* 30* dt), (camerapos.z - forward.z*30* dt)));
 	}
 }
 
@@ -100,13 +102,19 @@ void Scene::Tick(double dt)
 		m_objectsInScene[i]->Tick(dt);
 	}
 	
-	DirectX::BoundingOrientedBox* box = m_objectsInScene[1]->getBoundingBox();
-	DirectX::ContainmentType type = m_objectsInScene[0]->getBoundingBox()->Contains(*box);
 
-	if (type == DirectX::ContainmentType::INTERSECTS)
+	for (int i = 0; i < m_objectsInScene.size(); i++)
 	{
-		m_objectsInScene[1]->setPosition(4, 0.2, 0);
+		for (int j = i +1; j < m_objectsInScene.size(); j++)
+		{
+			if (m_objectsInScene[i]->getCollider()->Intersect(m_objectsInScene[j]->getCollider()))
+			{
+				m_objectsInScene[j]->resetVelocity(VelocityAxis::ALL_AXIS);
+				//m_objectsInScene[j]->AddForce(DirectX::XMFLOAT3(0, 5, 0));
+			}
+		}
 	}
+
 	//generate view matrix
 	m_camera->Tick();
 

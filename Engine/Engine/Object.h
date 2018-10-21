@@ -4,6 +4,16 @@
 #include "Renderer.h"
 #include <string>
 #include <fstream>
+#include "SphereCollider.h"
+
+enum VelocityAxis
+{
+	X_AXIS,
+	Y_AXIS,
+	Z_AXIS,
+	ALL_AXIS
+};
+
 class Object
 {
 public:
@@ -11,7 +21,6 @@ public:
 	~Object();
 
 	void Init(Renderer* renderer, std::string fileName, DirectX::XMFLOAT4 color);
-	void objFile(std::string fileName);
 	void Tick(double dt);
 	void Render(Renderer* renderer);
 
@@ -22,21 +31,35 @@ public:
 	void setScale(float x, float y, float z);
 	void setScale(DirectX::XMFLOAT3 scale);
 
+	void resetVelocity(VelocityAxis axis);
+	void AddForce(DirectX::XMFLOAT3 force);
+
+	float getMass();
+
+	void setGravity(float grav);
+
 
 	DirectX::XMFLOAT3 getPosition();
 	DirectX::XMFLOAT3 getRotation();
 	DirectX::XMFLOAT3 getScale();
 
-	DirectX::BoundingOrientedBox* getBoundingBox();
+	Collider* getCollider();
+
+	
 
 private:
+	Model* m_model = nullptr;
 
 	DirectX::XMFLOAT3 m_position;
 	DirectX::XMFLOAT3 m_rotation;
 	DirectX::XMFLOAT3 m_scale;
 
+	//physics stuff
+	float m_mass = 1;
+	DirectX::XMFLOAT3 m_velocity = DirectX::XMFLOAT3(0,0,0);
+	float m_gravity = 1;
 
-	Model* m_model = nullptr;
-	DirectX::BoundingOrientedBox* m_boundingBox = nullptr;
+	Collider* m_collider = nullptr;
+	
 };
 

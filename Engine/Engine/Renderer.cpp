@@ -335,6 +335,8 @@ void Renderer::renderModel(Model* model)
 	DirectX::XMMATRIX mScale = DirectX::XMMatrixScaling(scale.x,scale.y, scale.z);
 	DirectX::XMMATRIX modelMatrix = mScale * mSpin * mTranslate;
 
+
+	//float f = DirectX::XMVectorGetX(modelMatrix.r[0]);
 	//update our constant buffers
 	MatrixBuffer cb;
 	cb.mWorld = DirectX::XMMatrixTranspose(modelMatrix);

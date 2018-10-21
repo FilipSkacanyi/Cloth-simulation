@@ -1,5 +1,5 @@
 #include "Object.h"
-
+#include <DirectXCollision.h>
 
 
 Object::Object()
@@ -12,10 +12,10 @@ Object::Object()
 
 Object::~Object()
 {
-	if (m_boundingBox)
+	if (m_collider)
 	{
-		delete m_boundingBox;
-		m_boundingBox = nullptr;
+		delete m_collider;
+		m_collider = nullptr;
 	}
 
 	if (m_model)
@@ -161,7 +161,7 @@ void Object::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 c
 				objectfile >> y;
 				objectfile >> z;
 				vertices[iv].position = DirectX::XMFLOAT3(x, y, z);
-				vertices[iv].color = color;
+				vertices[iv].color = DirectX::XMFLOAT4(rand() % 2,rand() % 2,rand() % 2, 1.0f);
 				iv++;
 			}
 		}
@@ -200,111 +200,41 @@ void Object::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 c
 	
 
 	//create bounding box
-	m_boundingBox = new DirectX::BoundingOrientedBox();
-	//init bounding box
-	m_boundingBox->Center = m_position;
-	m_boundingBox->Extents = m_scale;
-	DirectX::XMStoreFloat4(&m_boundingBox->Orientation, DirectX::XMQuaternionRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z));
+	m_collider = new SphereCollider();
 	
+	SphereCollider* tmp = static_cast<SphereCollider*> (m_collider);
+	tmp->Init(ColliderType::SPHERE);
+
+	tmp->setRadius(m_scale.x / 2);
 }
 
-void Object::objFile(std::string fileName)
-{
-	std::ifstream objectfile, fileCounts;
-	int vcount = 0;
-	int icount = 0;
-	fileCounts.open(fileName);
-	char input;
-	fileCounts.get(input);
-	while (!fileCounts.eof())
-	{
-		if (input == 'v')
-		{
-			fileCounts.get(input);
-			if (input == ' ')
-			{
-				vcount++;
-			}
-		}
-		
-		if (input == 'f')
-		{
-			fileCounts.get(input);
-			if (input == ' ')
-			{
-				icount += 3; //each face is a triangle
-			} 
-		}
-	}
-
-	fileCounts.close();
-
-
-
-	objectfile.open(fileName);
-	
-	Vertex* vertices = new Vertex[vcount];
-	WORD* indices = new WORD[icount];
-	int iterator = 0;
-	float x = 0;
-	float y = 0;
-	float z = 0;
-
-	int ind1, ind2, ind3;
-
-	objectfile.get(input);
-	while (!objectfile.eof())
-	{
-		if (input == 'v')
-		{
-			objectfile.get(input);
-			if (input == ' ')
-			{
-				
-				objectfile >> x;
-				objectfile >> y;
-				objectfile >> z;
-				vertices[iterator].position = DirectX::XMFLOAT3(x, y, z);
-			}
-		}
-
-		if (input == 'f')
-		{
-			char garbage = 0;
-			int skip = 0;
-
-			objectfile >> ind1 >> garbage >> garbage >> skip;
-			objectfile >> ind2 >> garbage >> garbage >> skip;
-			objectfile >> ind3 >> garbage >> garbage >> skip;
-
-			indices[iterator] = ind1;
-			indices[iterator + 1] = ind2;
-			indices[iterator + 2] = ind3;
-
-		}
-
-		iterator++;
-	}
-	
-	objectfile.close();
-	//m_model = renderer->createRawModel(vertices, vcount, indices, icount);
-
-	delete[] vertices;
-	delete[] indices;
-}
 
 void Object::Tick(double dt)
-{
-	m_rotation.y += 100*dt;
+{ 
+	//m_rotation.y += 100000 * dt;
+
+	m_position = DirectX::XMFLOAT3(m_position.x + dt * m_velocity.x, m_position.y + dt*1* m_velocity.y, m_position.z + dt* m_velocity.z);
+	
+	//gravity
+	m_velocity = DirectX::XMFLOAT3(m_velocity.x, m_velocity.y + (-(dt * m_mass*9.80) * m_gravity), m_velocity.z);
+
+	if (m_position.y < -5)
+	{
+		//reset velocity
+		//m_velocity = DirectX::XMFLOAT3(0, 0, 0);
+		//m_position.y = 0;
+		m_velocity = DirectX::XMFLOAT3(-m_velocity.x, -m_velocity.y,- m_velocity.z);
+	}
+
 
 	m_model->setPosition(m_position);
 	m_model->setRotation(m_rotation);
 	m_model->setScale(m_scale);
 
-	//update bounding box
-	m_boundingBox->Center = m_position;
-	m_boundingBox->Extents = m_scale;
-	DirectX::XMStoreFloat4(&m_boundingBox->Orientation, DirectX::XMQuaternionRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z));
+	SphereCollider* tmp = static_cast<SphereCollider*> (m_collider);
+	tmp->setRadius(m_scale.x/2);
+	m_collider->setPosition(m_position);
+
 }
 
 void Object::Render(Renderer * renderer)
@@ -342,6 +272,47 @@ void Object::setScale(DirectX::XMFLOAT3 scale)
 	m_scale = scale;
 }
 
+void Object::resetVelocity(VelocityAxis axis)
+{
+	switch (axis)
+	{
+	case VelocityAxis::X_AXIS:
+	{
+		
+		break;
+	}
+	case VelocityAxis::Y_AXIS:
+	{
+		break;
+	}
+	case VelocityAxis::Z_AXIS:
+	{
+		break;
+	}
+	case VelocityAxis::ALL_AXIS:
+	{
+		m_velocity = DirectX::XMFLOAT3(0, 0, 0);
+		break;
+	}
+
+	}
+}
+
+void Object::AddForce(DirectX::XMFLOAT3 force)
+{
+	m_velocity = DirectX::XMFLOAT3(m_velocity.x + force.x, m_velocity.y +  force.y, m_velocity.z + force.z);
+}
+
+float Object::getMass()
+{
+	return 0.0f;
+}
+
+void Object::setGravity(float grav)
+{
+	m_gravity = grav;
+}
+
 DirectX::XMFLOAT3 Object::getPosition()
 {
 	return m_position;
@@ -357,7 +328,7 @@ DirectX::XMFLOAT3 Object::getScale()
 	return m_scale;
 }
 
-DirectX::BoundingOrientedBox * Object::getBoundingBox()
+Collider * Object::getCollider()
 {
-	return m_boundingBox;
+	return m_collider;
 }

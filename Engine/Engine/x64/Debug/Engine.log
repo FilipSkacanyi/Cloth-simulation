@@ -1,10 +1,3 @@
-﻿  Scene.cpp
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(41): warning C4305: 'argument': truncation from 'double' to 'float'
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(56): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(62): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(68): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(74): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(82): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(88): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(108): warning C4305: 'argument': truncation from 'double' to 'float'
+﻿  Renderer.cpp
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\renderer.cpp(249): warning C4715: 'Renderer::Init': not all control paths return a value
   Engine.vcxproj -> D:\School\Advanced technilogies\Advanced-Technologies-Collision-detection\Engine\x64\Debug\Engine.exe
