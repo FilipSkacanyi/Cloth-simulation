@@ -1,7 +1,7 @@
-﻿  Object.cpp
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\object.cpp(164): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\object.cpp(208): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\object.cpp(210): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\object.cpp(216): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\object.cpp(220): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+﻿  CollisionUtilities.cpp
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\collisionutilities.cpp(43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\collisionutilities.cpp(106): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\collisionutilities.cpp(146): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\collisionutilities.cpp(330): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\collisionutilities.cpp(500): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   Engine.vcxproj -> D:\School\Advanced technilogies\Advanced-Technologies-Collision-detection\Engine\x64\Debug\Engine.exe

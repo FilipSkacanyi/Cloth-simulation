@@ -1,4 +1,5 @@
 #include "Collider.h"
+#include "OrientedBoxCollider.h"
 
 
 
@@ -34,6 +35,7 @@ void Collider::setPosition(DirectX::XMFLOAT3 pos)
 
 bool Collider::Intersect(Collider* other)
 {
+	//sphere - sphere
 	if(m_type == ColliderType::SPHERE && other->getType() == ColliderType::SPHERE)
 	{
 		SphereCollider* self = (SphereCollider*)(this);
@@ -41,6 +43,7 @@ bool Collider::Intersect(Collider* other)
 		return CollisionUtilities::IntersectSpheres(self, tmpother);
 	}
 
+	//AABB - AABB
 	if (m_type == ColliderType::AABB && other->getType() == ColliderType::AABB)
 	{
 		AlignedBoxCollider* self = (AlignedBoxCollider*)(this);
@@ -49,19 +52,58 @@ bool Collider::Intersect(Collider* other)
 
 	}
 
+	//AABB - sphere
 	if (m_type == ColliderType::AABB && other->getType() == ColliderType::SPHERE)
+		
 	{
 		AlignedBoxCollider* self = (AlignedBoxCollider*)(this);
 		SphereCollider* tmpother = (SphereCollider*)(other);
 		return CollisionUtilities::IntersectBoxSphere(self, tmpother);
 	}
-
+	//sphere - AABB
 	if (m_type == ColliderType::SPHERE && other->getType() == ColliderType::AABB)
 	{
 		SphereCollider* self = (SphereCollider*)(this);
 		AlignedBoxCollider* otherbox = (AlignedBoxCollider*)(other);
-		return CollisionUtilities::IntersectBoxSphere(otherbox, self);
+		return CollisionUtilities::IntersectBoxSphere(self, otherbox);
+	}
+	//OBB - OBB
+	if (m_type == ColliderType::ORIENTED && other->getType() == ColliderType::ORIENTED)
+	{
+		OrientedBoxCollider* self = (OrientedBoxCollider*)(this);
+		OrientedBoxCollider* otherbox = (OrientedBoxCollider*)(other);
+		return CollisionUtilities::IntersectOrientedBoxes(self, otherbox);
+	}
+
+	//OBB - AABB
+	if (m_type == ColliderType::AABB && other->getType() == ColliderType::ORIENTED)
+	{
+		AlignedBoxCollider* self = (AlignedBoxCollider*)(this);
+		OrientedBoxCollider* otherbox = (OrientedBoxCollider*)(other);
+			
+		return CollisionUtilities::IntersectAABB_OBB(self, otherbox);
+	}
+
+	if(m_type == ColliderType::ORIENTED && other->getType() == ColliderType::AABB)
+	{
+		OrientedBoxCollider* self = (OrientedBoxCollider*)(this);
+		AlignedBoxCollider* otherbox = (AlignedBoxCollider*)(other);
+		return CollisionUtilities::IntersectAABB_OBB(self, otherbox);
 	}
 	
+	//OBB - sphere
+	if (m_type == ColliderType::ORIENTED && other->getType() == ColliderType::SPHERE)
+	{
+		OrientedBoxCollider* self = (OrientedBoxCollider*)(this);
+		SphereCollider* tmpsphere = (SphereCollider*)(other);
+		return CollisionUtilities::IntersectOrientedBoxSphere(self, tmpsphere);
+	}
+	if (m_type == ColliderType::SPHERE && other->getType() == ColliderType::ORIENTED)
+	{
+		OrientedBoxCollider* tmpsphere = (OrientedBoxCollider*)(other);
+		SphereCollider* self = (SphereCollider*)(this);
+		return CollisionUtilities::IntersectOrientedBoxSphere(self, tmpsphere);
+	}
+
 	return false;
 }

@@ -1,5 +1,5 @@
 #include "Cube.h"
-#include "AlignedBoxCollider.h"
+#include "OrientedBoxCollider.h"
 
 
 
@@ -18,10 +18,10 @@ void Cube::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 col
 
 
 	//create bounding box
-	m_collider = new AlignedBoxCollider();
+	m_collider = new OrientedBoxCollider();
 
-	AlignedBoxCollider* tmp = static_cast<AlignedBoxCollider*> (m_collider);
-	tmp->Init(ColliderType::AABB);
+	OrientedBoxCollider * tmp = (OrientedBoxCollider*)(m_collider);
+	tmp->Init(ColliderType::ORIENTED);
 	
 	m_gravity = 1;
 }
@@ -34,7 +34,8 @@ void Cube::Tick(double dt)
 	tmp->setRadius(m_scale.x / 2);
 	m_collider->setPosition(m_position);*/
 
-	AlignedBoxCollider* tmp = static_cast<AlignedBoxCollider*> (m_collider);
+	OrientedBoxCollider* tmp = static_cast<OrientedBoxCollider*> (m_collider);
 	tmp->setPosition(m_position);
+	tmp->setRotation(m_rotation);
 	tmp->setExtends(DirectX::XMFLOAT3(m_scale.x / 2, m_scale.y / 2, m_scale.z / 2));
 }

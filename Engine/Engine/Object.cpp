@@ -337,7 +337,7 @@ void Object::collision(Object * other)
 	//m_velocity = DirectX::XMFLOAT3(-m_velocity.x, -m_velocity.y, -m_velocity.z);
 	DirectX::XMFLOAT3 dir;
 	dir = DirectX::XMFLOAT3((other->getPosition().x - m_position.x) ,( other->getPosition().y - m_position.y) , (other->getPosition().z - m_position.z) );
-	other->AddForce(dir);
+	//other->AddForce(dir);
 }
 
 float Object::getMass()

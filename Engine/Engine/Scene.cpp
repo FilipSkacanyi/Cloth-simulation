@@ -34,46 +34,52 @@ bool Scene::Init(Renderer * renderer)
 	
 	Cube* obj = new Cube();
 	obj->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-	//obj->setGravity(0);
-	obj->setRotation(0, 0, 0);
+	obj->setGravity(0);
+	obj->setRotation(0, 45, 0);
+	obj->setScale(1, 1, 1);
 	
 	Cube* obj1 = new Cube();
 	obj1->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
+	obj1->setGravity(0);
+	obj1->setPosition(1.5f, 0, 0);
+	obj1->setRotation(0, 0, 45);
+	obj1->setScale(1, 1,1);
 
-	obj1->setPosition(0, 5, 0);
-	obj1->setRotation(0, 0, 0);
-	obj1->setScale(0.5, 0.5, 0.5);
-
-	Sphere* obj2 = new Sphere();
+	/*Sphere* obj2 = new Sphere();
 	obj2->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-	//obj2->setGravity(0);
+	obj2->setGravity(1);
 	obj2->setRotation(0, 0, 0);
-	obj2->setPosition(2, 0, 0);
+	obj2->setPosition(0.2, 2, 0);*/
 
-	Sphere* obj3 = new Sphere();
+	/*Sphere* obj3 = new Sphere();
 	obj3->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+	obj3->setGravity(0);
 	obj3->setRotation(0, 0, 0);
 	obj3->setPosition(2, 5, 0);
+	obj3->setScale(0.75, 0.75, 0.75);*/
 
-	Cube* obj4 = new Cube();
+	/*Cube* obj4 = new Cube();
 	obj4->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-	//obj4->setGravity(0);
+	obj4->setGravity(0);
 	obj4->setRotation(0, 0, 0);
-	obj4->setPosition(4, 0, 0);
+	obj4->setPosition(4, 0, 0);*/
 
-	Sphere* obj5 = new Sphere();
+	/*Sphere* obj5 = new Sphere();
 	obj5->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+	obj5->setGravity(0);
 	obj5->setRotation(0, 0, 0);
 	obj5->setPosition(3.3, 5, 0.1);
-	obj5->setScale(0.5, 0.5, 0.5);
+	obj5->setScale(0.5, 0.5, 0.5);*/
 
 	
 	m_objectsInScene.push_back(obj);
 	m_objectsInScene.push_back(obj1);
-	m_objectsInScene.push_back(obj2);
-	m_objectsInScene.push_back(obj3);
+	//m_objectsInScene.push_back(obj2);
+	/*m_objectsInScene.push_back(obj3);
 	m_objectsInScene.push_back(obj4);
-	m_objectsInScene.push_back(obj5);
+	m_objectsInScene.push_back(obj5);*/
+
+	
 
 	return true;
 }
@@ -116,6 +122,21 @@ void Scene::input(Input * input, double dt)
 		DirectX::XMFLOAT3 camerapos = m_camera->getPosition();
 		DirectX::XMFLOAT3 forward = m_camera->getForward();
 		m_camera->setPosition(DirectX::XMFLOAT3((camerapos.x - forward.x* 30* dt), (camerapos.y - forward.y* 30* dt), (camerapos.z - forward.z*30* dt)));
+	}
+
+	if (input->IsKeyDown(VK_NUMPAD9))
+	{
+		float f = 30 * dt;
+		DirectX::XMFLOAT3 rot = m_objectsInScene[1]->getRotation();
+		rot.y -= f;
+		m_objectsInScene[1]->setRotation(rot);
+	}
+	if (input->IsKeyDown(VK_NUMPAD6))
+	{
+		float f =  1* dt;
+		DirectX::XMFLOAT3 pos = m_objectsInScene[1]->getPosition();
+		pos.x -= f;
+		m_objectsInScene[1]->setPosition(pos);
 	}
 }
 

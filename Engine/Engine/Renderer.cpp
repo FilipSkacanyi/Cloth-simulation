@@ -330,7 +330,9 @@ void Renderer::renderModel(Model* model)
 	DirectX::XMFLOAT3 rot = model->getRotation();
 	DirectX::XMFLOAT3 scale = model->getScale();
 
-	DirectX::XMMATRIX mSpin = DirectX::XMMatrixRotationRollPitchYaw(rot.x,rot.y, rot.z);
+	float rad = 0.0174533;
+
+	DirectX::XMMATRIX mSpin = DirectX::XMMatrixRotationRollPitchYaw(rot.x* rad,rot.y * rad, rot.z *rad);
 	DirectX::XMMATRIX mTranslate = DirectX::XMMatrixTranslation(pos.x, pos.y,pos.z);
 	DirectX::XMMATRIX mScale = DirectX::XMMatrixScaling(scale.x,scale.y, scale.z);
 	DirectX::XMMATRIX modelMatrix = mScale * mSpin * mTranslate;
