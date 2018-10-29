@@ -61,8 +61,37 @@ void Object::Init(Renderer * renderer)
 		7,4,6,
 	};
 
+	int rows = 6;
+	int cols = 4;
+	Vertex* tmpvert = new Vertex[rows*cols];
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			tmpvert[i*cols+j].position = DirectX::XMFLOAT3(j, i, 0);
+			tmpvert[i*cols+j].color = DirectX::XMFLOAT4(rand() % 2, rand() % 2, rand() % 2, 1);
+		}
+	}
+	WORD* tmpind = new WORD[((rows -1) * (cols - 1)) * 6];
+	int indices_iterator = 0;;
+	for (int i = 0; i < rows-1; i++)
+	{
+		for (int j = 0; j < cols-1; j++)
+		{
 
-	m_model = renderer->createRawModel(vertices, 8, indices, 36);
+			tmpind[indices_iterator++] = (i + 1) * (cols)+j;
+			tmpind[indices_iterator++] = i * (cols)+j + 1;
+			tmpind[indices_iterator++] = i * (cols)+ j;
+			
+			tmpind[indices_iterator++] = (i + 1) * (cols)+j + 1;
+			tmpind[indices_iterator++] = i * (cols)+j + 1;
+			tmpind[indices_iterator++] = (i + 1) * (cols)+j;
+			
+			
+		}
+	}
+
+	m_model = renderer->createRawModel(tmpvert, rows*cols, tmpind, ((rows - 1) * (cols - 1)) * 6);
 
 	//create bounding box
 	m_boundingBox = new DirectX::BoundingOrientedBox();
@@ -75,7 +104,7 @@ void Object::Init(Renderer * renderer)
 
 void Object::Tick()
 {
-	m_rotation.y += 0.0001;
+	//m_rotation.y = 3.14;
 
 	m_model->setPosition(m_position);
 	m_model->setRotation(m_rotation);
