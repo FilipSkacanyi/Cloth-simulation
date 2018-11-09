@@ -25,6 +25,18 @@ struct Vector3
 		z = z_;
 	}
 
+	void Normalize()
+	{
+		float mag = sqrt(x * x + y * y + z * z);
+		
+		if (mag != 0)
+		{
+			x = x / mag;
+			y = y / mag;
+			z = z / mag;
+		}
+	}
+
 	Vector3& operator= (const Vector3& Float3) { x = Float3.x; y = Float3.y; z = Float3.z; return *this; }
 	Vector3 operator+ (const Vector3 Float3) { return Vector3(x + Float3.x,y + Float3.y,z + Float3.z); }
 	Vector3 operator- (const Vector3 Float3) { return Vector3(x - Float3.x, y - Float3.y, z - Float3.z); }

@@ -141,6 +141,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="CollisionUtilities.h" />
+    <ClInclude Include="OBJ_Loader.h" />
     <ClInclude Include="OrientedBoxCollider.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene.h" />

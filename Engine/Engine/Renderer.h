@@ -51,7 +51,9 @@ private :
 	D3D_FEATURE_LEVEL selectedFeatureLevel;
 	
 	ID3D11Buffer* m_matrixBuffer = nullptr;
-	
+
+	ID3D11RasterizerState* m_WireFrame;
+
 	DirectX::XMMATRIX m_world;
 	DirectX::XMMATRIX m_view;
 	DirectX::XMMATRIX m_projection;

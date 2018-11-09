@@ -22,6 +22,6 @@ private:
 	Renderer* m_renderer = nullptr;
 	Camera* m_camera = nullptr;
 
-
+	float ball_throw = 0;
 };
 

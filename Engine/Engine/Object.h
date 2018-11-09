@@ -39,6 +39,7 @@ public:
 
 	void setGravity(float grav);
 
+	void setKinematic(bool b) { m_kinematic = b; }
 
 	DirectX::XMFLOAT3 getPosition();
 	DirectX::XMFLOAT3 getRotation();
@@ -59,6 +60,8 @@ protected:
 	float m_mass = 1;
 	DirectX::XMFLOAT3 m_velocity = DirectX::XMFLOAT3(0,0,0);
 	float m_gravity = 1;
+	bool m_kinematic = false;
+	float m_bounciness = 0.33; 
 
 	float m_elapsed_time = 0;
 

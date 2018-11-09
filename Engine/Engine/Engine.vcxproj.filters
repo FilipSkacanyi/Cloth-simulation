@@ -116,5 +116,8 @@
     <ClInclude Include="Sphere.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="OBJ_Loader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

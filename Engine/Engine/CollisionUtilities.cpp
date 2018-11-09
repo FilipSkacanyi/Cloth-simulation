@@ -321,7 +321,7 @@ bool CollisionUtilities::IntersectOrientedBoxes(OrientedBoxCollider * obox1, Ori
 		return false;
 	}
 
-	OutputDebugStringA("collision occured\n");
+	
 	return true;
 }
 
@@ -385,7 +385,7 @@ bool CollisionUtilities::IntersectOrientedBoxSphere(OrientedBoxCollider * obox, 
 									fabs(dot(Az * DA, Ax)) +
 									fabs(dot(sphere_vector_towards_center_of_cube, Ax)))
 	{
-		OutputDebugStringA(" collision did not occur in X \n");
+		
 		
 		return false;
 	}
@@ -397,7 +397,7 @@ bool CollisionUtilities::IntersectOrientedBoxSphere(OrientedBoxCollider * obox, 
 									fabs(dot(Az * DA, Ay)) +
 									fabs(dot(sphere_vector_towards_center_of_cube, Ay)))
 	{
-		OutputDebugStringA("collision did not occur in Y \n");
+		
 		
 		return false;
 	}
@@ -408,7 +408,7 @@ bool CollisionUtilities::IntersectOrientedBoxSphere(OrientedBoxCollider * obox, 
 									fabs(dot(Az * HA, Az)) +
 									fabs(dot(sphere_vector_towards_center_of_cube, Az)))
 	{
-		OutputDebugStringA(" collision did not occur in Z \n");
+		
 		return false;
 	}
 
@@ -439,7 +439,7 @@ bool CollisionUtilities::IntersectOrientedBoxSphere(OrientedBoxCollider * obox, 
 		return false;
 	}*/
 
-	OutputDebugStringA("collision between obox and sphere occured\n");
+	
 	return true;
 }
 
@@ -517,7 +517,7 @@ bool CollisionUtilities::checkSeparatingAxes(Vector3 distance, Vector3 current_a
 											fabs(dot(By * HB, current_axis)) +
 											fabs(dot(Bz * DB, current_axis)) )
 	{
-		OutputDebugStringA("collision did not occur\n");
+		
 		return false;
 	}
 

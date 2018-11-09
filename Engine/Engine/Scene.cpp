@@ -33,17 +33,55 @@ bool Scene::Init(Renderer * renderer)
 
 	
 	Cube* obj = new Cube();
-	obj->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-	obj->setGravity(0);
-	obj->setRotation(0, 45, 0);
+	obj->Init(renderer, "cube.obj", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+	obj->setGravity(1);
+	obj->setPosition(0, 0, 0);
+	obj->setRotation(0, 0, 0);
 	obj->setScale(1, 1, 1);
 	
 	Cube* obj1 = new Cube();
-	obj1->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
-	obj1->setGravity(0);
-	obj1->setPosition(1.5f, 0, 0);
-	obj1->setRotation(0, 0, 45);
+	obj1->Init(renderer, "cube.obj", DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
+	obj1->setGravity(1);
+	obj1->setPosition(0.6, 1.1, 0);
+	obj1->setRotation(0, 0, 0);
 	obj1->setScale(1, 1,1);
+
+	Cube* obj2 = new Cube();
+	obj2->Init(renderer, "cube.obj", DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
+	obj2->setGravity(1);
+	obj2->setPosition(1.2, 0, 0);
+	obj2->setRotation(0, 0, 0);
+	obj2->setScale(1, 1, 1);
+
+	Cube* obj3 = new Cube();
+	obj3->Init(renderer, "cube.obj", DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
+	obj3->setGravity(1);
+	obj3->setPosition(2.4, 0, 0);
+	obj3->setRotation(0, 0, 0);
+	obj3->setScale(1, 1, 1);
+
+	Cube* obj4 = new Cube();
+	obj4->Init(renderer, "cube.obj", DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
+	obj4->setGravity(1);
+	obj4->setPosition(1.8, 1.1, 0);
+	obj4->setRotation(0, 0, 0);
+	obj4->setScale(1, 1, 1);
+
+	Cube* obj5 = new Cube();
+	obj5->Init(renderer, "cube.obj", DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
+	obj5->setGravity(1);
+	obj5->setPosition(1.2, 2.2, 0);
+	obj5->setRotation(0, 0, 0);
+	obj5->setScale(1, 1, 1);
+
+	Cube* plane = new Cube();
+	plane->Init(renderer, "cube.obj", DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
+	plane->setGravity(0);
+	plane->setKinematic(true);
+	plane->setPosition(0, -10, 0);
+	plane->setRotation(0, 0, 0);
+	plane->setScale(100, 10, 100);
+	
 
 	/*Sphere* obj2 = new Sphere();
 	obj2->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
@@ -74,10 +112,11 @@ bool Scene::Init(Renderer * renderer)
 	
 	m_objectsInScene.push_back(obj);
 	m_objectsInScene.push_back(obj1);
-	//m_objectsInScene.push_back(obj2);
-	/*m_objectsInScene.push_back(obj3);
+	m_objectsInScene.push_back(plane);
+	m_objectsInScene.push_back(obj2);
+	m_objectsInScene.push_back(obj3);
 	m_objectsInScene.push_back(obj4);
-	m_objectsInScene.push_back(obj5);*/
+	m_objectsInScene.push_back(obj5);
 
 	
 
@@ -138,6 +177,26 @@ void Scene::input(Input * input, double dt)
 		pos.x -= f;
 		m_objectsInScene[1]->setPosition(pos);
 	}
+
+	if (input->IsKeyDown(VK_SPACE))
+	{
+		ball_throw += dt;
+		if (ball_throw > 2)
+		{
+			ball_throw = 0;
+
+			Sphere* obj = new Sphere();
+			obj->Init(m_renderer, "cube.obj", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+			obj->setGravity(1);
+			obj->setPosition(m_camera->getPosition());
+			obj->setRotation(0, 0, 0);
+			obj->setScale(1, 1, 1);
+
+			DirectX::XMFLOAT3 force = DirectX::XMFLOAT3(m_camera->getForward().x * 10, m_camera->getForward().y * 10, m_camera->getForward().z * 10);
+			obj->AddForce(force);
+			m_objectsInScene.push_back(obj);
+		}
+	}
 }
 
 void Scene::Tick(double dt)
@@ -150,7 +209,7 @@ void Scene::Tick(double dt)
 	{
 		m_objectsInScene[i]->Tick(dt);
 	}
-	
+	//m_objectsInScene[0]->resetVelocity(ALL_AXIS);
 
 	for (int i = 0; i < m_objectsInScene.size(); i++)
 	{

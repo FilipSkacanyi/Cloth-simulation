@@ -71,6 +71,12 @@ Renderer::~Renderer()
 		m_depthStencilView->Release();
 		m_depthStencilView = nullptr;
 	}
+
+	if (m_WireFrame)
+	{
+		m_WireFrame->Release();
+		m_WireFrame = nullptr;
+	}
 	
 }
 
@@ -246,6 +252,16 @@ bool Renderer::Init(HWND hwnd)
 	m_projection = DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, 800 / (FLOAT)600, 0.01f, 100.0f); //800 and 600 are window size
 
 	
+	D3D11_RASTERIZER_DESC wfdesc;
+
+	ZeroMemory(&wfdesc, sizeof(D3D11_RASTERIZER_DESC));
+	wfdesc.FillMode = D3D11_FILL_SOLID;
+	// D3D11_FILL_SOLID
+	wfdesc.CullMode = D3D11_CULL_NONE;
+	hr = m_device->CreateRasterizerState(&wfdesc, &m_WireFrame);
+
+	m_context->RSSetState(m_WireFrame);
+
 }
 
 void Renderer::Clear()
