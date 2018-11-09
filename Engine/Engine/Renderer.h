@@ -33,6 +33,8 @@ public:
 
 	void renderModel(Model* model);
 	
+	ID3D11Device* getDevice() { return m_device; }
+	ID3D11DeviceContext* getContext() { return m_context; }
 
 private :
 

@@ -255,7 +255,7 @@ bool Renderer::Init(HWND hwnd)
 	D3D11_RASTERIZER_DESC wfdesc;
 
 	ZeroMemory(&wfdesc, sizeof(D3D11_RASTERIZER_DESC));
-	wfdesc.FillMode = D3D11_FILL_SOLID;
+	wfdesc.FillMode = D3D11_FILL_WIREFRAME;
 	// D3D11_FILL_SOLID
 	wfdesc.CullMode = D3D11_CULL_NONE;
 	hr = m_device->CreateRasterizerState(&wfdesc, &m_WireFrame);
@@ -365,9 +365,9 @@ void Renderer::renderModel(Model* model)
 	//set buffers to the ones of this specific object
 	m_context->VSSetConstantBuffers(0, 1, &m_matrixBuffer);
 	m_context->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
-	m_context->IASetIndexBuffer(model->getIndexBuffer(), DXGI_FORMAT_R16_UINT, 0);
+	m_context->IASetIndexBuffer(model->getIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 	
 	//render
-	m_context->DrawIndexed(36, 0, 0);
+	m_context->DrawIndexed(model->getIndexCount(), 0, 0);
 	
 }

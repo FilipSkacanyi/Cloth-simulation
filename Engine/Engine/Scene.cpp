@@ -32,91 +32,8 @@ bool Scene::Init(Renderer * renderer)
 	m_camera->setRotation(0, 10, 0);
 
 	
-	Cube* obj = new Cube();
-	obj->Init(renderer, "cube.obj", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-	obj->setGravity(1);
-	obj->setPosition(0, 0, 0);
-	obj->setRotation(0, 0, 0);
-	obj->setScale(1, 1, 1);
-	
-	Cube* obj1 = new Cube();
-	obj1->Init(renderer, "cube.obj", DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
-	obj1->setGravity(1);
-	obj1->setPosition(0.6, 1.1, 0);
-	obj1->setRotation(0, 0, 0);
-	obj1->setScale(1, 1,1);
-
-	Cube* obj2 = new Cube();
-	obj2->Init(renderer, "cube.obj", DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
-	obj2->setGravity(1);
-	obj2->setPosition(1.2, 0, 0);
-	obj2->setRotation(0, 0, 0);
-	obj2->setScale(1, 1, 1);
-
-	Cube* obj3 = new Cube();
-	obj3->Init(renderer, "cube.obj", DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
-	obj3->setGravity(1);
-	obj3->setPosition(2.4, 0, 0);
-	obj3->setRotation(0, 0, 0);
-	obj3->setScale(1, 1, 1);
-
-	Cube* obj4 = new Cube();
-	obj4->Init(renderer, "cube.obj", DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
-	obj4->setGravity(1);
-	obj4->setPosition(1.8, 1.1, 0);
-	obj4->setRotation(0, 0, 0);
-	obj4->setScale(1, 1, 1);
-
-	Cube* obj5 = new Cube();
-	obj5->Init(renderer, "cube.obj", DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
-	obj5->setGravity(1);
-	obj5->setPosition(1.2, 2.2, 0);
-	obj5->setRotation(0, 0, 0);
-	obj5->setScale(1, 1, 1);
-
-	Cube* plane = new Cube();
-	plane->Init(renderer, "cube.obj", DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
-	plane->setGravity(0);
-	plane->setKinematic(true);
-	plane->setPosition(0, -10, 0);
-	plane->setRotation(0, 0, 0);
-	plane->setScale(100, 10, 100);
-	
-
-	/*Sphere* obj2 = new Sphere();
-	obj2->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-	obj2->setGravity(1);
-	obj2->setRotation(0, 0, 0);
-	obj2->setPosition(0.2, 2, 0);*/
-
-	/*Sphere* obj3 = new Sphere();
-	obj3->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-	obj3->setGravity(0);
-	obj3->setRotation(0, 0, 0);
-	obj3->setPosition(2, 5, 0);
-	obj3->setScale(0.75, 0.75, 0.75);*/
-
-	/*Cube* obj4 = new Cube();
-	obj4->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-	obj4->setGravity(0);
-	obj4->setRotation(0, 0, 0);
-	obj4->setPosition(4, 0, 0);*/
-
-	/*Sphere* obj5 = new Sphere();
-	obj5->Init(renderer, "cube2.txt", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-	obj5->setGravity(0);
-	obj5->setRotation(0, 0, 0);
-	obj5->setPosition(3.3, 5, 0.1);
-	obj5->setScale(0.5, 0.5, 0.5);*/
-
-	
-	m_objectsInScene.push_back(obj);
-	m_objectsInScene.push_back(obj1);
-	m_objectsInScene.push_back(plane);
-	m_objectsInScene.push_back(obj2);
-	m_objectsInScene.push_back(obj3);
-	m_objectsInScene.push_back(obj4);
-	m_objectsInScene.push_back(obj5);
+	m_cloth = new Cloth();
+	m_cloth->Initialise(renderer, 5, 5);
 
 	
 
@@ -201,6 +118,7 @@ void Scene::input(Input * input, double dt)
 
 void Scene::Tick(double dt)
 {
+	m_cloth->Tick(dt, m_renderer);
 	
 	//DirectX::XMFLOAT3 tmp = DirectX::XMFLOAT3(m_objectsInScene[1]->getPosition().x - 0.0001f, m_objectsInScene[1]->getPosition().y, m_objectsInScene[1]->getPosition().z);
 	//m_objectsInScene[1]->setPosition(tmp);
@@ -241,4 +159,6 @@ void Scene::Render()
 	{
 		m_objectsInScene[i]->Render(m_renderer);
 	}
+
+	m_cloth->Render(m_renderer);
 }

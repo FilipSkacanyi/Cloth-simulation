@@ -4,6 +4,7 @@
 #include "Sphere.h"
 #include <vector>
 #include "Input.h"
+#include "Cloth.h"
 class Scene
 {
 public:
@@ -21,6 +22,8 @@ private:
 
 	Renderer* m_renderer = nullptr;
 	Camera* m_camera = nullptr;
+
+	Cloth* m_cloth = nullptr;
 
 	float ball_throw = 0;
 };

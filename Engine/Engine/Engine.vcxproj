@@ -118,6 +118,8 @@
     <ClCompile Include="AlignedBoxCollider.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Cloth.cpp" />
+    <ClCompile Include="ClothPoint.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionUtilities.cpp" />
     <ClCompile Include="Cube.cpp" />
@@ -135,6 +137,8 @@
     <ClInclude Include="AlignedBoxCollider.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Cloth.h" />
+    <ClInclude Include="ClothPoint.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Input.h" />
