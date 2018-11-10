@@ -25,6 +25,12 @@
     <Filter Include="Source Files\Objects">
       <UniqueIdentifier>{2fd0aab1-c982-48bf-aba5-0dc0934dee75}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Cloth">
+      <UniqueIdentifier>{917b74c2-8d24-4f58-b029-0dd88bda9fb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Cloth">
+      <UniqueIdentifier>{113288c7-d53f-4215-9624-aa3d88b43dd2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -73,10 +79,13 @@
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
     <ClCompile Include="Cloth.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Cloth</Filter>
     </ClCompile>
     <ClCompile Include="ClothPoint.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Cloth</Filter>
+    </ClCompile>
+    <ClCompile Include="Spring.cpp">
+      <Filter>Source Files\Cloth</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -126,10 +135,13 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Cloth.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Cloth</Filter>
     </ClInclude>
     <ClInclude Include="ClothPoint.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Cloth</Filter>
+    </ClInclude>
+    <ClInclude Include="Spring.h">
+      <Filter>Header Files\Cloth</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

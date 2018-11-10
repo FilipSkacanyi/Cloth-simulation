@@ -6,6 +6,7 @@
 #include <vector>
 #include <memory>
 class ClothPoint;
+class Spring;
 class Cloth
 {
 public:
@@ -25,5 +26,6 @@ private:
 	Model* m_model = nullptr;
 
 	std::vector<std::unique_ptr<ClothPoint>> m_points;
+	std::vector<std::unique_ptr<Spring>> m_springs;
 };
 
