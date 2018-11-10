@@ -2,10 +2,10 @@
 
 #include "Renderer.h"
 #include "CollisionUtilities.h"
-#include "ClothPoint.h"
+
 #include <vector>
 #include <memory>
-
+class ClothPoint;
 class Cloth
 {
 public:
@@ -14,6 +14,8 @@ public:
 	void Tick(double dt, Renderer* renderer);
 	void Render(Renderer* renderer);
 	bool Initialise(Renderer* renderer,int rows, int cols);
+
+	void setPosition(DirectX::XMFLOAT3 pos) { m_position = pos; }
 
 private:
 

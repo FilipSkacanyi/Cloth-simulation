@@ -1,5 +1,5 @@
 #include "ClothPoint.h"
-
+#include "Cloth.h"
 
 
 ClothPoint::ClothPoint()

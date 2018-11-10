@@ -297,7 +297,7 @@ void Renderer::updateViewMatrix(DirectX::XMMATRIX view)
 
 
 
-Model * Renderer::createRawModel(Vertex vertices[], int vertexNum, WORD indices[], int indexNum)
+Model * Renderer::createRawModel(Vertex vertices[], int vertexNum, unsigned long indices[], int indexNum)
 {
 	Model* model = new Model();
 
@@ -320,7 +320,7 @@ Model * Renderer::createRawModel(Vertex vertices[], int vertexNum, WORD indices[
 
 	ZeroMemory(&bd, sizeof(bd));
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(WORD) * indexNum;        
+	bd.ByteWidth = sizeof(unsigned long) * indexNum;        
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	bd.MiscFlags = 0;

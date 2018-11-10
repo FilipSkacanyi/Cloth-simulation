@@ -29,7 +29,7 @@ public:
 
 	void updateViewMatrix(DirectX::XMMATRIX view);
 
-	Model* createRawModel(Vertex vertices[], int vertexNum, WORD indices[], int indexNum);
+	Model* createRawModel(Vertex vertices[], int vertexNum, unsigned long indices[], int indexNum);
 
 	void renderModel(Model* model);
 	

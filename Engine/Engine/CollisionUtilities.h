@@ -38,6 +38,7 @@ struct Vector3
 	}
 
 	Vector3& operator= (const Vector3& Float3) { x = Float3.x; y = Float3.y; z = Float3.z; return *this; }
+	Vector3& operator= (const DirectX::XMFLOAT3& Float3) { x = Float3.x; y = Float3.y; z = Float3.z; return *this; }
 	Vector3 operator+ (const Vector3 Float3) { return Vector3(x + Float3.x,y + Float3.y,z + Float3.z); }
 	Vector3 operator- (const Vector3 Float3) { return Vector3(x - Float3.x, y - Float3.y, z - Float3.z); }
 	Vector3 operator* (const float Float) { return Vector3(x * Float, y * Float, z * Float); }

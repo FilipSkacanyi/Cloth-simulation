@@ -1,8 +1,12 @@
-﻿  Cloth.cpp
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\collisionutilities.h(30): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\cloth.cpp(16): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\cloth.cpp(17): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\cloth.cpp(68): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\cloth.cpp(73): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\cloth.cpp(136): warning C4715: 'Cloth::Initialise': not all control paths return a value
+﻿  Scene.cpp
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\object.h(64): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(55): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(61): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(67): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(73): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(81): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(87): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(92): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(99): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(107): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
   Engine.vcxproj -> D:\School\Advanced technilogies\Advanced-Technologies-Collision-detection\Engine\x64\Debug\Engine.exe

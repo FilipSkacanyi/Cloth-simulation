@@ -38,7 +38,7 @@ void Object::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 c
 	int vertcount = loader.LoadedVertices.size();
 	int indcount = loader.LoadedIndices.size();
 	Vertex* vertices1 = new Vertex[vertcount];
-	WORD* indices1 = new WORD[indcount];
+	unsigned long* indices1 = new unsigned long[indcount];
 
 	for (int i = 0; i < loader.LoadedVertices.size(); i++)
 	{

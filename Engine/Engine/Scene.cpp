@@ -33,8 +33,15 @@ bool Scene::Init(Renderer * renderer)
 
 	
 	m_cloth = new Cloth();
-	m_cloth->Initialise(renderer, 5, 5);
+	m_cloth->Initialise(renderer, 4, 6);
+	m_cloth->setPosition(DirectX::XMFLOAT3(0, 0, 0));
 
+	Cube* sphere = new Cube();
+	sphere->Init(renderer, "cube.obj", DirectX::XMFLOAT4(1, 0, 0, 1));
+	sphere->setGravity(0);
+	sphere->setScale(0.5, 0.5, 0.5);
+
+	m_objectsInScene.push_back(sphere);
 	
 
 	return true;

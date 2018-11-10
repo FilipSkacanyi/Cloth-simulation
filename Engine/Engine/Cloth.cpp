@@ -1,9 +1,10 @@
 #include "Cloth.h"
-
+#include "ClothPoint.h"
 
 
 Cloth::Cloth()
 {
+	m_position = DirectX::XMFLOAT3(0, 0, 0);
 }
 
 
@@ -13,9 +14,19 @@ Cloth::~Cloth()
 
 void Cloth::Tick(double dt, Renderer* renderer)
 {
-	m_points[0]->setPosition(DirectX::XMFLOAT3(m_points[0]->getPosition().x - dt, m_points[0]->getPosition().y+dt, m_points[0]->getPosition().z));
-	m_points[1]->setPosition(DirectX::XMFLOAT3(m_points[1]->getPosition().x  , m_points[1]->getPosition().y + dt, m_points[1]->getPosition().z));
+	//m_points[0]->setPosition(DirectX::XMFLOAT3(m_points[0]->getPosition().x - dt, m_points[0]->getPosition().y+dt, m_points[0]->getPosition().z));
+	//m_points[1]->setPosition(DirectX::XMFLOAT3(m_points[1]->getPosition().x  , m_points[1]->getPosition().y + dt, m_points[1]->getPosition().z));
 
+	for (int i = 0; i < m_model->getVertexCount(); i++)
+	{
+		}
+	
+
+	m_model->setPosition(m_position);
+}
+
+void Cloth::Render(Renderer * renderer)
+{
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
@@ -23,6 +34,7 @@ void Cloth::Tick(double dt, Renderer* renderer)
 
 	for (int i = 0; i < m_model->getVertexCount(); i++)
 	{
+		
 		vertices[i].position = m_points[i]->getPosition();
 		vertices[i].color = DirectX::XMFLOAT4(1, 0, 0, 1);
 
@@ -34,20 +46,9 @@ void Cloth::Tick(double dt, Renderer* renderer)
 	m_d3dContext->Map(m_model->getVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	//  Update the vertex buffer here.
 	memcpy(mappedResource.pData, vertices, sizeof(Vertex) * m_model->getVertexCount());
-
-	
 	//  Reenable GPU access to the vertex buffer data.
 	m_d3dContext->Unmap(m_model->getVertexBuffer(), 0);
-
 	delete[] vertices;
-}
-
-void Cloth::Render(Renderer * renderer)
-{
-	
-
-
-
 	
 	renderer->renderModel(m_model);
 }
@@ -61,16 +62,22 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols)
 
 
 	Vertex* tmpvert = new Vertex[vertexNum];
+
+	//find the center of cloth given;
+	float centerX = 0, centerY = 0;
+
+	centerX = (float)cols / 2 - 0.5f;
+	centerY = (float)rows / 2 - 0.5f;
 	for (int i = 0; i < rows; i++)
 	{
 		for (int j = 0; j < cols; j++)
 		{
-			tmpvert[i*cols + j].position = DirectX::XMFLOAT3(j, -i, 0);
+			tmpvert[i*cols + j].position = DirectX::XMFLOAT3(j-centerX, i-centerY, 0);
 		    
 			//tmpvert[i*cols + j].color = DirectX::XMFLOAT4(rand() % 2, rand() % 2, rand() % 2, 1);
 			tmpvert[i*cols + j].color = DirectX::XMFLOAT4(1, 0, 0, 1);
 			m_points.push_back(std::make_unique<ClothPoint>());
-			m_points[m_points.size() - 1]->setPosition(DirectX::XMFLOAT3(j, -i, 0));
+			m_points[m_points.size() - 1]->setPosition(DirectX::XMFLOAT3(j - centerX, -i + centerY, 0));
 		}
 	}
 
