@@ -123,6 +123,8 @@
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionUtilities.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -142,6 +144,8 @@
     <ClInclude Include="ClothPoint.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Object.h" />

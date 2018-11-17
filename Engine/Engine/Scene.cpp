@@ -1,5 +1,5 @@
 #include "Scene.h"
-
+#include "Grid.h"
 
 
 Scene::Scene()
@@ -43,6 +43,7 @@ bool Scene::Init(Renderer * renderer)
 
 	m_objectsInScene.push_back(sphere);
 	
+	m_grid = std::make_unique<Grid>(10,10,10,1);
 
 	return true;
 }
@@ -117,7 +118,7 @@ void Scene::input(Input * input, double dt)
 			obj->setScale(1, 1, 1);
 
 			DirectX::XMFLOAT3 force = DirectX::XMFLOAT3(m_camera->getForward().x * 10, m_camera->getForward().y * 10, m_camera->getForward().z * 10);
-			obj->AddForce(force);
+			//obj->AddForce(force);
 			m_objectsInScene.push_back(obj);
 		}
 	}

@@ -14,7 +14,7 @@ ClothPoint::~ClothPoint()
 void ClothPoint::Tick(float dt)
 {
 	//gravity
-	AddForce(Vector3(0, -1, 0) * (mass*9.80) * dt * gravity);
+	AddForce(Vector3(0, -1, 0) * (m_mass*9.80) * dt * m_gravity);
 
 	if (m_isKinematic)
 	{
@@ -31,17 +31,3 @@ void ClothPoint::Tick(float dt)
 
 }
 
-DirectX::XMFLOAT3 ClothPoint::getPosition()
-{
-	return m_position;
-}
-
-void ClothPoint::setPosition(DirectX::XMFLOAT3 pos)
-{
-	m_position = pos;
-}
-
-void ClothPoint::AddForce(Vector3 force)
-{
-	m_velocity = m_velocity + force;
-}

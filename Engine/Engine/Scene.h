@@ -5,6 +5,10 @@
 #include <vector>
 #include "Input.h"
 #include "Cloth.h"
+#include <memory>
+
+class Grid;
+
 class Scene
 {
 public:
@@ -24,6 +28,8 @@ private:
 	Camera* m_camera = nullptr;
 
 	Cloth* m_cloth = nullptr;
+
+	std::unique_ptr<Grid> m_grid = nullptr;
 
 	float ball_throw = 0;
 };

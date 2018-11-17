@@ -68,22 +68,7 @@ void Object::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 c
 
 void Object::Tick(double dt)
 { 
-	//m_rotation.y += 3 * dt;
-	if (m_kinematic)
-	{
-		resetVelocity(ALL_AXIS);
-	}
-
-	m_elapsed_time += dt;
-
-	m_position = DirectX::XMFLOAT3(m_position.x + dt * m_velocity.x, m_position.y + dt*1* m_velocity.y, m_position.z + dt* m_velocity.z);
-	
-	//velocity decay / air ressistance
-	AddForce(DirectX::XMFLOAT3(-m_velocity.x * 1 * dt, -m_velocity.y * 1 * dt, -m_velocity.z* 1 * dt));
-	
-
-	//gravity
-	m_velocity = DirectX::XMFLOAT3(m_velocity.x, m_velocity.y + (-(dt * m_mass*9.80) * m_gravity), m_velocity.z);
+	GameObject::Tick(dt);
 
 	
 	
@@ -102,35 +87,7 @@ void Object::Render(Renderer * renderer)
 	renderer->renderModel(m_model);
 }
 
-void Object::setPosition(float x, float y, float z)
-{
-	m_position = DirectX::XMFLOAT3(x, y, z);
-}
 
-void Object::setPosition(DirectX::XMFLOAT3 pos)
-{
-	m_position = pos;
-}
-
-void Object::setRotation(float x, float y, float z)
-{
-	m_rotation = DirectX::XMFLOAT3(x, y, z);
-}
-
-void Object::setRotation(DirectX::XMFLOAT3 rot)
-{
-	m_rotation = rot;
-}
-
-void Object::setScale(float x, float y, float z)
-{
-	m_scale = DirectX::XMFLOAT3(x, y, z);
-}
-
-void Object::setScale(DirectX::XMFLOAT3 scale)
-{
-	m_scale = scale;
-}
 
 void Object::resetVelocity(VelocityAxis axis)
 {
@@ -158,14 +115,11 @@ void Object::resetVelocity(VelocityAxis axis)
 	}
 }
 
-void Object::AddForce(DirectX::XMFLOAT3 force)
-{
-	m_velocity = DirectX::XMFLOAT3(m_velocity.x + force.x, m_velocity.y +  force.y, m_velocity.z + force.z);
-}
+
 
 void Object::collision(Object * other)
 {
-	AddForce(DirectX::XMFLOAT3(-m_velocity.x * (1+m_bounciness), -m_velocity.y * (1 + m_bounciness), -m_velocity.z* (1 + m_bounciness)) );
+	AddForce(Vector3(-m_velocity.x * (1+m_bounciness), -m_velocity.y * (1 + m_bounciness), -m_velocity.z* (1 + m_bounciness)) );
 	/*DirectX::XMFLOAT3 dir;
 	dir = DirectX::XMFLOAT3((other->getPosition().x - m_position.x) ,( other->getPosition().y - m_position.y) , (other->getPosition().z - m_position.z) );
 	other->AddForce(dir);*/
@@ -183,30 +137,7 @@ void Object::collision(Object * other)
 	//AddForce(v);
 }
 
-float Object::getMass()
-{
-	return m_mass;
-}
 
-void Object::setGravity(float grav)
-{
-	m_gravity = grav;
-}
-
-DirectX::XMFLOAT3 Object::getPosition()
-{
-	return m_position;
-}
-
-DirectX::XMFLOAT3 Object::getRotation()
-{
-	return m_rotation;
-}
-
-DirectX::XMFLOAT3 Object::getScale()
-{
-	return m_scale;
-}
 
 Collider * Object::getCollider()
 {
