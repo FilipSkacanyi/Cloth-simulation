@@ -21,28 +21,14 @@ public:
 	Object();
 	~Object();
 
-	void Init(Renderer* renderer, std::string fileName, DirectX::XMFLOAT4 color);
-	virtual void Tick(double dt);
+	virtual void Init(Renderer* renderer, std::string fileName, DirectX::XMFLOAT4 color);
+	void Tick(double dt) override;
 	void Render(Renderer* renderer);
 	
 
 	void resetVelocity(VelocityAxis axis);
 	
-	void collision(Object* other);
-
 	
-
-	
-
-	
-
-	
-	
-
-	Collider* getCollider();
-
-	
-
 protected:
 	Model* m_model = nullptr;
 
@@ -54,7 +40,7 @@ protected:
 
 	float m_elapsed_time = 0;
 
-	Collider* m_collider = nullptr;
+	
 	
 };
 

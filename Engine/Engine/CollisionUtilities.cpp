@@ -14,6 +14,25 @@ CollisionUtilities::~CollisionUtilities()
 {
 }
 
+bool CollisionUtilities::IntersectPointSphere(Collider * A, SphereCollider * B)
+{
+	Vector3 dot, sphere, distance;
+	dot = A->getPosition();
+	sphere = B->getPosition();
+	distance = dot - sphere;
+	if (distance.Magnitude() < B->getRadius())
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool CollisionUtilities::IntersectPointSphere(SphereCollider * A, Collider * B)
+{
+	return IntersectPointSphere(B,A);
+}
+
 bool CollisionUtilities::IntersectAlignedBoxes(AlignedBoxCollider * A, AlignedBoxCollider * B)
 {
 	if (intersectRange(A->getPosition().x - A->getExtends().x, A->getPosition().x + A->getExtends().x, B->getPosition().x - B->getExtends().x, B->getPosition().x + B->getExtends().x) &&

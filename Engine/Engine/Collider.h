@@ -7,7 +7,8 @@ enum ColliderType
 {
 	SPHERE,
 	AABB,
-	ORIENTED
+	ORIENTED,
+	SINGLE_POINT
 };
 
 class Collider

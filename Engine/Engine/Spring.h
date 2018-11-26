@@ -14,7 +14,7 @@ public:
 	~Spring();
 
 	void Tick(float dt);
-	void assignPoints(ClothPoint* pointA, ClothPoint* pointB);
+	void assignPoints(ClothPoint* pointA, ClothPoint* pointB, float offset_distance);
 	void setType(SpringType type) { m_type = type; }
 
 private:

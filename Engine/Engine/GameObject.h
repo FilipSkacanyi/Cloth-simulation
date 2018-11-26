@@ -2,7 +2,10 @@
 
 #include <DirectXMath.h>
 #include "CollisionUtilities.h"
+#include "Collider.h"
 
+class Grid;
+struct Cell;
 class GameObject
 {
 public:
@@ -10,8 +13,8 @@ public:
 	~GameObject();
 
 
-	virtual void Tick(float dt);
-	DirectX::XMFLOAT3 getPosition();
+	virtual void Tick(double dt);
+	virtual DirectX::XMFLOAT3 getPosition();
 	DirectX::XMFLOAT3 getRotation();
 	DirectX::XMFLOAT3 getScale();
 
@@ -26,8 +29,12 @@ public:
 
 	float getMass();
 	void setGravity(float grav);
-
+	Collider* getCollider(); 
 	void setKinematic(bool b) { m_isKinematic = b; }
+
+	virtual void collision(GameObject* other);
+
+
 protected:
 	DirectX::XMFLOAT3 m_position;
 	DirectX::XMFLOAT3 m_rotation;
@@ -37,5 +44,9 @@ protected:
 	float m_gravity = 1;
 	bool m_isKinematic = false;
 	Vector3 m_velocity = Vector3(0, 0, 0);
+	Collider* m_collider = nullptr;
+
+
+	
 };
 

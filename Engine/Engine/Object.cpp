@@ -117,29 +117,8 @@ void Object::resetVelocity(VelocityAxis axis)
 
 
 
-void Object::collision(Object * other)
-{
-	AddForce(Vector3(-m_velocity.x * (1+m_bounciness), -m_velocity.y * (1 + m_bounciness), -m_velocity.z* (1 + m_bounciness)) );
-	/*DirectX::XMFLOAT3 dir;
-	dir = DirectX::XMFLOAT3((other->getPosition().x - m_position.x) ,( other->getPosition().y - m_position.y) , (other->getPosition().z - m_position.z) );
-	other->AddForce(dir);*/
-
-	//other->AddForce(m_velocity);
-
-	//Vector3 normal = Vector3(m_position.x - other->getPosition().x, m_position.y - other->getPosition().y, m_position.z - other->getPosition().z);
-	//normal.Normalize();
-	//float mag = sqrt(m_velocity.x * m_velocity.x + m_velocity.y * m_velocity.y + m_velocity.z * m_velocity.z);
-
-	////normal = normal * mag;
-	//normal = normal * m_bounciness;
-
-	//DirectX::XMFLOAT3 v = DirectX::XMFLOAT3(normal.x, normal.y, normal.z);
-	//AddForce(v);
-}
 
 
 
-Collider * Object::getCollider()
-{
-	return m_collider;
-}
+
+

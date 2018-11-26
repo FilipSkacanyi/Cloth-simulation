@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include "Grid.h"
+#include "ClothPoint.h"
 
 
 Scene::Scene()
@@ -27,23 +28,30 @@ bool Scene::Init(Renderer * renderer)
 {
 	m_renderer = renderer;
 
+	m_grid = std::make_unique<Grid>(10, 20, 10,1, renderer);
+
 	m_camera = new Camera();
-	m_camera->setPosition(1.0f, 2.0f, -6.0f);
+	m_camera->setPosition(10.0f, 6.0f, -5.0f);
 	m_camera->setRotation(0, 10, 0);
 
 	
 	m_cloth = new Cloth();
-	m_cloth->Initialise(renderer, 5, 5);
-	m_cloth->setPosition(DirectX::XMFLOAT3(0, 0, 0));
 
-	Cube* sphere = new Cube();
+	int clothWidth = 10, clothHeigth = 10;
+
+	m_cloth->Initialise(renderer, clothWidth, clothHeigth,0.3, m_objectsInScene);
+	m_cloth->setPosition(DirectX::XMFLOAT3(5, 12, 5));
+	
+
+	Sphere* sphere = new Sphere();
 	sphere->Init(renderer, "cube.obj", DirectX::XMFLOAT4(1, 0, 0, 1));
 	sphere->setGravity(0);
-	sphere->setScale(0.5, 0.5, 0.5);
+	sphere->setPosition(DirectX::XMFLOAT3(5, 12, 5));
+	sphere->setScale(0.25, 0.25, 0.25);
 
-	m_objectsInScene.push_back(sphere);
+	//m_objectsInScene.push_back(sphere);
 	
-	m_grid = std::make_unique<Grid>(10,10,10,1);
+	m_grid->addObject(sphere);
 
 	return true;
 }
@@ -115,10 +123,11 @@ void Scene::input(Input * input, double dt)
 			obj->setGravity(1);
 			obj->setPosition(m_camera->getPosition());
 			obj->setRotation(0, 0, 0);
-			obj->setScale(1, 1, 1);
+			obj->setScale(2,2, 2);
 
-			DirectX::XMFLOAT3 force = DirectX::XMFLOAT3(m_camera->getForward().x * 10, m_camera->getForward().y * 10, m_camera->getForward().z * 10);
-			//obj->AddForce(force);
+			Vector3 force;
+			force = DirectX::XMFLOAT3(m_camera->getForward().x * 10, m_camera->getForward().y * 10, m_camera->getForward().z * 10);
+			obj->AddForce(force);
 			m_objectsInScene.push_back(obj);
 		}
 	}
@@ -126,32 +135,31 @@ void Scene::input(Input * input, double dt)
 
 void Scene::Tick(double dt)
 {
-	m_cloth->Tick(dt, m_renderer);
-	
-	//DirectX::XMFLOAT3 tmp = DirectX::XMFLOAT3(m_objectsInScene[1]->getPosition().x - 0.0001f, m_objectsInScene[1]->getPosition().y, m_objectsInScene[1]->getPosition().z);
-	//m_objectsInScene[1]->setPosition(tmp);
+	for (int i = 0; i < m_cloth->getWidth() * m_cloth->getHeigth(); i++)
+	{
+		m_grid->addObject(m_cloth->getClothpointAtIndex(i));
+	}
+
+	for (int i = 0; i < m_objectsInScene.size(); i++)
+	{
+		m_grid->addObject(m_objectsInScene[i]);
+	}
 
 	for (int i = 0; i < m_objectsInScene.size(); i++)
 	{
 		m_objectsInScene[i]->Tick(dt);
 	}
-	//m_objectsInScene[0]->resetVelocity(ALL_AXIS);
 
-	for (int i = 0; i < m_objectsInScene.size(); i++)
-	{
-		for (int j = i +1; j < m_objectsInScene.size(); j++)
-		{
-			if (m_objectsInScene[i]->getCollider()->Intersect(m_objectsInScene[j]->getCollider()))
-			{
-				m_objectsInScene[i]->collision(m_objectsInScene[j]);
-				m_objectsInScene[j]->collision(m_objectsInScene[i]);
-				//m_objectsInScene[j]->AddForce(DirectX::XMFLOAT3(0, 5, 0));
-			}
-		}
-	}
+	m_cloth->Tick(dt, m_renderer);
+	
+		//collisions
+	m_grid->handleCollisions();
 
 	//generate view matrix
 	m_camera->Tick();
+
+	//clear grid
+	m_grid->clearAllCells();
 
 	//get view matrix from camera
 	DirectX::XMMATRIX viewMatrix;
@@ -165,8 +173,16 @@ void Scene::Render()
 {
 	for (int i = 0; i < m_objectsInScene.size(); i++)
 	{
-		m_objectsInScene[i]->Render(m_renderer);
+		Object* obj = dynamic_cast<Object*>(m_objectsInScene[i]);
+
+		if (obj)
+		{
+		 obj->Render(m_renderer);
+		}
+		
 	}
 
 	m_cloth->Render(m_renderer);
+
+	//m_grid->Render(m_renderer);
 }

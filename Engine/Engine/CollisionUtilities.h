@@ -6,6 +6,7 @@
 class AlignedBoxCollider;
 class SphereCollider;
 class OrientedBoxCollider;
+class Collider;
 
 struct Vector3
 {
@@ -57,6 +58,9 @@ public:
 	CollisionUtilities();
 	~CollisionUtilities();
 
+
+	static bool IntersectPointSphere(Collider* A, SphereCollider *B);
+	static bool IntersectPointSphere(SphereCollider *A,Collider* B );
 	static bool IntersectAlignedBoxes(AlignedBoxCollider* A, AlignedBoxCollider *B);
 	static bool IntersectSpheres(SphereCollider* A, SphereCollider* B);
 	static bool IntersectBoxSphere(AlignedBoxCollider* box, SphereCollider * sphere);

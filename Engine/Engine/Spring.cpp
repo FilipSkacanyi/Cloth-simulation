@@ -47,15 +47,16 @@ void Spring::Tick(float dt)
 
 	force = distance *m_stiffness;
 	//force = distance ;
-	m_point_A->AddForce(force*(-1) * dt * 200 );
-	m_point_B->AddForce(force * dt * 200 );
+	m_point_A->AddForce(force*(-1)  );
+	m_point_B->AddForce(force  );
 	
 	
 
 }
 
-void Spring::assignPoints(ClothPoint * pointA, ClothPoint * pointB)
+void Spring::assignPoints(ClothPoint * pointA, ClothPoint * pointB, float offset_distance)
 {
 	m_point_A = pointA;
 	m_point_B = pointB;
+	m_offset_distance = offset_distance;
 }

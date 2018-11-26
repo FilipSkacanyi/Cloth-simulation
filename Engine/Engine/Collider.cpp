@@ -98,11 +98,24 @@ bool Collider::Intersect(Collider* other)
 		SphereCollider* tmpsphere = (SphereCollider*)(other);
 		return CollisionUtilities::IntersectOrientedBoxSphere(self, tmpsphere);
 	}
+	
 	if (m_type == ColliderType::SPHERE && other->getType() == ColliderType::ORIENTED)
 	{
 		OrientedBoxCollider* tmpsphere = (OrientedBoxCollider*)(other);
 		SphereCollider* self = (SphereCollider*)(this);
 		return CollisionUtilities::IntersectOrientedBoxSphere(self, tmpsphere);
+	}
+
+	if (m_type == ColliderType::SINGLE_POINT && other->getType() == ColliderType::SPHERE)
+	{
+		SphereCollider* tmpsphere = (SphereCollider*)(other);
+		return CollisionUtilities::IntersectPointSphere(this, tmpsphere);
+	}
+
+	if (m_type == ColliderType::SPHERE && other->getType() == ColliderType::SINGLE_POINT)
+	{
+		SphereCollider* self = (SphereCollider*)(other);
+		return CollisionUtilities::IntersectPointSphere(other, self);
 	}
 
 	return false;

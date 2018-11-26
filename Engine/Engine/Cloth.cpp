@@ -18,10 +18,10 @@ void Cloth::Tick(double dt, Renderer* renderer)
 	//m_points[0]->setPosition(DirectX::XMFLOAT3(m_points[0]->getPosition().x - dt, m_points[0]->getPosition().y+dt, m_points[0]->getPosition().z));
 	//m_points[1]->setPosition(DirectX::XMFLOAT3(m_points[1]->getPosition().x  , m_points[1]->getPosition().y + dt, m_points[1]->getPosition().z));
 
-	for (int i = 0; i < m_points.size(); i++)
+	/*for (int i = 0; i < m_points.size(); i++)
 	{
 		m_points[i]->Tick(dt);
-	}
+	}*/
 	for (int i = 0; i < m_springs.size(); i++)
 	{
 		m_springs[i]->Tick(dt);
@@ -40,8 +40,12 @@ void Cloth::Render(Renderer * renderer)
 
 	for (int i = 0; i < m_model->getVertexCount(); i++)
 	{
-		
-		vertices[i].position = m_points[i]->getPosition();
+		DirectX::XMFLOAT3 temppos = DirectX::XMFLOAT3(m_points[i]->getPosition().x - m_position.x,
+			m_points[i]->getPosition().y - m_position.y,
+			m_points[i]->getPosition().z - m_position.z);
+
+
+		vertices[i].position = temppos;
 		vertices[i].color = DirectX::XMFLOAT4(1, 0, 0, 1);
 
 	}
@@ -59,10 +63,11 @@ void Cloth::Render(Renderer * renderer)
 	renderer->renderModel(m_model);
 }
 
-bool Cloth::Initialise(Renderer * renderer, int rows, int cols)
+bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, std::vector<GameObject*>& objects_in_scene)
 {
 	int vertexNum, indexNum;
-
+	m_width = cols;
+	m_heigth = rows;
 	vertexNum = rows * cols;
 	indexNum = ((rows - 1) * (cols - 1)) * 6;
 
@@ -79,12 +84,15 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols)
 		for (int j = 0; j < cols; j++)
 		{
 			//create a vertex
-			tmpvert[i*cols + j].position = DirectX::XMFLOAT3(j-centerX, i-centerY, 0);
+			tmpvert[i*cols + j].position = DirectX::XMFLOAT3(j*distance -centerX * distance, i*distance -centerY * distance, 0);
 		    tmpvert[i*cols + j].color = DirectX::XMFLOAT4(1, 0, 0, 1);
 
 			//create a cloth point based on the same values as the vertex
 			m_points.push_back(std::make_unique<ClothPoint>());
-			m_points[m_points.size() - 1]->setPosition(DirectX::XMFLOAT3(j - centerX, -i + centerY, 0));
+			m_points[m_points.size() - 1]->setPosition(DirectX::XMFLOAT3(j*distance - centerX * distance + m_position.x, -i * distance + centerY* distance + m_position.y, 0+ m_position.z));
+			m_points[m_points.size() - 1]->setParent(this);
+			m_points[m_points.size() - 1]->Init();
+			objects_in_scene.push_back(m_points[m_points.size() - 1].get());
 		}
 	}
 
@@ -134,7 +142,7 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols)
 				m_springs.push_back(std::make_unique<Spring>());
 				currentSpring = m_springs[m_springs.size() - 1].get();
 				B = m_points[(i + 1) * cols + j].get();
-				currentSpring->assignPoints(A, B);
+				currentSpring->assignPoints(A, B,distance);
 			
 			}
 
@@ -143,7 +151,7 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols)
 				m_springs.push_back(std::make_unique<Spring>());
 				currentSpring = m_springs[m_springs.size() - 1].get();
 				B = m_points[(i+1) * cols + j - 1].get();
-				currentSpring->assignPoints(A, B);
+				currentSpring->assignPoints(A, B, distance);
 				currentSpring->setType(SpringType::DIAGONAL);
 			}
 
@@ -152,14 +160,14 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols)
 				m_springs.push_back(std::make_unique<Spring>());
 				currentSpring = m_springs[m_springs.size() - 1].get();
 				B = m_points[i * cols + j + 1].get();
-				currentSpring->assignPoints(A, B);
+				currentSpring->assignPoints(A, B, distance);
 
 				if (i != rows - 1)
 				{
 					m_springs.push_back(std::make_unique<Spring>());
 					currentSpring = m_springs[m_springs.size() - 1].get();
 					B = m_points[(i + 1) * cols + j + 1].get();
-					currentSpring->assignPoints(A, B);
+					currentSpring->assignPoints(A, B, distance);
 					currentSpring->setType(SpringType::DIAGONAL);
 				}
 				
@@ -203,4 +211,21 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols)
 
 	delete[] tmpvert;
 	delete[] tmpind;
+}
+
+ClothPoint * Cloth::getClothpointAtIndex(int i)
+{
+	return m_points[i].get();
+}
+
+void Cloth::setPosition(DirectX::XMFLOAT3 pos)
+{
+	m_position = pos;
+
+	for (int i = 0; i < m_points.size(); i++)
+	{
+		m_points[i]->setPosition(DirectX::XMFLOAT3(m_points[i]->getPosition().x + m_position.x,
+												m_points[i]->getPosition().y + m_position.y,
+												m_points[i]->getPosition().z + m_position.z));
+	}
 }
