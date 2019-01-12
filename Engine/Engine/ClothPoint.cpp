@@ -34,6 +34,7 @@ void ClothPoint::Tick(double dt)
 	}
 	else
 	{
+		m_velocity = m_force;
 		//velocity
 		m_position = DirectX::XMFLOAT3(m_position.x + dt * m_velocity.x, m_position.y + dt * 1 * m_velocity.y, m_position.z + dt * m_velocity.z);
 
@@ -43,7 +44,7 @@ void ClothPoint::Tick(double dt)
 	m_collider->setPosition(m_position);
 
 
-
+	//GameObject::Tick(dt);
 }
 
 void ClothPoint::collision(GameObject * other)

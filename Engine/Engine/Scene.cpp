@@ -28,7 +28,7 @@ bool Scene::Init(Renderer * renderer)
 {
 	m_renderer = renderer;
 
-	m_grid = std::make_unique<Grid>(10, 20, 10,1, renderer);
+	m_grid = std::make_unique<Grid>(1, 1, 1,20, renderer);
 
 	m_camera = new Camera();
 	m_camera->setPosition(10.0f, 6.0f, -5.0f);
@@ -46,12 +46,14 @@ bool Scene::Init(Renderer * renderer)
 	Sphere* sphere = new Sphere();
 	sphere->Init(renderer, "cube.obj", DirectX::XMFLOAT4(1, 0, 0, 1));
 	sphere->setGravity(0);
-	sphere->setPosition(DirectX::XMFLOAT3(5, 12, 5));
-	sphere->setScale(0.25, 0.25, 0.25);
+	sphere->setPosition(DirectX::XMFLOAT3(5, 11, 7));
+	sphere->setScale(2, 2, 2);
 
-	//m_objectsInScene.push_back(sphere);
+	objptr = sphere;
+
+	m_objectsInScene.push_back(sphere);
 	
-	m_grid->addObject(sphere);
+	//m_grid->addObject(sphere);
 
 	return true;
 }
@@ -103,12 +105,19 @@ void Scene::input(Input * input, double dt)
 		rot.y -= f;
 		m_objectsInScene[1]->setRotation(rot);
 	}
-	if (input->IsKeyDown(VK_NUMPAD6))
+	if (input->IsKeyDown(VK_NUMPAD5))
 	{
 		float f =  1* dt;
-		DirectX::XMFLOAT3 pos = m_objectsInScene[1]->getPosition();
-		pos.x -= f;
-		m_objectsInScene[1]->setPosition(pos);
+		DirectX::XMFLOAT3 pos = objptr->getPosition();
+		pos.z -= f;
+		objptr->setPosition(pos);
+	}
+	if (input->IsKeyDown(VK_NUMPAD6))
+	{
+		float f = 1 * dt;
+		DirectX::XMFLOAT3 pos = objptr->getPosition();
+		pos.z += f;
+		objptr->setPosition(pos);
 	}
 
 	if (input->IsKeyDown(VK_SPACE))

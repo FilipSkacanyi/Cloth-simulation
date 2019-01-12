@@ -14,7 +14,11 @@ GameObject::~GameObject()
 void GameObject::Tick(double dt)
 {
 	//gravity
-	AddForce(Vector3(0, -1, 0) * (m_mass*9.80) * dt * m_gravity);
+	AddForce(Vector3(0, -9.80 * m_mass, 0) * dt * m_gravity);
+
+	//force = mass * acceleration;
+	//acceleration = force / mass
+	m_acceleration = m_force / m_mass;
 
 	if (m_isKinematic)
 	{
@@ -23,9 +27,12 @@ void GameObject::Tick(double dt)
 	else
 	{
 		//velocity
+		m_velocity = m_velocity + m_acceleration * dt;
+
 		m_position = DirectX::XMFLOAT3(m_position.x + dt * m_velocity.x, m_position.y + dt * 1 * m_velocity.y, m_position.z + dt * m_velocity.z);
 
-		AddForce(Vector3(-m_velocity.x * 0.9 * dt, -m_velocity.y * 0.9 * dt, -m_velocity.z * 0.9 * dt));
+		//AddForce(Vector3(-m_velocity.x * 0.9 * dt, -m_velocity.y * 0.9 * dt, -m_velocity.z * 0.9 * dt));
+		AddForce(m_force * -0.9 * dt);
 	}
 
 	m_collider->setPosition(m_position);
@@ -43,7 +50,7 @@ void GameObject::setPosition(DirectX::XMFLOAT3 pos)
 
 void GameObject::AddForce(Vector3 force)
 {
-	m_velocity = m_velocity + force;
+	m_force = m_force + force;
 }
 
 

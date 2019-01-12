@@ -31,6 +31,7 @@ public:
 	void setGravity(float grav);
 	Collider* getCollider(); 
 	void setKinematic(bool b) { m_isKinematic = b; }
+	bool isKinematic() { return m_isKinematic; }
 
 	virtual void collision(GameObject* other);
 
@@ -41,9 +42,12 @@ protected:
 	DirectX::XMFLOAT3 m_scale;
 
 	float m_mass = 1;
+	Vector3 m_acceleration = Vector3(0, 0, 0);
+	Vector3 m_velocity = Vector3(0, 0, 0);
+	Vector3 m_force = Vector3(0, 0, 0);
+
 	float m_gravity = 1;
 	bool m_isKinematic = false;
-	Vector3 m_velocity = Vector3(0, 0, 0);
 	Collider* m_collider = nullptr;
 
 

@@ -25,5 +25,7 @@ private:
 
 	float m_stiffness = 0.2;
 	float m_offset_distance = 1;
+
+	float m_max_stretch = 1.1;
 };
 

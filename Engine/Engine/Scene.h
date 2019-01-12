@@ -27,6 +27,8 @@ private:
 	Renderer* m_renderer = nullptr;
 	Camera* m_camera = nullptr;
 
+	GameObject * objptr = nullptr;
+
 	Cloth* m_cloth = nullptr;
 
 	std::unique_ptr<Grid> m_grid = nullptr;

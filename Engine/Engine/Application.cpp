@@ -58,9 +58,10 @@ void Application::Run()
 		{
 			auto start = std::chrono::high_resolution_clock::now();
 			Tick(m_delta_time.count());
-			Render();
 			auto end = std::chrono::high_resolution_clock::now();
 			m_delta_time = end - start;
+			Render();
+			
 
 		}
 		
