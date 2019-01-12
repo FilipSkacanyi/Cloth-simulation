@@ -14,16 +14,16 @@ public:
 
 
 	virtual void Tick(double dt);
-	virtual DirectX::XMFLOAT3 getPosition();
-	DirectX::XMFLOAT3 getRotation();
-	DirectX::XMFLOAT3 getScale();
+	virtual Vector3 getPosition();
+	Vector3 getRotation();
+	Vector3 getScale();
 
-	void setPosition(DirectX::XMFLOAT3 pos);
+	void setPosition(Vector3 pos);
 
 	void setRotation(float x, float y, float z);
-	void setRotation(DirectX::XMFLOAT3 rot);
+	void setRotation(Vector3 rot);
 	void setScale(float x, float y, float z);
-	void setScale(DirectX::XMFLOAT3 scale);
+	void setScale(Vector3 scale);
 
 	void AddForce(Vector3 force);
 
@@ -37,9 +37,9 @@ public:
 
 
 protected:
-	DirectX::XMFLOAT3 m_position;
-	DirectX::XMFLOAT3 m_rotation;
-	DirectX::XMFLOAT3 m_scale;
+	Vector3 m_position;
+	Vector3 m_rotation;
+	Vector3 m_scale;
 
 	float m_mass = 1;
 	Vector3 m_acceleration = Vector3(0, 0, 0);

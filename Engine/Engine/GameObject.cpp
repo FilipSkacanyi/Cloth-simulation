@@ -38,12 +38,12 @@ void GameObject::Tick(double dt)
 	m_collider->setPosition(m_position);
 }
 
-DirectX::XMFLOAT3 GameObject::getPosition()
+Vector3 GameObject::getPosition()
 {
 	return m_position;
 }
 
-void GameObject::setPosition(DirectX::XMFLOAT3 pos)
+void GameObject::setPosition(Vector3 pos)
 {
 	m_position = pos;
 }
@@ -59,7 +59,7 @@ void GameObject::setRotation(float x, float y, float z)
 	m_rotation = DirectX::XMFLOAT3(x, y, z);
 }
 
-void GameObject::setRotation(DirectX::XMFLOAT3 rot)
+void GameObject::setRotation(Vector3 rot)
 {
 	m_rotation = rot;
 }
@@ -69,7 +69,7 @@ void GameObject::setScale(float x, float y, float z)
 	m_scale = DirectX::XMFLOAT3(x, y, z);
 }
 
-void GameObject::setScale(DirectX::XMFLOAT3 scale)
+void GameObject::setScale(Vector3 scale)
 {
 	m_scale = scale;
 }
@@ -89,12 +89,12 @@ Collider * GameObject::getCollider()
 	return m_collider;
 }
 
-DirectX::XMFLOAT3 GameObject::getRotation()
+Vector3 GameObject::getRotation()
 {
 	return m_rotation;
 }
 
-DirectX::XMFLOAT3 GameObject::getScale()
+Vector3 GameObject::getScale()
 {
 	return m_scale;
 }

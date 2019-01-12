@@ -31,10 +31,7 @@ public:
 	
 protected:
 	Model* m_model = nullptr;
-
 	
-	
-
 	//physics stuff
 	float m_bounciness = 0.33; 
 

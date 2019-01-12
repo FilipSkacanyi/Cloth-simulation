@@ -9,11 +9,11 @@ public:
 	OrientedBoxCollider();
 	~OrientedBoxCollider();
 
-	DirectX::XMFLOAT3 getRotation();
+	Vector3 getRotation();
 
-	void setRotation(DirectX::XMFLOAT3 rot);
+	void setRotation(Vector3 rot);
 
 private: 
-	DirectX::XMFLOAT3 m_rotation;
+	Vector3 m_rotation;
 };
 

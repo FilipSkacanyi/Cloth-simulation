@@ -14,7 +14,7 @@ public:
 	void setParent(Cloth* parent_) { m_parent = parent_; }
 	void collision(GameObject* other) override;
 
-	DirectX::XMFLOAT3 getPosition() override;
+	Vector3 getPosition() override;
 
 	
 	

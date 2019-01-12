@@ -23,12 +23,12 @@ ColliderType Collider::getType()
 	return m_type;
 }
 
-DirectX::XMFLOAT3 Collider::getPosition()
+Vector3 Collider::getPosition()
 {
 	return m_position;
 }
 
-void Collider::setPosition(DirectX::XMFLOAT3 pos)
+void Collider::setPosition(Vector3 pos)
 {
 	m_position = pos;
 }

@@ -157,6 +157,7 @@
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="Spring.h" />
+    <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

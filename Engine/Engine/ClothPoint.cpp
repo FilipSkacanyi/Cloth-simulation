@@ -75,7 +75,7 @@ void ClothPoint::collision(GameObject * other)
 	}
 }
 
-DirectX::XMFLOAT3 ClothPoint::getPosition()
+Vector3 ClothPoint::getPosition()
 {
 	return m_position;
 }

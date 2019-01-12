@@ -40,13 +40,13 @@ bool Scene::Init(Renderer * renderer)
 	int clothWidth = 10, clothHeigth = 10;
 
 	m_cloth->Initialise(renderer, clothWidth, clothHeigth,0.3, m_objectsInScene);
-	m_cloth->setPosition(DirectX::XMFLOAT3(5, 12, 5));
+	m_cloth->setPosition(Vector3(5, 12, 5));
 	
 
 	Sphere* sphere = new Sphere();
 	sphere->Init(renderer, "cube.obj", DirectX::XMFLOAT4(1, 0, 0, 1));
 	sphere->setGravity(0);
-	sphere->setPosition(DirectX::XMFLOAT3(5, 11, 7));
+	sphere->setPosition(Vector3(5, 11, 7));
 	sphere->setScale(2, 2, 2);
 
 	objptr = sphere;
@@ -87,35 +87,62 @@ void Scene::input(Input * input, double dt)
 
 	if (input->IsKeyDown(VK_NUMPAD8))
 	{
-		DirectX::XMFLOAT3 camerapos = m_camera->getPosition();
-		DirectX::XMFLOAT3 forward = m_camera->getForward();
-		m_camera->setPosition(DirectX::XMFLOAT3((camerapos.x + forward.x *30* dt), (camerapos.y + forward.y* 30*dt), (camerapos.z + forward.z*30* dt)));
+		float f = 10 * dt;
+		DirectX::XMFLOAT3 pos = m_camera->getPosition();
+		pos.y += f;
+		m_camera->setPosition(pos);
 	}
 	if (input->IsKeyDown(VK_NUMPAD2))
 	{
-		DirectX::XMFLOAT3 camerapos = m_camera->getPosition();
-		DirectX::XMFLOAT3 forward = m_camera->getForward();
-		m_camera->setPosition(DirectX::XMFLOAT3((camerapos.x - forward.x* 30* dt), (camerapos.y - forward.y* 30* dt), (camerapos.z - forward.z*30* dt)));
+		float f = 10 * dt;
+		DirectX::XMFLOAT3 pos = m_camera->getPosition();
+		pos.y -= f;
+		m_camera->setPosition(pos);
 	}
-
-	if (input->IsKeyDown(VK_NUMPAD9))
-	{
-		float f = 30 * dt;
-		DirectX::XMFLOAT3 rot = m_objectsInScene[1]->getRotation();
-		rot.y -= f;
-		m_objectsInScene[1]->setRotation(rot);
-	}
+	
 	if (input->IsKeyDown(VK_NUMPAD5))
 	{
-		float f =  1* dt;
-		DirectX::XMFLOAT3 pos = objptr->getPosition();
-		pos.z -= f;
-		objptr->setPosition(pos);
+		//forward
+		DirectX::XMFLOAT3 camerapos = m_camera->getPosition();
+		DirectX::XMFLOAT3 forward = m_camera->getForward();
+		m_camera->setPosition(DirectX::XMFLOAT3((camerapos.x + forward.x * 30 * dt), (camerapos.y + forward.y * 30 * dt), (camerapos.z + forward.z * 30 * dt)));
+	}
+
+	if (input->IsKeyDown(VK_NUMPAD0))
+	{
+		//backwards
+		DirectX::XMFLOAT3 camerapos = m_camera->getPosition();
+		DirectX::XMFLOAT3 forward = m_camera->getForward();
+		m_camera->setPosition(DirectX::XMFLOAT3((camerapos.x - forward.x * 30 * dt), (camerapos.y - forward.y * 30 * dt), (camerapos.z - forward.z * 30 * dt)));
+
 	}
 	if (input->IsKeyDown(VK_NUMPAD6))
 	{
+		//right
+		DirectX::XMFLOAT3 camerapos = m_camera->getPosition();
+		DirectX::XMFLOAT3 forward = m_camera->getRight();
+		m_camera->setPosition(DirectX::XMFLOAT3((camerapos.x + forward.x * 30 * dt), (camerapos.y + forward.y * 30 * dt), (camerapos.z + forward.z * 30 * dt)));
+	}
+
+	if (input->IsKeyDown(VK_NUMPAD4))
+	{
+		//left
+		DirectX::XMFLOAT3 camerapos = m_camera->getPosition();
+		DirectX::XMFLOAT3 forward = m_camera->getRight();
+		m_camera->setPosition(DirectX::XMFLOAT3((camerapos.x - forward.x * 30 * dt), (camerapos.y - forward.y * 30 * dt), (camerapos.z - forward.z * 30 * dt)));
+
+	}
+	if (input->IsKeyDown(VK_NUMPAD1))
+	{
+		float f =  1* dt;
+		Vector3 pos = objptr->getPosition();
+		pos.z -= f;
+		objptr->setPosition(pos);
+	}
+	if (input->IsKeyDown(VK_NUMPAD3))
+	{
 		float f = 1 * dt;
-		DirectX::XMFLOAT3 pos = objptr->getPosition();
+		Vector3 pos = objptr->getPosition();
 		pos.z += f;
 		objptr->setPosition(pos);
 	}
@@ -130,12 +157,12 @@ void Scene::input(Input * input, double dt)
 			Sphere* obj = new Sphere();
 			obj->Init(m_renderer, "cube.obj", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
 			obj->setGravity(1);
-			obj->setPosition(m_camera->getPosition());
+			obj->setPosition(Vector3(m_camera->getPosition().x, m_camera->getPosition().y, m_camera->getPosition().z));
 			obj->setRotation(0, 0, 0);
 			obj->setScale(2,2, 2);
 
 			Vector3 force;
-			force = DirectX::XMFLOAT3(m_camera->getForward().x * 10, m_camera->getForward().y * 10, m_camera->getForward().z * 10);
+			force = force * 10;
 			obj->AddForce(force);
 			m_objectsInScene.push_back(obj);
 		}

@@ -19,17 +19,17 @@ public:
 	bool Initialise(Renderer* renderer,int rows, int cols, float distannce, std::vector<GameObject*>& objects_in_scene);
 
 	ClothPoint* getClothpointAtIndex(int i);
-	void setPosition(DirectX::XMFLOAT3 pos);
-	DirectX::XMFLOAT3 getPosition() { return m_position; }
+	void setPosition(Vector3 pos);
+	Vector3 getPosition() { return m_position; }
 
 	int getWidth() { return m_width; }
 	int getHeigth() { return m_heigth; }
 
 private:
 	int m_width, m_heigth;
-	DirectX::XMFLOAT3 m_position;
-	DirectX::XMFLOAT3 m_rotation;
-	DirectX::XMFLOAT3 m_scale;
+	Vector3 m_position;
+	Vector3 m_rotation;
+	Vector3 m_scale;
 	Model* m_model = nullptr;
 
 	std::vector<std::unique_ptr<ClothPoint>> m_points;

@@ -44,6 +44,7 @@ void Cloth::Render(Renderer * renderer)
 			m_points[i]->getPosition().y - m_position.y,
 			m_points[i]->getPosition().z - m_position.z);
 
+		//Vector3 temppos = Vector3(m_points[i]->getPosition() - m_position);
 
 		vertices[i].position = temppos;
 		vertices[i].color = DirectX::XMFLOAT4(1, 0, 0, 1);
@@ -89,7 +90,7 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 
 			//create a cloth point based on the same values as the vertex
 			m_points.push_back(std::make_unique<ClothPoint>());
-			m_points[m_points.size() - 1]->setPosition(DirectX::XMFLOAT3(j*distance - centerX * distance + m_position.x, -i * distance + centerY* distance + m_position.y, 0+ m_position.z));
+			m_points[m_points.size() - 1]->setPosition(Vector3(j*distance - centerX * distance + m_position.x, -i * distance + centerY* distance + m_position.y, 0+ m_position.z));
 			m_points[m_points.size() - 1]->setParent(this);
 			m_points[m_points.size() - 1]->Init();
 			objects_in_scene.push_back(m_points[m_points.size() - 1].get());
@@ -218,14 +219,14 @@ ClothPoint * Cloth::getClothpointAtIndex(int i)
 	return m_points[i].get();
 }
 
-void Cloth::setPosition(DirectX::XMFLOAT3 pos)
+void Cloth::setPosition(Vector3 pos)
 {
 	m_position = pos;
 
 	for (int i = 0; i < m_points.size(); i++)
 	{
-		m_points[i]->setPosition(DirectX::XMFLOAT3(m_points[i]->getPosition().x + m_position.x,
-												m_points[i]->getPosition().y + m_position.y,
-												m_points[i]->getPosition().z + m_position.z));
+		m_points[i]->setPosition(m_points[i]->getPosition() + m_position);
+
+		
 	}
 }

@@ -66,7 +66,7 @@ void Spring::Tick(float dt)
 				newpos = m_point_A->getPosition();
 				newpos = newpos + distance;
 
-				m_point_B->setPosition(DirectX::XMFLOAT3(newpos.x, newpos.y, newpos.z));
+				m_point_B->setPosition(newpos);
 				//m_point_B->setPosition()
 			}
 			else if (m_point_B->isKinematic())
@@ -76,11 +76,7 @@ void Spring::Tick(float dt)
 				distance.Normalize();
 				distance = distance * offset  * m_max_stretch;
 
-				Vector3 newpos;
-				newpos = m_point_B->getPosition();
-				newpos = newpos + distance;
-
-				m_point_A->setPosition(DirectX::XMFLOAT3(newpos.x, newpos.y, newpos.z));
+				m_point_A->setPosition(m_point_B->getPosition() + distance);
 			}
 			else
 			{
@@ -94,24 +90,14 @@ void Spring::Tick(float dt)
 				difference = currentdist - distance;
 				difference = difference / 2;
 
+				m_point_A->setPosition(m_point_A->getPosition() + difference);
 
-				Vector3 newpos;
-				newpos = m_point_A->getPosition();
-				newpos = newpos + difference;
-
-				m_point_A->setPosition(DirectX::XMFLOAT3(newpos.x, newpos.y, newpos.z));
-
-				newpos = m_point_B->getPosition();
-				newpos = newpos - difference;
-
-				m_point_B->setPosition(DirectX::XMFLOAT3(newpos.x, newpos.y, newpos.z));
+				m_point_B->setPosition(m_point_B->getPosition() - difference);
 			}
 		}
 
 	}
-	
 		
-	
 	
 }
 

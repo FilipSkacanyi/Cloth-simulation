@@ -1,6 +1,6 @@
 #pragma once
 
-#include <DirectXMath.h>
+#include "Vector3.h"
 #include <DirectXCollision.h>
 #include <d3d11.h>
 //#include "Renderer.h"
@@ -25,15 +25,16 @@ public:
 
 
 	void setPosition(float x, float y, float z);
-	void setPosition(DirectX::XMFLOAT3 pos);
+	void setPosition(Vector3 pos);
 	void setRotation(float x, float y, float z);
-	void setRotation(DirectX::XMFLOAT3 rot);
+	void setRotation(Vector3 rot);
 	void setScale(float x, float y, float z);
-	void setScale(DirectX::XMFLOAT3 scale);
+	void setScale(Vector3 scale);
 
-	DirectX::XMFLOAT3 getPosition();
-	DirectX::XMFLOAT3 getRotation();
-	DirectX::XMFLOAT3 getScale();
+	
+	Vector3 getPosition();
+	Vector3 getRotation();
+	Vector3 getScale();
 
 	ID3D11Buffer* getVertexBuffer();
 	ID3D11Buffer* getIndexBuffer();
@@ -45,9 +46,9 @@ public:
 
 private:
 	
-	DirectX::XMFLOAT3 m_position;
-	DirectX::XMFLOAT3 m_rotation;
-	DirectX::XMFLOAT3 m_scale;
+	Vector3 m_position;
+	Vector3 m_rotation;
+	Vector3 m_scale;
 
 	int m_indexCount = 0;
 	int m_vertexCount = 0;

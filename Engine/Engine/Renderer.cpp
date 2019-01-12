@@ -342,9 +342,9 @@ void Renderer::renderModel(Model* model)
 
 	//create the matrix from all info the model has
 	//could also do this in the model itself
-	DirectX::XMFLOAT3 pos = model->getPosition();
-	DirectX::XMFLOAT3 rot = model->getRotation();
-	DirectX::XMFLOAT3 scale = model->getScale();
+	Vector3 pos = model->getPosition();
+	Vector3 rot = model->getRotation();
+	Vector3 scale = model->getScale();
 
 	float rad = 0.0174533;
 

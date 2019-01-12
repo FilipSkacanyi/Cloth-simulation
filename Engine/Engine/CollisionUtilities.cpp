@@ -49,19 +49,12 @@ bool CollisionUtilities::IntersectAlignedBoxes(AlignedBoxCollider * A, AlignedBo
 
 bool CollisionUtilities::IntersectSpheres(SphereCollider * A, SphereCollider * B)
 {
-	float x, y, z, distance, magnitude;
+	float radius_sum = A->getRadius() + B->getRadius();
 
-	//subtract positions to get a vector betwwen the to objects
-	x = A->getPosition().x - B->getPosition().x;
-	y = A->getPosition().y - B->getPosition().y;
-	z = A->getPosition().z - B->getPosition().z;
+	Vector3 distance;
+	distance = A->getPosition() - B->getPosition();
 
-	distance = A->getRadius() + B->getRadius();
-
-	//
-	magnitude = pow((pow(x, 2) + pow(y, 2) + pow(z, 2)), 0.5);
-
-	if (magnitude < distance)
+	if (distance.Magnitude() < radius_sum)
 	{
 		return true;
 	}
@@ -71,7 +64,7 @@ bool CollisionUtilities::IntersectSpheres(SphereCollider * A, SphereCollider * B
 bool CollisionUtilities::IntersectBoxSphere(AlignedBoxCollider * box, SphereCollider * sphere)
 {
 	//find closest point
-	DirectX::XMFLOAT3 closestPoint = DirectX::XMFLOAT3(0, 0, 0);
+	Vector3 closestPoint = Vector3(0, 0, 0);
 
 	//x coord
 	if (sphere->getPosition().x < box->getPosition().x - box->getExtends().x)
@@ -117,14 +110,10 @@ bool CollisionUtilities::IntersectBoxSphere(AlignedBoxCollider * box, SphereColl
 	yo = yo - Vector3(2, -2, 2);
 
 	//calculate distance between sphere and closest point
-	float x, y, z, magnitude;
-	x = sphere->getPosition().x - closestPoint.x;
-	y = sphere->getPosition().y - closestPoint.y;
-	z = sphere->getPosition().z - closestPoint.z;
+	Vector3 distance;
+	distance = sphere->getPosition() - closestPoint;
 
-	magnitude = pow((pow(x, 2) + pow(y, 2) + pow(z, 2)), 0.5);
-
-	if (magnitude < sphere->getRadius())
+	if (distance.Magnitude() < sphere->getRadius())
 	{
 		return true;
 	}
@@ -144,7 +133,7 @@ bool CollisionUtilities::IntersectAABB_OBB(AlignedBoxCollider * AABB, OrientedBo
 	OrientedBoxCollider tmpcol;
 	tmpcol.setExtends(AABB->getExtends());
 	tmpcol.setPosition(AABB->getPosition());
-	tmpcol.setRotation(DirectX::XMFLOAT3(0, 0, 0));
+	tmpcol.setRotation(Vector3(0, 0, 0));
 
 	return IntersectOrientedBoxes(&tmpcol,obox);
 }
@@ -154,7 +143,7 @@ bool CollisionUtilities::IntersectAABB_OBB(OrientedBoxCollider * obox, AlignedBo
 	OrientedBoxCollider tmpcol;
 	tmpcol.setExtends(AABB->getExtends());
 	tmpcol.setPosition(AABB->getPosition());
-	tmpcol.setRotation(DirectX::XMFLOAT3(0, 0, 0));
+	tmpcol.setRotation(Vector3(0, 0, 0));
 
 
 	return IntersectOrientedBoxes(&tmpcol, obox);
@@ -352,9 +341,7 @@ bool CollisionUtilities::IntersectOrientedBoxSphere(OrientedBoxCollider * obox, 
 		obox->getRotation().y * rad,
 		obox->getRotation().z * rad);
 
-	Vector3 distance = Vector3(obox->getPosition().x - sphere->getPosition().x,
-		obox->getPosition().y - sphere->getPosition().y,
-		obox->getPosition().z - sphere->getPosition().z);
+	Vector3 distance = obox->getPosition() - sphere->getPosition();
 
 	float dist_mag = sqrt(distance.x * distance.x + distance.y * distance.y + distance.z * distance.z);
 	Vector3 distance_normalised;
