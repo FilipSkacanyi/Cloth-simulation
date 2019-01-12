@@ -14,16 +14,16 @@ Spring::~Spring()
 
 void Spring::Tick(float dt)
 {
-	Vector3 distance;
+	Vector3 direction;
 	Vector3 posA;
 	Vector3 posB;
-	Vector3 force;
+	Vector3 distance;
 	
 
 	posA = m_point_A->getPosition();
 	posB = m_point_B->getPosition();
 
-	distance = posB - posA;
+	direction = posB - posA;
 
 	float offset = 0;
 	if (m_type == SpringType::STRAIT)
@@ -37,17 +37,13 @@ void Spring::Tick(float dt)
 		//offset = offset * m_offset_distance * sqrt(2);
 	}
 
-	float distmag = 0;
-	distmag = distance.Magnitude();
-	distmag = distmag - offset;
-	distance.Normalize();
-	distance = distance * distmag;
-
-
-	force = distance * m_stiffness;
-	//force = distance ;
-	m_point_A->AddForce(force * 100 * dt);
-	m_point_B->AddForce(force *(-100)*dt);
+	float current_length = direction.Magnitude();
+	direction.Normalize();
+	float stretch = current_length - offset;
+	direction = direction *(-m_stiffness * stretch);
+	
+	m_point_A->AddForce(direction * (-1000) * dt);
+	m_point_B->AddForce(direction * (1000) * dt);
 
 	distance = posB - posA;
 
@@ -101,7 +97,7 @@ void Spring::Tick(float dt)
 	
 }
 
-void Spring::assignPoints(ClothPoint * pointA, ClothPoint * pointB, float offset_distance)
+void Spring::assignPoints(GameObject * pointA, GameObject * pointB, float offset_distance)
 {
 	m_point_A = pointA;
 	m_point_B = pointB;

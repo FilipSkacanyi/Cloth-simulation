@@ -25,26 +25,30 @@ void ClothPoint::Tick(double dt)
 		m_parent->getPosition().y + m_object_position.y,
 		m_parent->getPosition().z + m_object_position.z);*/
 
-	//gravity
-	AddForce(Vector3(0, -1, 0) * (m_mass*9.80) * dt * m_gravity);
+	
 
-	if (m_isKinematic)
-	{
-		m_velocity = Vector3(0, 0, 0);
-	}
-	else
-	{
-		m_velocity = m_force;
-		//velocity
-		m_position = DirectX::XMFLOAT3(m_position.x + dt * m_velocity.x, m_position.y + dt * 1 * m_velocity.y, m_position.z + dt * m_velocity.z);
+	//if (m_isKinematic)
+	//{
+	//	m_velocity = Vector3(0, 0, 0);
+	//}
+	//else
+	//{
+	//	//gravity
+	//	AddForce(Vector3(0, -1, 0) * (m_mass*9.80) * dt * m_gravity);
 
-		AddForce(Vector3(-m_velocity.x * 0.9 * dt, -m_velocity.y * 0.9 * dt, -m_velocity.z * 0.9 * dt));
-	}
+	//	m_velocity = m_force;
+	//	//velocity
+	//	//m_position = DirectX::XMFLOAT3(m_position.x + dt * m_velocity.x, m_position.y + dt * 1 * m_velocity.y, m_position.z + dt * m_velocity.z);
+	//	m_position = m_position + (m_velocity * dt);
 
-	m_collider->setPosition(m_position);
+	//	//AddForce(Vector3(-m_velocity.x * 0.9 * dt, -m_velocity.y * 0.9 * dt, -m_velocity.z * 0.9 * dt));
+	//	AddForce(m_velocity * (-0.9) * dt);
+	//}
+
+	//m_collider->setPosition(m_position);
 
 
-	//GameObject::Tick(dt);
+	GameObject::Tick(dt);
 }
 
 void ClothPoint::collision(GameObject * other)

@@ -7,6 +7,8 @@
 #include "Cloth.h"
 #include <memory>
 
+#include "Spring.h"
+
 class Grid;
 
 class Scene
@@ -30,6 +32,8 @@ private:
 	GameObject * objptr = nullptr;
 
 	Cloth* m_cloth = nullptr;
+
+	Spring* spring = nullptr;
 
 	std::unique_ptr<Grid> m_grid = nullptr;
 

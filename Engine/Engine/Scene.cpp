@@ -3,6 +3,7 @@
 #include "ClothPoint.h"
 
 
+
 Scene::Scene()
 {
 }
@@ -53,6 +54,25 @@ bool Scene::Init(Renderer * renderer)
 
 	m_objectsInScene.push_back(sphere);
 	
+
+	Cube* cube = new Cube();
+	cube->Init(renderer, "cube.obj", DirectX::XMFLOAT4(1, 0, 0, 1));
+	cube->setGravity(0);
+	cube->setPosition(Vector3(8, 11, 7));
+	cube->setScale(1, 1, 1);
+
+
+	Cube* cube1 = new Cube();
+	cube1->Init(renderer, "cube.obj", DirectX::XMFLOAT4(1, 0, 0, 1));
+	cube1->setGravity(0);
+	cube1->setPosition(Vector3(8, 6, 7));
+	cube1->setScale(1, 1, 1);
+
+	spring = new Spring();
+	spring->assignPoints(cube, cube1, 2);
+
+	m_objectsInScene.push_back(cube);
+	m_objectsInScene.push_back(cube1);
 	//m_grid->addObject(sphere);
 
 	return true;
@@ -162,7 +182,7 @@ void Scene::input(Input * input, double dt)
 			obj->setScale(2,2, 2);
 
 			Vector3 force;
-			force = force * 10;
+			force = force * 100000;
 			obj->AddForce(force);
 			m_objectsInScene.push_back(obj);
 		}
@@ -188,6 +208,7 @@ void Scene::Tick(double dt)
 
 	m_cloth->Tick(dt, m_renderer);
 	
+	spring->Tick(dt);
 		//collisions
 	m_grid->handleCollisions();
 
@@ -203,6 +224,7 @@ void Scene::Tick(double dt)
 
 	//update renderers view matrix
 	m_renderer->updateViewMatrix(viewMatrix);
+
 }
 
 void Scene::Render()
