@@ -35,6 +35,9 @@ private:
 
 	Spring* spring = nullptr;
 
+	Triangle * triangle1 = nullptr;
+	Triangle * triangle2 = nullptr;
+
 	std::unique_ptr<Grid> m_grid = nullptr;
 
 	float ball_throw = 0;

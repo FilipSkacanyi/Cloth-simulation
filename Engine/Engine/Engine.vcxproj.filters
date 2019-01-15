@@ -93,6 +93,12 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Triangle.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothTriangle.cpp">
+      <Filter>Source Files\Cloth</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -157,6 +163,18 @@
     </ClInclude>
     <ClInclude Include="Vector3.h">
       <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Triangle.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="trianglecol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tricol2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothTriangle.h">
+      <Filter>Header Files\Cloth</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

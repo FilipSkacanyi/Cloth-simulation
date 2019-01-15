@@ -7,6 +7,7 @@ class AlignedBoxCollider;
 class SphereCollider;
 class OrientedBoxCollider;
 class Collider;
+class Triangle;
 
 
 
@@ -28,6 +29,7 @@ public:
 	static bool IntersectOrientedBoxes(OrientedBoxCollider* obox1, OrientedBoxCollider* obox2);
 	static bool IntersectOrientedBoxSphere(OrientedBoxCollider* obox, SphereCollider* sphere);
 	static bool IntersectOrientedBoxSphere(SphereCollider* sphere, OrientedBoxCollider* obox);
+	static bool IntersectTriangles(Triangle * A, Triangle* B);
 
 private:
 
@@ -42,6 +44,10 @@ private:
 	static bool checkSeparatingAxes(Vector3 distance, Vector3 current_axis, 
 									Vector3 Ax, Vector3 Ay, Vector3 Az, Vector3 Bx, Vector3 By, Vector3 Bz,
 									float WA, float HA, float DA, float WB, float HB, float DB);
+
+	static void computeTriangleIntersectionIntervals(Vector3 projections, float dist[], float &t1, float &t2);
+
+	static void Vector3tofloatArray(double arr[], Vector3 vec);
 };
 
 

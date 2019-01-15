@@ -1,7 +1,7 @@
 #include "Scene.h"
 #include "Grid.h"
 #include "ClothPoint.h"
-
+#include "Triangle.h"
 
 
 Scene::Scene()
@@ -23,6 +23,12 @@ Scene::~Scene()
 		m_objectsInScene[i] = nullptr;
 	}
 	m_objectsInScene.clear();
+
+	if (spring)
+	{
+		delete spring;
+		spring = nullptr;
+	}
 }
 
 bool Scene::Init(Renderer * renderer)
@@ -45,10 +51,10 @@ bool Scene::Init(Renderer * renderer)
 	
 
 	Sphere* sphere = new Sphere();
-	sphere->Init(renderer, "cube.obj", DirectX::XMFLOAT4(1, 0, 0, 1));
+	sphere->Init(renderer, "sphere.obj", DirectX::XMFLOAT4(1, 0, 0, 1));
 	sphere->setGravity(0);
 	sphere->setPosition(Vector3(5, 11, 7));
-	sphere->setScale(2, 2, 2);
+	sphere->setScale(1, 1, 1);
 
 	objptr = sphere;
 
@@ -74,6 +80,27 @@ bool Scene::Init(Renderer * renderer)
 	m_objectsInScene.push_back(cube);
 	m_objectsInScene.push_back(cube1);
 	//m_grid->addObject(sphere);
+
+	DirectX::XMFLOAT3 t1[] = {
+	DirectX::XMFLOAT3(-1,-1,1),
+	DirectX::XMFLOAT3(0,1,0),
+	DirectX::XMFLOAT3(1,-1,0)
+	};
+
+	DirectX::XMFLOAT3 t2[] = {
+	DirectX::XMFLOAT3(-1,0,-1),
+	DirectX::XMFLOAT3(1,0,1),
+	DirectX::XMFLOAT3(1,0,-1)
+	};
+	triangle1 = new Triangle();
+	triangle1->Init(renderer, t1, DirectX::XMFLOAT4(1, 0, 0, 1));
+	triangle1->setPosition(Vector3(5, 5, 5));
+	triangle1->setGravity(0);
+
+	triangle2 = new Triangle();
+	triangle2->Init(renderer, t2, DirectX::XMFLOAT4(0, 1, 0, 1));
+	triangle2->setPosition(Vector3(5, 4.5, 5));
+	triangle2->setGravity(0);
 
 	return true;
 }
@@ -158,6 +185,10 @@ void Scene::input(Input * input, double dt)
 		Vector3 pos = objptr->getPosition();
 		pos.z -= f;
 		objptr->setPosition(pos);
+
+		Vector3 pos2 = triangle1->getPosition();
+		pos2.y -= f;
+		triangle1->setPosition(pos2);
 	}
 	if (input->IsKeyDown(VK_NUMPAD3))
 	{
@@ -165,6 +196,10 @@ void Scene::input(Input * input, double dt)
 		Vector3 pos = objptr->getPosition();
 		pos.z += f;
 		objptr->setPosition(pos);
+
+		Vector3 pos2 = triangle1->getPosition();
+		pos2.y += f;
+		triangle1->setPosition(pos2);
 	}
 
 	if (input->IsKeyDown(VK_SPACE))
@@ -208,6 +243,19 @@ void Scene::Tick(double dt)
 
 	m_cloth->Tick(dt, m_renderer);
 	
+	triangle1->Tick(dt);
+	triangle2->Tick(dt);
+
+	if (CollisionUtilities::IntersectTriangles(triangle1, triangle2))
+	{
+		OutputDebugString("there was triangle collision\n");
+	}
+	else
+	{
+		OutputDebugString("no triangle collision\n");
+	}
+
+
 	spring->Tick(dt);
 		//collisions
 	m_grid->handleCollisions();
@@ -241,6 +289,9 @@ void Scene::Render()
 	}
 
 	m_cloth->Render(m_renderer);
+
+	triangle1->Render(m_renderer);
+	triangle2->Render(m_renderer);
 
 	//m_grid->Render(m_renderer);
 }

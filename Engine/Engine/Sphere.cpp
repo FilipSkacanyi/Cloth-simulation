@@ -25,6 +25,6 @@ void Sphere::Tick(double dt)
 	Object::Tick(dt);
 
 	SphereCollider* tmp = static_cast<SphereCollider*> (m_collider);
-	tmp->setRadius(m_scale.x / 2);
+	tmp->setRadius(m_scale.x * 1.1);
 	m_collider->setPosition(m_position);
 }

@@ -5,7 +5,7 @@
 
 ClothPoint::ClothPoint()
 {
-	m_mass = 0.1;
+	m_mass = 0.5;
 }
 
 
