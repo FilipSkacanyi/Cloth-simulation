@@ -8,6 +8,7 @@
 class ClothPoint;
 class Spring;
 class GameObject;
+class ClothTriangle;
 
 class Cloth
 {
@@ -22,10 +23,15 @@ public:
 	void setPosition(Vector3 pos);
 	Vector3 getPosition() { return m_position; }
 
+	
+
 	int getWidth() { return m_width; }
 	int getHeigth() { return m_heigth; }
 
 private:
+	void selfCollision(float dt);
+
+
 	int m_width, m_heigth;
 	Vector3 m_position;
 	Vector3 m_rotation;
@@ -33,6 +39,7 @@ private:
 	Model* m_model = nullptr;
 
 	std::vector<std::unique_ptr<ClothPoint>> m_points;
+	std::vector<std::unique_ptr<ClothTriangle>> m_triangles;
 	std::vector<std::unique_ptr<Spring>> m_springs;
 };
 

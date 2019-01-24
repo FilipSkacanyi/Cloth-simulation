@@ -35,11 +35,11 @@ bool Scene::Init(Renderer * renderer)
 {
 	m_renderer = renderer;
 
-	m_grid = std::make_unique<Grid>(1, 1, 1,20, renderer);
+	m_grid = std::make_unique<Grid>(27, 27, 27,3, renderer);
 
 	m_camera = new Camera();
-	m_camera->setPosition(10.0f, 6.0f, -5.0f);
-	m_camera->setRotation(0, 10, 0);
+	m_camera->setPosition(5.0f, 13.0f, 1.0f);
+	m_camera->setRotation(0, 0, 0);
 
 	
 	m_cloth = new Cloth();
@@ -54,7 +54,7 @@ bool Scene::Init(Renderer * renderer)
 	sphere->Init(renderer, "sphere.obj", DirectX::XMFLOAT4(1, 0, 0, 1));
 	sphere->setGravity(0);
 	sphere->setPosition(Vector3(5, 11, 7));
-	sphere->setScale(1, 1, 1);
+	sphere->setScale(0.7, 0.7, 0.7);
 
 	objptr = sphere;
 
@@ -64,18 +64,22 @@ bool Scene::Init(Renderer * renderer)
 	Cube* cube = new Cube();
 	cube->Init(renderer, "cube.obj", DirectX::XMFLOAT4(1, 0, 0, 1));
 	cube->setGravity(0);
-	cube->setPosition(Vector3(8, 11, 7));
+	cube->setPosition(Vector3(15, 11, 7));
 	cube->setScale(1, 1, 1);
+	cube->setKinematic(true);
 
 
 	Cube* cube1 = new Cube();
 	cube1->Init(renderer, "cube.obj", DirectX::XMFLOAT4(1, 0, 0, 1));
-	cube1->setGravity(0);
-	cube1->setPosition(Vector3(8, 6, 7));
+	cube1->setGravity(1);
+	cube1->setPosition(Vector3(15, 1, 7));
 	cube1->setScale(1, 1, 1);
+	
+
+	objptr = cube1;
 
 	spring = new Spring();
-	spring->assignPoints(cube, cube1, 2);
+	spring->assignPoints(cube, cube1, 5);
 
 	m_objectsInScene.push_back(cube);
 	m_objectsInScene.push_back(cube1);
@@ -183,7 +187,7 @@ void Scene::input(Input * input, double dt)
 	{
 		float f =  1* dt;
 		Vector3 pos = objptr->getPosition();
-		pos.z -= f;
+		pos.z -= f ;
 		objptr->setPosition(pos);
 
 		Vector3 pos2 = triangle1->getPosition();
@@ -226,10 +230,10 @@ void Scene::input(Input * input, double dt)
 
 void Scene::Tick(double dt)
 {
-	for (int i = 0; i < m_cloth->getWidth() * m_cloth->getHeigth(); i++)
+	/*for (int i = 0; i < m_cloth->getWidth() * m_cloth->getHeigth(); i++)
 	{
 		m_grid->addObject(m_cloth->getClothpointAtIndex(i));
-	}
+	}*/
 
 	for (int i = 0; i < m_objectsInScene.size(); i++)
 	{
@@ -283,12 +287,12 @@ void Scene::Render()
 
 		if (obj)
 		{
-		 obj->Render(m_renderer);
+		//obj->Render(m_renderer);
 		}
 		
 	}
 
-	m_cloth->Render(m_renderer);
+	//m_cloth->Render(m_renderer);
 
 	triangle1->Render(m_renderer);
 	triangle2->Render(m_renderer);

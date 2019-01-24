@@ -24,6 +24,8 @@ void Cube::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 col
 	tmp->Init(ColliderType::ORIENTED);
 	
 	m_gravity = 1;
+
+	m_mass = 20;
 }
 
 void Cube::Tick(double dt)

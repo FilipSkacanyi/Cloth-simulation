@@ -6,6 +6,9 @@
 #include <Windows.h>
 #include <string>
 #include "Triangle.h"
+#include "ClothTriangle.h"
+#include "ClothPoint.h"
+
 #include "trianglecol.h"
 #include "Tricol2.h"
 
@@ -531,14 +534,6 @@ bool CollisionUtilities::IntersectTriangles(Triangle * A, Triangle * B)
 	Vector3 D;
 	D = cross(N1, N2);
 
-   //compute and index to the largest component of D
-	float max = (float)fabs(D.x);
-	int index = 0;
-	float bb = (float)fabs(D.y);
-	float cc = (float)fabs(D.z);
-	if (bb > max) max = bb, index = 1;
-	if (cc > max) max = cc, index = 2;
-
 	Vector3 T1_p, T2_p;
 
 	T1_p.x = dot(D, t1_points[0]);
@@ -615,6 +610,118 @@ bool CollisionUtilities::IntersectTriangles(Triangle * A, Triangle * B)
 	//		return true;
 	//	}*/
 	//	return true;
+}
+
+bool CollisionUtilities::IntersectTriangles(ClothTriangle * A, ClothTriangle * B)
+{
+	Vector3 N1, N2;
+	float d1, d2;
+	float distances1[3], distances2[3];
+
+	Vector3 t1_points[3];
+	Vector3 t2_points[3];
+
+	for (int i = 0; i < 3; i++)
+	{
+		t1_points[i] = A->getClothPointAtIndex(i)->getPosition();
+		t2_points[i] = B->getClothPointAtIndex(i)->getPosition();
+	}
+
+
+	N2 = cross(t2_points[1] - t2_points[0], t2_points[2] - t2_points[0]);
+	d2 = -1 * dot(N2, t2_points[0]);
+
+	//calculate distances of vertices of one triangle from a plane of second triangle 
+	for (int i = 0; i < 3; i++)
+	{
+		distances1[i] = dot(N2, t1_points[i]) + d2;
+	}
+
+	//if all have the same sign, there is noc collision
+	if (distances1[0] > 0 && distances1[1] > 0 && distances1[2] > 0)
+	{
+		return false;
+	}
+	else if (distances1[0] < 0 && distances1[1] < 0 && distances1[2] < 0)
+	{
+		return false;
+	}
+	//if the distance is 0 that means the point is on the plane directly
+	//meaning they probably share a point or an edge.
+	//so far I am going to disregard it as well
+	else if (distances1[0] == 0 || distances1[1] == 0 || distances1[2] == 0)
+	{
+		return false;
+	}
+
+	//same teste are done for other triangle... 
+	//not sure if the second one is necessery
+
+	N1 = cross(t1_points[1] - t1_points[0], t1_points[2] - t1_points[0]);
+	d1 = -1 * dot(N1, t1_points[0]);
+
+	for (int i = 0; i < 3; i++)
+	{
+		distances2[i] = dot(N1, t2_points[i]) + d1;
+	}
+
+	if (distances2[0] > 0 && distances2[1] > 0 && distances2[2] > 0)
+	{
+		return false;
+	}
+	else if (distances2[0] < 0 && distances2[1] < 0 && distances2[2] < 0)
+	{
+		return false;
+	}
+	else if (distances2[0] == 0 || distances2[1] == 0 || distances2[2] == 0)
+	{
+		return false;
+	}
+
+	//the intersection of planes is a line
+	// line = a point on it + cross of N1xN2
+	Vector3 D;
+	D = cross(N1, N2);
+
+	Vector3 T1_p, T2_p;
+
+	T1_p.x = dot(D, t1_points[0]);
+	T1_p.y = dot(D, t1_points[1]);
+	T1_p.z = dot(D, t1_points[2]);
+
+	T2_p.x = dot(D, t2_points[0]);
+	T2_p.y = dot(D, t2_points[1]);
+	T2_p.z = dot(D, t2_points[2]);
+
+	float T1t1, T1t2, T2t1, T2t2;
+
+	computeTriangleIntersectionIntervals(T1_p, distances1, T1t1, T1t2);
+	computeTriangleIntersectionIntervals(T2_p, distances2, T2t1, T2t2);
+
+	//sort the intervals so that the smaller number is on the left
+	float tmp = 0;
+	if (T1t1 > T1t2)
+	{
+		tmp = T1t1;
+		T1t1 = T1t2;
+		T1t2 = tmp;
+		tmp = 0;
+	}
+
+	if (T2t1 > T2t2)
+	{
+		tmp = T2t1;
+		T2t1 = T2t2;
+		T2t2 = tmp;
+	}
+
+	if (T1t2 < T2t1 || T2t2 < T1t1)
+	{
+
+		return false;
+	}
+
+	return true;
 }
 
 

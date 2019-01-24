@@ -32,7 +32,7 @@ void GameObject::Tick(double dt)
 		//m_velocity = m_force;
 		m_position = m_position + (m_velocity * dt);
 		
-		m_velocity = m_velocity - m_velocity * 0.9 *dt;
+		m_velocity = m_velocity - m_velocity * 0.95 *dt;
 		 //air ressistance
 
 		m_force = Vector3(0, 0, 0);

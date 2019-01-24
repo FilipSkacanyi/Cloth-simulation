@@ -23,9 +23,9 @@ private:
 
 	SpringType m_type = SpringType::STRAIT;
 
-	float m_stiffness = 0.5;
+	float m_stiffness = 0.2;
 	float m_offset_distance = 1;
 
-	float m_max_stretch = 1000;
+	float m_max_stretch = 1.1;
 };
 

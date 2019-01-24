@@ -1,5 +1,6 @@
 #include "Cloth.h"
 #include "ClothPoint.h"
+#include "ClothTriangle.h"
 #include "Spring.h"
 
 
@@ -27,6 +28,7 @@ void Cloth::Tick(double dt, Renderer* renderer)
 		m_springs[i]->Tick(dt);
 	}
 	
+	//selfCollision(dt);
 
 	m_model->setPosition(m_position);
 }
@@ -117,6 +119,15 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 			tmpind[indices_iterator++] = (i + 1) * (cols)+j +1 ;
 		}
 	}
+
+	for (int i = 0; i < indexNum; i +=3 )
+	{
+		m_triangles.push_back(std::make_unique<ClothTriangle>());
+		m_triangles[m_triangles.size() - 1]->addPoints(m_points[tmpind[i]].get(),
+														m_points[tmpind[i + 1]].get(),
+														m_points[tmpind[i + 2]].get());
+	}
+	
 
 	//add springs to the mix
 	
@@ -228,5 +239,21 @@ void Cloth::setPosition(Vector3 pos)
 		m_points[i]->setPosition(m_points[i]->getPosition() + m_position);
 
 		
+	}
+}
+
+void Cloth::selfCollision(float dt)
+{
+
+	for (int i = 0; i < m_triangles.size(); i++)
+	{
+		for (int j = i + 1; j < m_triangles.size(); j++)
+		{
+			if (CollisionUtilities::IntersectTriangles(m_triangles[i].get(), m_triangles[j].get()))
+			{
+
+				//add force yo
+			}
+		}
 	}
 }
