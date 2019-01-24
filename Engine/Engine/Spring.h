@@ -1,5 +1,5 @@
 #pragma once
-class GameObject;
+class Object;
 
 enum SpringType
 {
@@ -14,12 +14,12 @@ public:
 	~Spring();
 
 	void Tick(float dt);
-	void assignPoints(GameObject* pointA, GameObject* pointB, float offset_distance);
+	void assignPoints(Object* pointA, Object* pointB, float offset_distance);
 	void setType(SpringType type) { m_type = type; }
 
 private:
-	GameObject* m_point_A = nullptr;
-	GameObject* m_point_B = nullptr;
+	Object* m_point_A = nullptr;
+	Object* m_point_B = nullptr;
 
 	SpringType m_type = SpringType::STRAIT;
 

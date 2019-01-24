@@ -1,5 +1,7 @@
 #pragma once
 #include "Object.h"
+#include <vector>
+
 class Triangle :
 	public Object
 {
@@ -12,7 +14,7 @@ public:
 
 	void Tick(float dt);
 private:
-
+	
 	Vector3* m_points = nullptr;
 };
 

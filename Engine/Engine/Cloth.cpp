@@ -128,7 +128,7 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 														m_points[tmpind[i + 2]].get());
 	}
 	
-
+	m_triangle_count = m_triangles.size();
 	//add springs to the mix
 	
 	for (int i = 0; i < rows; i++)
@@ -228,6 +228,11 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 ClothPoint * Cloth::getClothpointAtIndex(int i)
 {
 	return m_points[i].get();
+}
+
+ClothTriangle * Cloth::getClothTriangleAtIndex(int i)
+{
+	return m_triangles[i].get();
 }
 
 void Cloth::setPosition(Vector3 pos)

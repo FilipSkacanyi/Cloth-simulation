@@ -36,3 +36,15 @@ void ClothTriangle::AddForce(Vector3 force)
 		m_points[i]->AddForce(force);
 	}
 }
+
+Vector3 ClothTriangle::getPosition()
+{
+	Vector3 averagePosition;
+	  
+	for (int i = 0; i < 3; i++)
+	{
+		averagePosition = averagePosition + m_points[i]->getPosition();
+	}
+
+	return averagePosition / 3;
+}

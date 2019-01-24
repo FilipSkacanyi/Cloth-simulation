@@ -49,7 +49,7 @@ void ClothPoint::Tick(double dt)
 	//m_collider->setPosition(m_position);
 
 
-	GameObject::Tick(dt);
+	Object::Tick(dt);
 }
 
 void ClothPoint::collision(GameObject * other)

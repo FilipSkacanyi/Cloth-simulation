@@ -99,6 +99,9 @@
     <ClCompile Include="ClothTriangle.cpp">
       <Filter>Source Files\Cloth</Filter>
     </ClCompile>
+    <ClCompile Include="TriangleCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -175,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="ClothTriangle.h">
       <Filter>Header Files\Cloth</Filter>
+    </ClInclude>
+    <ClInclude Include="TriangleCollider.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

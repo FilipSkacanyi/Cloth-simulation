@@ -26,6 +26,16 @@ public:
 	void Render(Renderer* renderer);
 	
 
+	void AddForce(Vector3 force);
+
+	float getMass();
+	void setGravity(float grav);
+	
+	void setKinematic(bool b) { m_isKinematic = b; }
+	bool isKinematic() { return m_isKinematic; }
+
+	virtual void collision(GameObject* other) override;
+
 	void resetVelocity(VelocityAxis axis);
 	
 	
@@ -34,10 +44,17 @@ protected:
 	
 	//physics stuff
 	float m_bounciness = 0.33; 
+	float m_mass = 1;
+	Vector3 m_acceleration = Vector3(0, 0, 0);
+	Vector3 m_velocity = Vector3(0, 0, 0);
+	Vector3 m_force = Vector3(0, 0, 0);
+
+	float m_gravity = 1;
+	bool m_isKinematic = false;
+	
 
 	float m_elapsed_time = 0;
 
-	
-	
+		
 };
 

@@ -137,6 +137,7 @@
     <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="Spring.cpp" />
     <ClCompile Include="Triangle.cpp" />
+    <ClCompile Include="TriangleCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AlignedBoxCollider.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="Spring.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="trianglecol.h" />
+    <ClInclude Include="TriangleCollider.h" />
     <ClInclude Include="Tricol2.h" />
     <ClInclude Include="Vector3.h" />
   </ItemGroup>

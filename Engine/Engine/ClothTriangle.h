@@ -1,10 +1,11 @@
 #pragma once
 #include <vector>
-#include "Vector3.h"
+#include "GameObject.h"
+
 
 class ClothPoint;
 
-class ClothTriangle
+class ClothTriangle : public GameObject
 {
 public:
 	ClothTriangle();
@@ -14,9 +15,12 @@ public:
 	ClothPoint* getClothPointAtIndex(int i);
 
 	void AddForce(Vector3 force);
+
+	Vector3 getPosition() override;
 private:
 	
 	std::vector<ClothPoint*> m_points;
+	
 
 };
 

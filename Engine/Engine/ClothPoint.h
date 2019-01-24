@@ -1,10 +1,10 @@
 #pragma once
 
 
-#include "GameObject.h"
+#include "Object.h"
 class Cloth;
 
-class ClothPoint : public GameObject
+class ClothPoint : public Object
 {
 public:
 	ClothPoint();

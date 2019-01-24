@@ -25,32 +25,16 @@ public:
 	void setScale(float x, float y, float z);
 	void setScale(Vector3 scale);
 
-	void AddForce(Vector3 force);
-
-	float getMass();
-	void setGravity(float grav);
-	Collider* getCollider(); 
-	void setKinematic(bool b) { m_isKinematic = b; }
-	bool isKinematic() { return m_isKinematic; }
+	Collider* getCollider();
 
 	virtual void collision(GameObject* other);
-
 
 protected:
 	Vector3 m_position;
 	Vector3 m_rotation;
 	Vector3 m_scale;
 
-	float m_mass = 1;
-	Vector3 m_acceleration = Vector3(0, 0, 0);
-	Vector3 m_velocity = Vector3(0, 0, 0);
-	Vector3 m_force = Vector3(0, 0, 0);
-
-	float m_gravity = 1;
-	bool m_isKinematic = false;
 	Collider* m_collider = nullptr;
-
-
 	
 };
 

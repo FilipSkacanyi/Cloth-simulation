@@ -97,7 +97,7 @@ void Spring::Tick(float dt)
 	
 }
 
-void Spring::assignPoints(GameObject * pointA, GameObject * pointB, float offset_distance)
+void Spring::assignPoints(Object * pointA, Object * pointB, float offset_distance)
 {
 	m_point_A = pointA;
 	m_point_B = pointB;

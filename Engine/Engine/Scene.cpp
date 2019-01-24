@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "Grid.h"
 #include "ClothPoint.h"
+#include "ClothTriangle.h"
 #include "Triangle.h"
 
 
@@ -76,7 +77,7 @@ bool Scene::Init(Renderer * renderer)
 	cube1->setScale(1, 1, 1);
 	
 
-	objptr = cube1;
+	//objptr = cube1;
 
 	spring = new Spring();
 	spring->assignPoints(cube, cube1, 5);
@@ -230,10 +231,10 @@ void Scene::input(Input * input, double dt)
 
 void Scene::Tick(double dt)
 {
-	/*for (int i = 0; i < m_cloth->getWidth() * m_cloth->getHeigth(); i++)
+	for (int i = 0; i < m_cloth->getTriangleCount(); i++)
 	{
-		m_grid->addObject(m_cloth->getClothpointAtIndex(i));
-	}*/
+		m_grid->addObject(m_cloth->getClothTriangleAtIndex(i));
+	}
 
 	for (int i = 0; i < m_objectsInScene.size(); i++)
 	{
@@ -287,12 +288,12 @@ void Scene::Render()
 
 		if (obj)
 		{
-		//obj->Render(m_renderer);
+		obj->Render(m_renderer);
 		}
 		
 	}
 
-	//m_cloth->Render(m_renderer);
+	m_cloth->Render(m_renderer);
 
 	triangle1->Render(m_renderer);
 	triangle2->Render(m_renderer);
