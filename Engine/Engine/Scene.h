@@ -19,7 +19,7 @@ public:
 
 	bool Init(Renderer* renderer);
 	void input(Input* input, double dt);
-	void Tick(double dt);
+	void Tick(float dt);
 	void Render();
 
 private:

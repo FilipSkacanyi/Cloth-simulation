@@ -15,7 +15,7 @@ class Cloth
 public:
 	Cloth();
 	~Cloth();
-	void Tick(double dt, Renderer* renderer);
+	void Tick(float dt, Renderer* renderer);
 	void Render(Renderer* renderer);
 	bool Initialise(Renderer* renderer,int rows, int cols, float distannce, std::vector<GameObject*>& objects_in_scene);
 

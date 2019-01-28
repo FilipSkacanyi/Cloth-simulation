@@ -28,7 +28,7 @@ void Cube::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 col
 	m_mass = 20;
 }
 
-void Cube::Tick(double dt)
+void Cube::Tick(float dt)
 {
 	Object::Tick(dt);
 

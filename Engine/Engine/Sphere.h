@@ -8,6 +8,6 @@ public:
 	~Sphere();
 
 	void Init(Renderer* renderer, std::string fileName, DirectX::XMFLOAT4 color) override;
-	void Tick(double dt) override;
+	void Tick(float dt) override;
 };
 

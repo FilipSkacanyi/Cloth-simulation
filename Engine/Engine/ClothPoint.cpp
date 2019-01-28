@@ -5,8 +5,8 @@
 
 ClothPoint::ClothPoint()
 {
-	m_mass = 10;
-	m_gravity = 10;
+	m_mass = 1;
+	m_gravity = 1;
 }
 
 
@@ -20,7 +20,7 @@ void ClothPoint::Init()
 	m_collider->Init(ColliderType::SINGLE_POINT);
 }
 
-void ClothPoint::Tick(double dt)
+void ClothPoint::Tick(float dt)
 {
 	/*m_position = DirectX::XMFLOAT3(m_parent->getPosition().x + m_object_position.x,
 		m_parent->getPosition().y + m_object_position.y,

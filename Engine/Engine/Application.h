@@ -18,12 +18,12 @@ public:
 	LRESULT CALLBACK MessageHandler(HWND, UINT, WPARAM, LPARAM);
 
 private:
-	bool Tick(double dt);
+	bool Tick(float dt);
 	void Render();
 	bool InitWindow();
 
-	std::chrono::duration<double> m_delta_time;
-
+	std::chrono::duration<float> m_delta_time;
+	float m_frame_rate_cap = 60.0f;
 	LPCSTR m_applicationName;
 	HINSTANCE m_hInstance;
 	HWND m_hwnd;

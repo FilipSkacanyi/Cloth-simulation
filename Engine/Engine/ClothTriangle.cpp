@@ -1,10 +1,13 @@
 #include "ClothTriangle.h"
 #include "ClothPoint.h"
+#include "TriangleCollider.h"
 
 
 
 ClothTriangle::ClothTriangle()
 {
+	m_collider = new TriangleCollider();
+	m_collider->Init(ColliderType::TRIANGLE);
 }
 
 
@@ -27,6 +30,12 @@ void ClothTriangle::addPoints(ClothPoint * a, ClothPoint * b, ClothPoint * c)
 ClothPoint * ClothTriangle::getClothPointAtIndex(int i)
 {
 	return m_points[i];
+}
+
+void ClothTriangle::Tick(float dt)
+{
+	TriangleCollider* tmp = static_cast<TriangleCollider*>(m_collider);
+	tmp->setPoints(m_points[0]->getPosition(), m_points[1]->getPosition(), m_points[2]->getPosition());
 }
 
 void ClothTriangle::AddForce(Vector3 force)

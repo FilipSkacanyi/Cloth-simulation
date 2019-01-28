@@ -9,6 +9,7 @@ class OrientedBoxCollider;
 class Collider;
 class Triangle;
 class ClothTriangle;
+class TriangleCollider;
 
 
 
@@ -32,6 +33,7 @@ public:
 	static bool IntersectOrientedBoxSphere(SphereCollider* sphere, OrientedBoxCollider* obox);
 	static bool IntersectTriangles(Triangle * A, Triangle* B);
 	static bool IntersectTriangles(ClothTriangle * A, ClothTriangle* B);
+	static bool IntersectTriangles(TriangleCollider * A, TriangleCollider* B);
 
 private:
 

@@ -1,5 +1,5 @@
 #include "Application.h"
-
+#include "Timer.h"
 
 
 Application::Application()
@@ -45,7 +45,7 @@ bool Application::Init()
 
 void Application::Run()
 {
-
+	Timer* timer = Timer::Instance();
 	MSG msg = { 0 };
 	while (WM_QUIT != msg.message)
 	{
@@ -56,13 +56,20 @@ void Application::Run()
 		}
 		else
 		{
-			auto start = std::chrono::high_resolution_clock::now();
-			Tick(m_delta_time.count());
-			
-			Render();
-			auto end = std::chrono::high_resolution_clock::now();
-			m_delta_time = end - start;
+			timer->Tick();
+			if (timer->DeltaTime() >= 1 / m_frame_rate_cap)
+			{
+				//auto start = std::chrono::high_resolution_clock::now();
+				timer->Reset();
+				Tick(timer->DeltaTime());
 
+				/*std::string string = std::to_string(timer->DeltaTime());
+				string += "\n";
+				OutputDebugString(string.c_str());*/
+				Render();
+				//auto end = std::chrono::high_resolution_clock::now();
+				//m_delta_time = end - start;
+			}
 		}
 		
 	}
@@ -91,7 +98,7 @@ LRESULT Application::MessageHandler(HWND hWnd, UINT message, WPARAM wParam, LPAR
 	return 0;
 }
 
-bool Application::Tick(double dt)
+bool Application::Tick(float dt)
 {
 	m_renderer->Tick();
 	m_scene->input(m_input, dt);

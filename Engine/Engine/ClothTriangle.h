@@ -13,7 +13,7 @@ public:
 
 	void addPoints(ClothPoint* a, ClothPoint* b, ClothPoint*c);
 	ClothPoint* getClothPointAtIndex(int i);
-
+	void Tick(float dt) override;
 	void AddForce(Vector3 force);
 
 	Vector3 getPosition() override;

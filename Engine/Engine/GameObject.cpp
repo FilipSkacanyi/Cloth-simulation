@@ -11,7 +11,7 @@ GameObject::~GameObject()
 {
 }
 
-void GameObject::Tick(double dt)
+void GameObject::Tick(float dt)
 {
 	
 }

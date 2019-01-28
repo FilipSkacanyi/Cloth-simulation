@@ -14,7 +14,7 @@ Cloth::~Cloth()
 {
 }
 
-void Cloth::Tick(double dt, Renderer* renderer)
+void Cloth::Tick(float dt, Renderer* renderer)
 {
 	//m_points[0]->setPosition(DirectX::XMFLOAT3(m_points[0]->getPosition().x - dt, m_points[0]->getPosition().y+dt, m_points[0]->getPosition().z));
 	//m_points[1]->setPosition(DirectX::XMFLOAT3(m_points[1]->getPosition().x  , m_points[1]->getPosition().y + dt, m_points[1]->getPosition().z));

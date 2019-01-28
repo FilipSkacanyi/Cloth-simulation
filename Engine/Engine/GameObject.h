@@ -13,7 +13,7 @@ public:
 	~GameObject();
 
 
-	virtual void Tick(double dt);
+	virtual void Tick(float dt);
 	virtual Vector3 getPosition();
 	Vector3 getRotation();
 	Vector3 getScale();

@@ -255,7 +255,7 @@ bool Renderer::Init(HWND hwnd)
 	D3D11_RASTERIZER_DESC wfdesc;
 
 	ZeroMemory(&wfdesc, sizeof(D3D11_RASTERIZER_DESC));
-	wfdesc.FillMode = D3D11_FILL_SOLID;
+	wfdesc.FillMode = D3D11_FILL_WIREFRAME;
 	// D3D11_FILL_SOLID
 	wfdesc.CullMode = D3D11_CULL_NONE;
 	hr = m_device->CreateRasterizerState(&wfdesc, &m_WireFrame);

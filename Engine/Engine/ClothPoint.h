@@ -10,7 +10,7 @@ public:
 	ClothPoint();
 	~ClothPoint();
 	void Init();
-	void Tick(double dt) override;
+	void Tick(float dt) override;
 	void setParent(Cloth* parent_) { m_parent = parent_; }
 	void collision(GameObject* other) override;
 

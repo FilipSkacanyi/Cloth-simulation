@@ -100,6 +100,9 @@
       <Filter>Source Files\Cloth</Filter>
     </ClCompile>
     <ClCompile Include="TriangleCollider.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -180,6 +183,9 @@
       <Filter>Header Files\Cloth</Filter>
     </ClInclude>
     <ClInclude Include="TriangleCollider.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -20,7 +20,7 @@ void Sphere::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 c
 	m_collider->Init(ColliderType::SPHERE);
 }
 
-void Sphere::Tick(double dt)
+void Sphere::Tick(float dt)
 {
 	Object::Tick(dt);
 

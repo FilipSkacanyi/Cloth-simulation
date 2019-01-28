@@ -36,7 +36,7 @@ bool Scene::Init(Renderer * renderer)
 {
 	m_renderer = renderer;
 
-	m_grid = std::make_unique<Grid>(27, 27, 27,3, renderer);
+	m_grid = std::make_unique<Grid>(18, 27, 9,3, renderer);
 
 	m_camera = new Camera();
 	m_camera->setPosition(5.0f, 13.0f, 1.0f);
@@ -229,7 +229,7 @@ void Scene::input(Input * input, double dt)
 	}
 }
 
-void Scene::Tick(double dt)
+void Scene::Tick(float dt)
 {
 	for (int i = 0; i < m_cloth->getTriangleCount(); i++)
 	{
@@ -251,14 +251,14 @@ void Scene::Tick(double dt)
 	triangle1->Tick(dt);
 	triangle2->Tick(dt);
 
-	if (CollisionUtilities::IntersectTriangles(triangle1, triangle2))
-	{
-		OutputDebugString("there was triangle collision\n");
-	}
-	else
-	{
-		OutputDebugString("no triangle collision\n");
-	}
+	//if (CollisionUtilities::IntersectTriangles(triangle1, triangle2))
+	//{
+	//	OutputDebugString("there was triangle collision\n");
+	//}
+	//else
+	//{
+	//	OutputDebugString("no triangle collision\n");
+	//}
 
 
 	spring->Tick(dt);
