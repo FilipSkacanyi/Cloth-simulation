@@ -51,7 +51,7 @@ private:
 
 	static void computeTriangleIntersectionIntervals(Vector3 projections, float dist[], float &t1, float &t2);
 
-	static void Vector3tofloatArray(double arr[], Vector3 vec);
+	static void Vector3tofloatArray(float arr[], Vector3 vec);
 };
 
 

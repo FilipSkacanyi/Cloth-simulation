@@ -46,6 +46,12 @@ void ClothTriangle::AddForce(Vector3 force)
 	}
 }
 
+void ClothTriangle::collision(GameObject * other)
+{
+	ClothTriangle* tmp = static_cast<ClothTriangle*>(other);
+	//tmp->AddForce(Vector3(0, 1000, 0));
+}
+
 Vector3 ClothTriangle::getPosition()
 {
 	Vector3 averagePosition;

@@ -27,6 +27,11 @@ void Cloth::Tick(float dt, Renderer* renderer)
 	{
 		m_springs[i]->Tick(dt);
 	}
+
+	for (int i = 0; i < m_triangles.size(); i++)
+	{
+		m_triangles[i]->Tick(dt);
+	}
 	
 	//selfCollision(dt);
 

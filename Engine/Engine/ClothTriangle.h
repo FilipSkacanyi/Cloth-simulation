@@ -16,6 +16,8 @@ public:
 	void Tick(float dt) override;
 	void AddForce(Vector3 force);
 
+	void collision(GameObject* other) override;
+
 	Vector3 getPosition() override;
 private:
 	

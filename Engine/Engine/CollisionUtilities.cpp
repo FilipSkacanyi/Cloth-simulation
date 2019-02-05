@@ -739,7 +739,27 @@ bool CollisionUtilities::IntersectTriangles(TriangleCollider * A, TriangleCollid
 		t1_points[i] = A->getPointAtIndex(i);
 		t2_points[i] = B->getPointAtIndex(i);
 	}
+	
+	//float v1[3], v2[3], v3[3], u1[3], u2[3], u3[3];
 
+	//Vector3tofloatArray(v1, t1_points[0]);
+	//Vector3tofloatArray(v2, t1_points[1]);
+	//Vector3tofloatArray(v3, t1_points[2]);
+
+	//Vector3tofloatArray(u1, t2_points[0]);
+	//Vector3tofloatArray(u2, t2_points[1]);
+	//Vector3tofloatArray(u3, t2_points[2]);
+
+	//int result = NoDivTriTriIsect(v1, v2, v3, u1, u2, u3);
+	//if (result == 0)
+	//{
+	//	return false;
+	//}
+	//else
+	//{
+	//	return true;
+	//}
+	
 
 	N2 = cross(t2_points[1] - t2_points[0], t2_points[2] - t2_points[0]);
 	d2 = -1 * dot(N2, t2_points[0]);
@@ -834,7 +854,7 @@ bool CollisionUtilities::IntersectTriangles(TriangleCollider * A, TriangleCollid
 		return false;
 	}
 
-	return true;
+return true;
 }
 
 
@@ -939,7 +959,7 @@ void CollisionUtilities::computeTriangleIntersectionIntervals(Vector3 projection
 
 }
 
-void CollisionUtilities::Vector3tofloatArray(double arr[], Vector3 vec)
+void CollisionUtilities::Vector3tofloatArray(float arr[], Vector3 vec)
 {
 	arr[0] = vec.x;
 	arr[1] = vec.y;

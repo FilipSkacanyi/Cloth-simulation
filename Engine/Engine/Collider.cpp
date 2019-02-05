@@ -118,5 +118,13 @@ bool Collider::Intersect(Collider* other)
 		return CollisionUtilities::IntersectPointSphere(other, self);
 	}
 
+	if (m_type == ColliderType::TRIANGLE && other->getType() == ColliderType::TRIANGLE)
+	{
+		TriangleCollider* other_ = (TriangleCollider*)(other);
+		TriangleCollider* self_ = (TriangleCollider*)(this);
+
+		return CollisionUtilities::IntersectTriangles(other_,self_);
+	}
+
 	return false;
 }
