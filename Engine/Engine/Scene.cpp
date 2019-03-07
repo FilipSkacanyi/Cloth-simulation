@@ -45,7 +45,7 @@ bool Scene::Init(Renderer * renderer)
 	
 	m_cloth = new Cloth();
 
-	int clothWidth = 10, clothHeigth = 10;
+	int clothWidth = 9, clothHeigth = 9;
 
 	m_cloth->Initialise(renderer, clothWidth, clothHeigth,0.3, m_objectsInScene);
 	m_cloth->setPosition(Vector3(5, 12, 5));
@@ -236,10 +236,10 @@ void Scene::Tick(float dt)
 		m_grid->addObject(m_cloth->getClothTriangleAtIndex(i));
 	}
 
-	for (int i = 0; i < m_objectsInScene.size(); i++)
+	/*for (int i = 0; i < m_objectsInScene.size(); i++)
 	{
 		m_grid->addObject(m_objectsInScene[i]);
-	}
+	}*/
 
 	for (int i = 0; i < m_objectsInScene.size(); i++)
 	{
