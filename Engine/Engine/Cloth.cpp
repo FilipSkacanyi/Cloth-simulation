@@ -92,21 +92,23 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 		for (int j = 0; j < cols; j++)
 		{
 			//create a vertex
-			tmpvert[i*cols + j].position = DirectX::XMFLOAT3(j*distance -centerX * distance, i*distance -centerY * distance, 0);
+			tmpvert[i*cols + j].position = DirectX::XMFLOAT3(j*distance -centerX * distance, 0, i*distance - centerY * distance);
 		    tmpvert[i*cols + j].color = DirectX::XMFLOAT4(1, 0, 0, 1);
 
 			//create a cloth point based on the same values as the vertex
 			m_points.push_back(std::make_unique<ClothPoint>());
-			m_points[m_points.size() - 1]->setPosition(Vector3(j*distance - centerX * distance + m_position.x, -i * distance + centerY* distance + m_position.y, 0+ m_position.z));
+			m_points[m_points.size() - 1]->setPosition(Vector3(j*distance - centerX * distance + m_position.x, 0+ m_position.y, - i * distance + centerY * distance + m_position.z));
 			m_points[m_points.size() - 1]->setParent(this);
 			m_points[m_points.size() - 1]->Init();
 			objects_in_scene.push_back(m_points[m_points.size() - 1].get());
+			
 		}
 	}
 
-	m_points[0]->setKinematic(true);
-	m_points[cols - 1]->setKinematic(true);
+	//m_points[0]->setKinematic(true);
+	//m_points[cols - 1]->setKinematic(true);
 	
+	m_points[12]->setKinematic(true);
 
 	//assign indices
 	unsigned long* tmpind = new unsigned long[indexNum];

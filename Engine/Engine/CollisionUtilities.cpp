@@ -505,6 +505,10 @@ bool CollisionUtilities::IntersectTriangles(Triangle * A, Triangle * B)
 	{
 		return false;
 	}
+	else if (distances1[0] < 0.01 && distances1[0] > -0.01 || distances1[1] < 0.01 && distances1[1] > -0.01 || distances1[2] < 0.01 && distances1[2] > -0.01)
+	{
+		return false;
+	}
 
 	//same teste are done for other triangle... 
 	//not sure if the second one is necessery
@@ -740,27 +744,6 @@ bool CollisionUtilities::IntersectTriangles(TriangleCollider * A, TriangleCollid
 		t2_points[i] = B->getPointAtIndex(i);
 	}
 	
-	//float v1[3], v2[3], v3[3], u1[3], u2[3], u3[3];
-
-	//Vector3tofloatArray(v1, t1_points[0]);
-	//Vector3tofloatArray(v2, t1_points[1]);
-	//Vector3tofloatArray(v3, t1_points[2]);
-
-	//Vector3tofloatArray(u1, t2_points[0]);
-	//Vector3tofloatArray(u2, t2_points[1]);
-	//Vector3tofloatArray(u3, t2_points[2]);
-
-	//int result = NoDivTriTriIsect(v1, v2, v3, u1, u2, u3);
-	//if (result == 0)
-	//{
-	//	return false;
-	//}
-	//else
-	//{
-	//	return true;
-	//}
-	
-
 	N2 = cross(t2_points[1] - t2_points[0], t2_points[2] - t2_points[0]);
 	d2 = -1 * dot(N2, t2_points[0]);
 
@@ -782,7 +765,7 @@ bool CollisionUtilities::IntersectTriangles(TriangleCollider * A, TriangleCollid
 	//if the distance is 0 that means the point is on the plane directly
 	//meaning they probably share a point or an edge.
 	//so far I am going to disregard it as well
-	else if (distances1[0] == 0 || distances1[1] == 0 || distances1[2] == 0)
+	else if (distances1[0] < 0.001 && distances1[0] > -0.001 || distances1[1] < 0.001 && distances1[1] > -0.001 || distances1[2] < 0.001 && distances1[2] > -0.001)
 	{
 		return false;
 	}
@@ -806,7 +789,7 @@ bool CollisionUtilities::IntersectTriangles(TriangleCollider * A, TriangleCollid
 	{
 		return false;
 	}
-	else if (distances2[0] == 0 || distances2[1] == 0 || distances2[2] == 0)
+	else if (distances2[0] < 0.001 && distances2[0] > -0.001 || distances2[1] < 0.001 && distances2[1] > -0.001 || distances2[2] < 0.001 && distances2[2] > -0.001)
 	{
 		return false;
 	}

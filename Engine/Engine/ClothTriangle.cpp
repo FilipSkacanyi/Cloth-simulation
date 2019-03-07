@@ -1,6 +1,7 @@
 #include "ClothTriangle.h"
 #include "ClothPoint.h"
 #include "TriangleCollider.h"
+#include "Timer.h"
 
 
 
@@ -49,7 +50,30 @@ void ClothTriangle::AddForce(Vector3 force)
 void ClothTriangle::collision(GameObject * other)
 {
 	ClothTriangle* tmp = static_cast<ClothTriangle*>(other);
-	//tmp->AddForce(Vector3(0, 1000, 0));
+	//tmp->AddForce();
+
+	//force = mass * acceleration;
+	//acceleration = force / mass
+
+	//m_velocity = m_velocity + m_acceleration * dt;
+	//velocity +(force /mass) *dt = 0
+	//force *dt / mass = -velocity
+	//force * dt = -velocity * mass
+	//force = -velocity * mass / dt
+
+	for (int i = 0; i < 3; i++)
+	{
+		ClothPoint* point = tmp->getClothPointAtIndex(i);
+		Vector3 velocity = point->getVelocity();
+
+		Vector3 distance = tmp->getPosition() - getPosition();
+		float distmag = distance.Magnitude() * 5;
+		distance.Normalize();
+		point->AddForce(((velocity * (-0.1f) * point->getMass()) / Timer::Instance()->DeltaTime()));
+		point->AddForce(distance * (0.1f / distmag));
+	}
+
+
 }
 
 Vector3 ClothTriangle::getPosition()
