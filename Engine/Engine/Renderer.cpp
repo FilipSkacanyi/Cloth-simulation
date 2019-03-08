@@ -175,7 +175,7 @@ bool Renderer::Init(HWND hwnd)
 	 hr = S_OK;
 
 	 //compile vertexshader from a file
-	hr = D3DCompileFromFile(L"lightshaders.fx", nullptr, nullptr, "VS", "vs_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_vertexShaderBlob, &errorBlob);
+	hr = D3DCompileFromFile(L"vertexshader.vs", nullptr, nullptr, "VS", "vs_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_vertexShaderBlob, &errorBlob);
 	if (FAILED(hr))
 	{
 		if (errorBlob)
@@ -213,7 +213,7 @@ bool Renderer::Init(HWND hwnd)
 	m_vertexShaderBlob->Release();
 	
 	//compile pixelshader from a file
-	hr = D3DCompileFromFile(L"lightshaders.fx", nullptr, nullptr, "PS", "ps_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_pixelShaderBlob, &errorBlob);
+	hr = D3DCompileFromFile(L"pixelshader.ps", nullptr, nullptr, "PS", "ps_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_pixelShaderBlob, &errorBlob);
 	if (FAILED(hr))
 	{
 		OutputDebugStringA(reinterpret_cast<const char*>(errorBlob->GetBufferPointer()));
@@ -365,6 +365,7 @@ void Renderer::renderModel(Model* model)
 
 	//set buffers to the ones of this specific object
 	m_context->VSSetConstantBuffers(0, 1, &m_matrixBuffer);
+	//m_context->PSSetConstantBuffers(0, 1, &m_lightBuffer);
 	m_context->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 	m_context->IASetIndexBuffer(model->getIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 	

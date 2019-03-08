@@ -1,7 +1,4 @@
-﻿  AlignedBoxCollider.cpp
-d:\advanced-technologies-collision-detection\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-  Application.cpp
+﻿  Application.cpp
 d:\advanced-technologies-collision-detection\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
 d:\advanced-technologies-collision-detection\engine\engine\spring.h(29): warning C4305: 'initializing': truncation from 'double' to 'float'
   Cloth.cpp
@@ -16,9 +13,6 @@ d:\advanced-technologies-collision-detection\engine\engine\vector3.h(36): warnin
 d:\advanced-technologies-collision-detection\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
   ClothTriangle.cpp
 d:\advanced-technologies-collision-detection\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
-  Collider.cpp
-d:\advanced-technologies-collision-detection\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
   CollisionUtilities.cpp
 d:\advanced-technologies-collision-detection\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 d:\advanced-technologies-collision-detection\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
@@ -34,9 +28,6 @@ d:\advanced-technologies-collision-detection\engine\engine\collisionutilities.cp
 d:\advanced-technologies-collision-detection\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 d:\advanced-technologies-collision-detection\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
 d:\advanced-technologies-collision-detection\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
-  GameObject.cpp
-d:\advanced-technologies-collision-detection\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
   Grid.cpp
 d:\advanced-technologies-collision-detection\engine\engine\grid.cpp(16): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 d:\advanced-technologies-collision-detection\engine\engine\grid.cpp(17): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
@@ -44,9 +35,6 @@ d:\advanced-technologies-collision-detection\engine\engine\grid.cpp(18): warning
 d:\advanced-technologies-collision-detection\engine\engine\grid.cpp(36): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 d:\advanced-technologies-collision-detection\engine\engine\grid.cpp(37): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 d:\advanced-technologies-collision-detection\engine\engine\grid.cpp(38): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-  Model.cpp
-d:\advanced-technologies-collision-detection\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
   Object.cpp
 d:\advanced-technologies-collision-detection\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 d:\advanced-technologies-collision-detection\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
@@ -56,9 +44,6 @@ d:\advanced-technologies-collision-detection\engine\engine\object.cpp(38): warni
 d:\advanced-technologies-collision-detection\engine\engine\object.cpp(39): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 d:\advanced-technologies-collision-detection\engine\engine\object.cpp(49): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 d:\advanced-technologies-collision-detection\engine\engine\object.cpp(80): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  OrientedBoxCollider.cpp
-d:\advanced-technologies-collision-detection\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
   Renderer.cpp
 d:\advanced-technologies-collision-detection\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 d:\advanced-technologies-collision-detection\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
@@ -88,9 +73,6 @@ d:\advanced-technologies-collision-detection\engine\engine\vector3.h(24): warnin
 d:\advanced-technologies-collision-detection\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
 d:\advanced-technologies-collision-detection\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
 d:\advanced-technologies-collision-detection\engine\engine\sphere.cpp(28): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  SphereCollider.cpp
-d:\advanced-technologies-collision-detection\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
   Spring.cpp
 d:\advanced-technologies-collision-detection\engine\engine\spring.h(29): warning C4305: 'initializing': truncation from 'double' to 'float'
 d:\advanced-technologies-collision-detection\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
@@ -101,14 +83,9 @@ d:\advanced-technologies-collision-detection\engine\engine\spring.cpp(36): warni
 d:\advanced-technologies-collision-detection\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 d:\advanced-technologies-collision-detection\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
 d:\advanced-technologies-collision-detection\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
-  TriangleCollider.cpp
-d:\advanced-technologies-collision-detection\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
-d:\advanced-technologies-collision-detection\engine\engine\renderer.cpp(266): warning C4715: 'Renderer::Init': not all control paths return a value
-  Compiling...
   main.cpp
 d:\advanced-technologies-collision-detection\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
 d:\advanced-technologies-collision-detection\engine\engine\spring.h(29): warning C4305: 'initializing': truncation from 'double' to 'float'
   Generating Code...
+d:\advanced-technologies-collision-detection\engine\engine\renderer.cpp(266): warning C4715: 'Renderer::Init': not all control paths return a value
   Engine.vcxproj -> D:\Advanced-Technologies-Collision-detection\Engine\x64\Debug\Engine.exe

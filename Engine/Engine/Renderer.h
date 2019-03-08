@@ -16,6 +16,13 @@ struct MatrixBuffer
 	DirectX::XMMATRIX mProjection;
 };
 
+struct LightBufferType
+{
+	DirectX::XMFLOAT4 diffuseColor;
+	DirectX::XMFLOAT3 lightDirection;
+	float padding;  // Added extra padding so structure is a multiple of 16 for CreateBuffer function requirements.
+};
+
 class Renderer
 {
 public:
@@ -48,6 +55,8 @@ private :
 
 	ID3D11VertexShader*     m_vertexShader = nullptr;
 	ID3D11PixelShader*      m_pixelShader = nullptr;
+
+	ID3D11Buffer* m_lightBuffer;
 
 	ID3D11InputLayout*  m_vertexLayout = nullptr;
 

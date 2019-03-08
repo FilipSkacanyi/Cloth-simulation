@@ -32,5 +32,21 @@ VS_OUTPUT VS( float4 Pos : POSITION, float4 Color : COLOR, float3 normal : NORMA
 //--------------------------------------------------------------------------------------
 float4 PS( VS_OUTPUT input ) : SV_Target
 {
+	float4 textureColor;
+	float3 lightDir;
+	float lightIntensity;
+	float4 color;
+
+	// Invert the light direction for calculations.
+	//lightDir = -lightDirection;
+
+	// Calculate the amount of light on this pixel.
+	//lightIntensity = saturate(dot(input.normal, lightDir));
+
+	// Determine the final amount of diffuse color based on the diffuse color combined with the light intensity.
+	//color = saturate(diffuseColor * lightIntensity);
+
+	//color = color * input.color;
+
     return input.Color;
 }

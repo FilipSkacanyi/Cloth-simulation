@@ -102,7 +102,7 @@ void ClothTriangle::Render(Renderer * renderer)
 	{
 		Vector3 pos = m_points[i]->getPosition();
 		vertices[i].position = DirectX::XMFLOAT3(pos.x, pos.y, pos.z);
-		vertices[i].color = DirectX::XMFLOAT4(1, 0, 0, 1);
+		vertices[i].color = DirectX::XMFLOAT4(1, 1, 0, 1);
 		vertices[i].normal = DirectX::XMFLOAT3(normal.x, normal.y, normal.z);
 
 	}
