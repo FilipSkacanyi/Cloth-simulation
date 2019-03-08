@@ -77,6 +77,13 @@ Renderer::~Renderer()
 		m_WireFrame->Release();
 		m_WireFrame = nullptr;
 	}
+
+	if (m_Light)
+	{
+		delete m_Light;
+		m_Light = nullptr;
+
+	}
 	
 }
 
@@ -198,7 +205,7 @@ bool Renderer::Init(HWND hwnd)
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 	UINT numElements = ARRAYSIZE(layout);
 
@@ -262,6 +269,62 @@ bool Renderer::Init(HWND hwnd)
 	hr = m_device->CreateRasterizerState(&wfdesc, &m_WireFrame);
 
 	m_context->RSSetState(m_WireFrame);
+
+
+	D3D11_BUFFER_DESC lightBufferDesc;
+
+	// Setup the description of the light dynamic constant buffer that is in the pixel shader.
+	// Note that ByteWidth always needs to be a multiple of 16 if using D3D11_BIND_CONSTANT_BUFFER or CreateBuffer will fail.
+	lightBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	lightBufferDesc.ByteWidth = sizeof(LightBuffer);
+	lightBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	lightBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	lightBufferDesc.MiscFlags = 0;
+	lightBufferDesc.StructureByteStride = 0;
+
+	// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
+	hr = m_device->CreateBuffer(&lightBufferDesc, NULL, &m_lightBuffer);
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
+
+
+	// Create the light object.
+	m_Light = new Light();
+	if (!m_Light)
+	{
+		return false;
+	}
+
+	// Initialize the light object.
+	m_Light->setDiffuseColor(0.0f, 1.0f, 0.0f, 1.0f);
+	m_Light->setDirection(0.0f, 0.0f, 1.0f);
+
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	// Lock the light constant buffer so it can be written to.
+	hr = m_context->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
+	LightBuffer* dataPtr = nullptr;
+	// Get a pointer to the data in the constant buffer.
+	dataPtr = (LightBuffer*)mappedResource.pData;
+
+	// Copy the lighting variables into the constant buffer.
+	dataPtr->diffuseColor = m_Light->GetDiffuseColor();
+	dataPtr->lightDirection = m_Light->GetDirection();
+	dataPtr->padding = 0.0f;
+
+	// Unlock the constant buffer.
+	m_context->Unmap(m_lightBuffer, 0);
+
+	m_context->PSSetConstantBuffers(0, 1, &m_lightBuffer);
+
+
 
 }
 
@@ -364,8 +427,9 @@ void Renderer::renderModel(Model* model)
 	m_context->UpdateSubresource(m_matrixBuffer, 0, NULL, &cb, 0, 0);
 
 	//set buffers to the ones of this specific object
+	
 	m_context->VSSetConstantBuffers(0, 1, &m_matrixBuffer);
-	//m_context->PSSetConstantBuffers(0, 1, &m_lightBuffer);
+	m_context->PSSetConstantBuffers(0, 1, &m_lightBuffer);
 	m_context->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 	m_context->IASetIndexBuffer(model->getIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 	
