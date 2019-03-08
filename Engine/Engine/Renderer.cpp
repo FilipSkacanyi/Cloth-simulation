@@ -175,7 +175,7 @@ bool Renderer::Init(HWND hwnd)
 	 hr = S_OK;
 
 	 //compile vertexshader from a file
-	hr = D3DCompileFromFile(L"shaders.fx", nullptr, nullptr, "VS", "vs_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_vertexShaderBlob, &errorBlob);
+	hr = D3DCompileFromFile(L"lightshaders.fx", nullptr, nullptr, "VS", "vs_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_vertexShaderBlob, &errorBlob);
 	if (FAILED(hr))
 	{
 		if (errorBlob)
@@ -198,6 +198,7 @@ bool Renderer::Init(HWND hwnd)
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 	UINT numElements = ARRAYSIZE(layout);
 
@@ -212,7 +213,7 @@ bool Renderer::Init(HWND hwnd)
 	m_vertexShaderBlob->Release();
 	
 	//compile pixelshader from a file
-	hr = D3DCompileFromFile(L"shaders.fx", nullptr, nullptr, "PS", "ps_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_pixelShaderBlob, &errorBlob);
+	hr = D3DCompileFromFile(L"lightshaders.fx", nullptr, nullptr, "PS", "ps_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_pixelShaderBlob, &errorBlob);
 	if (FAILED(hr))
 	{
 		OutputDebugStringA(reinterpret_cast<const char*>(errorBlob->GetBufferPointer()));

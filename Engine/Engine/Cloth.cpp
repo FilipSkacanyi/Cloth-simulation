@@ -35,40 +35,48 @@ void Cloth::Tick(float dt, Renderer* renderer)
 	
 	//selfCollision(dt);
 
-	m_model->setPosition(m_position);
+	if (m_model)
+	{
+		m_model->setPosition(m_position);
+	}
 }
 
 void Cloth::Render(Renderer * renderer)
 {
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+	//D3D11_MAPPED_SUBRESOURCE mappedResource;
+	//ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
-	Vertex* vertices = new Vertex[m_model->getVertexCount()];
+	//Vertex* vertices = new Vertex[m_model->getVertexCount()];
 
-	for (int i = 0; i < m_model->getVertexCount(); i++)
+	//for (int i = 0; i < m_model->getVertexCount(); i++)
+	//{
+	//	DirectX::XMFLOAT3 temppos = DirectX::XMFLOAT3(m_points[i]->getPosition().x - m_position.x,
+	//		m_points[i]->getPosition().y - m_position.y,
+	//		m_points[i]->getPosition().z - m_position.z);
+
+	//	//Vector3 temppos = Vector3(m_points[i]->getPosition() - m_position);
+
+	//	vertices[i].position = temppos;
+	//	vertices[i].color = DirectX::XMFLOAT4(1, 0, 0, 1);
+
+	//}
+
+
+	////  Disable GPU access to the vertex buffer data.
+	//auto m_d3dContext = renderer->getContext();
+	//m_d3dContext->Map(m_model->getVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	////  Update the vertex buffer here.
+	//memcpy(mappedResource.pData, vertices, sizeof(Vertex) * m_model->getVertexCount());
+	////  Reenable GPU access to the vertex buffer data.
+	//m_d3dContext->Unmap(m_model->getVertexBuffer(), 0);
+	//delete[] vertices;
+	//
+	//renderer->renderModel(m_model);
+
+	for (int i = 0; i < m_triangles.size(); i++)
 	{
-		DirectX::XMFLOAT3 temppos = DirectX::XMFLOAT3(m_points[i]->getPosition().x - m_position.x,
-			m_points[i]->getPosition().y - m_position.y,
-			m_points[i]->getPosition().z - m_position.z);
-
-		//Vector3 temppos = Vector3(m_points[i]->getPosition() - m_position);
-
-		vertices[i].position = temppos;
-		vertices[i].color = DirectX::XMFLOAT4(1, 0, 0, 1);
-
+		m_triangles[i]->Render(renderer);
 	}
-
-
-	//  Disable GPU access to the vertex buffer data.
-	auto m_d3dContext = renderer->getContext();
-	m_d3dContext->Map(m_model->getVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	//  Update the vertex buffer here.
-	memcpy(mappedResource.pData, vertices, sizeof(Vertex) * m_model->getVertexCount());
-	//  Reenable GPU access to the vertex buffer data.
-	m_d3dContext->Unmap(m_model->getVertexBuffer(), 0);
-	delete[] vertices;
-	
-	renderer->renderModel(m_model);
 }
 
 bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, std::vector<GameObject*>& objects_in_scene)
@@ -133,6 +141,8 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 		m_triangles[m_triangles.size() - 1]->addPoints(m_points[tmpind[i]].get(),
 														m_points[tmpind[i + 1]].get(),
 														m_points[tmpind[i + 2]].get());
+
+		m_triangles[m_triangles.size() - 1]->Init(renderer);
 	}
 	
 	m_triangle_count = m_triangles.size();
@@ -195,7 +205,7 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 		}
 	}
 
-	m_model = new Model();
+	/*m_model = new Model();
 	ID3D11Device* device = renderer->getDevice();
 	ID3D11Buffer* vertexBuffer = nullptr;
 	ID3D11Buffer* indexBuffer = nullptr;
@@ -226,10 +236,14 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 	if (FAILED(device->CreateBuffer(&bd, &InitData, &indexBuffer)))
 		return FALSE;
 
-	m_model->Init(vertexBuffer, vertexNum, indexBuffer, indexNum);
+	m_model->Init(vertexBuffer, vertexNum, indexBuffer, indexNum);*/
+
+	
 
 	delete[] tmpvert;
 	delete[] tmpind;
+
+	return true;
 }
 
 ClothPoint * Cloth::getClothpointAtIndex(int i)

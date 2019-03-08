@@ -23,7 +23,7 @@ public:
 
 	virtual void Init(Renderer* renderer, std::string fileName, DirectX::XMFLOAT4 color);
 	void Tick(float dt) override;
-	void Render(Renderer* renderer);
+	virtual void Render(Renderer* renderer);
 	
 
 	void AddForce(Vector3 force);

@@ -35,6 +35,8 @@ public:
 	static bool IntersectTriangles(ClothTriangle * A, ClothTriangle* B);
 	static bool IntersectTriangles(TriangleCollider * A, TriangleCollider* B);
 
+
+	static Vector3 cross(Vector3 A, Vector3 B);
 private:
 
 	static float Min(float f1, float f2);
@@ -42,7 +44,7 @@ private:
 	static float dot(DirectX::XMFLOAT3 A, DirectX::XMFLOAT3 B);
 	static float dot(Vector3 A, Vector3 B);
 	static DirectX::XMFLOAT3 cross(DirectX::XMFLOAT3 A, DirectX::XMFLOAT3 B);
-	static Vector3 cross(Vector3 A, Vector3 B);
+	
 	static float absoluteValue(float f);
 	static bool intersectRange(float min0, float max0, float min1, float max1);
 	static bool checkSeparatingAxes(Vector3 distance, Vector3 current_axis, 

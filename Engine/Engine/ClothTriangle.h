@@ -1,11 +1,11 @@
 #pragma once
 #include <vector>
-#include "GameObject.h"
+#include "Object.h"
 
 
 class ClothPoint;
 
-class ClothTriangle : public GameObject
+class ClothTriangle : public Object
 {
 public:
 	ClothTriangle();
@@ -14,6 +14,8 @@ public:
 	void addPoints(ClothPoint* a, ClothPoint* b, ClothPoint*c);
 	ClothPoint* getClothPointAtIndex(int i);
 	void Tick(float dt) override;
+	bool Init(Renderer* renderer);
+	void Render(Renderer* renderer) override;
 	void AddForce(Vector3 force);
 
 	void collision(GameObject* other) override;
