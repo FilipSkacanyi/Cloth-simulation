@@ -5,7 +5,7 @@
 #include <d3dcompiler.h>
 #include "Model.h"
 #include "Camera.h"
-
+#include "Light.h"
 
 #pragma comment (lib, "d3dcompiler.lib")
 
@@ -14,6 +14,13 @@ struct MatrixBuffer
 	DirectX::XMMATRIX mWorld;
 	DirectX::XMMATRIX mView;
 	DirectX::XMMATRIX mProjection;
+};
+
+struct LightBuffer
+{
+	DirectX::XMFLOAT4 diffuseColor;
+	DirectX::XMFLOAT3 lightDirection;
+	float padding;  // Added extra padding so structure is a multiple of 16 for CreateBuffer function requirements.
 };
 
 class Renderer
@@ -49,6 +56,8 @@ private :
 	ID3D11VertexShader*     m_vertexShader = nullptr;
 	ID3D11PixelShader*      m_pixelShader = nullptr;
 
+	ID3D11Buffer* m_lightBuffer = nullptr;
+
 	ID3D11InputLayout*  m_vertexLayout = nullptr;
 
 	D3D_FEATURE_LEVEL selectedFeatureLevel;
@@ -56,6 +65,8 @@ private :
 	ID3D11Buffer* m_matrixBuffer = nullptr;
 
 	ID3D11RasterizerState* m_WireFrame;
+
+	Light* m_Light = nullptr;
 
 	DirectX::XMMATRIX m_world;
 	DirectX::XMMATRIX m_view;

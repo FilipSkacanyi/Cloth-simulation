@@ -98,6 +98,8 @@ void ClothTriangle::Render(Renderer * renderer)
 
 	Vector3 normal = CollisionUtilities::cross(A, B);
 
+	normal.Normalize();
+
 	for (int i = 0; i < m_model->getVertexCount(); i++)
 	{
 		Vector3 pos = m_points[i]->getPosition();
