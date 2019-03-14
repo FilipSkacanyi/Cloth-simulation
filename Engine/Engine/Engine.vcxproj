@@ -137,9 +137,11 @@
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="Spring.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="TriangleCollider.cpp" />
+    <ClCompile Include="WICTextureLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AlignedBoxCollider.h" />
@@ -164,12 +166,14 @@
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="Spring.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="trianglecol.h" />
     <ClInclude Include="TriangleCollider.h" />
     <ClInclude Include="Tricol2.h" />
     <ClInclude Include="Vector3.h" />
+    <ClInclude Include="WICTextureLoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -11,12 +11,13 @@ struct VS_OUTPUT
     float4 Pos : SV_POSITION;
     float4 Color : COLOR0;
     float3 normal : NORMAL;
+	float2 tex : TEXCOORD0;
 };
 
 //--------------------------------------------------------------------------------------
 // Vertex Shader
 //--------------------------------------------------------------------------------------
-VS_OUTPUT VS( float4 Pos : POSITION, float4 Color : COLOR, float3 normal : NORMAL)
+VS_OUTPUT VS( float4 Pos : POSITION, float4 Color : COLOR, float3 normal : NORMAL, float2 tex : TEXCOORD0)
 {
     VS_OUTPUT output = (VS_OUTPUT)0;
     output.Pos = mul( Pos, World );
@@ -26,6 +27,7 @@ VS_OUTPUT VS( float4 Pos : POSITION, float4 Color : COLOR, float3 normal : NORMA
     output.normal = mul(normal, (float3x3)World);
     output.normal = normalize(output.normal);
     //output.normal = normal;
+	output.tex = tex;
     return output;
 }
 

@@ -4,6 +4,7 @@
 
 
 class ClothPoint;
+class Texture;
 
 class ClothTriangle : public Object
 {
@@ -12,9 +13,10 @@ public:
 	~ClothTriangle();
 
 	void addPoints(ClothPoint* a, ClothPoint* b, ClothPoint*c);
+	void setTextureCoords(DirectX::XMFLOAT2 a, DirectX::XMFLOAT2 b, DirectX::XMFLOAT2 c);
 	ClothPoint* getClothPointAtIndex(int i);
 	void Tick(float dt) override;
-	bool Init(Renderer* renderer);
+	bool Init(Renderer* renderer, Texture* texture);
 	void Render(Renderer* renderer) override;
 	void AddForce(Vector3 force);
 
@@ -24,7 +26,7 @@ public:
 private:
 	
 	std::vector<ClothPoint*> m_points;
-	
+	std::vector<DirectX::XMFLOAT2> m_texturecoords;
 
 };
 

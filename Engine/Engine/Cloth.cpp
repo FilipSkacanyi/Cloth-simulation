@@ -12,6 +12,17 @@ Cloth::Cloth()
 
 Cloth::~Cloth()
 {
+	if (m_texture)
+	{
+		delete m_texture;
+		m_texture = nullptr;
+	}
+
+	if (m_model)
+	{
+		delete m_model;
+		m_model = nullptr;
+	}
 }
 
 void Cloth::Tick(float dt, Renderer* renderer)
@@ -87,6 +98,16 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 	vertexNum = rows * cols;
 	indexNum = ((rows - 1) * (cols - 1)) * 6;
 
+	m_texture = new Texture();
+
+	WCHAR* file = new WCHAR(L'reference_dog.jpg');
+	bool res = m_texture->Initialize(renderer->getDevice(),file);
+	delete file;
+
+	if (!res)
+	{
+		return false;
+	}
 
 	Vertex* tmpvert = new Vertex[vertexNum];
 
@@ -100,12 +121,12 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 		for (int j = 0; j < cols; j++)
 		{
 			//create a vertex
-			tmpvert[i*cols + j].position = DirectX::XMFLOAT3(j*distance -centerX * distance, 0, i*distance - centerY * distance);
+			tmpvert[i*cols + j].position = DirectX::XMFLOAT3(j*distance -centerX * distance, i*distance - centerY * distance, 0);
 		    tmpvert[i*cols + j].color = DirectX::XMFLOAT4(1, 0, 0, 1);
 
 			//create a cloth point based on the same values as the vertex
 			m_points.push_back(std::make_unique<ClothPoint>());
-			m_points[m_points.size() - 1]->setPosition(Vector3(j*distance - centerX * distance + m_position.x, 0+ m_position.y, - i * distance + centerY * distance + m_position.z));
+			m_points[m_points.size() - 1]->setPosition(Vector3(j*distance - centerX * distance + m_position.x, -i * distance + centerY * distance + m_position.y, 0+ m_position.z));
 			m_points[m_points.size() - 1]->setParent(this);
 			m_points[m_points.size() - 1]->Init();
 			objects_in_scene.push_back(m_points[m_points.size() - 1].get());
@@ -113,10 +134,10 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 		}
 	}
 
-	//m_points[0]->setKinematic(true);
-	//m_points[cols - 1]->setKinematic(true);
+	m_points[0]->setKinematic(true);
+	m_points[cols - 1]->setKinematic(true);
 	
-	m_points[12]->setKinematic(true);
+	//m_points[12]->setKinematic(true);
 
 	//assign indices
 	unsigned long* tmpind = new unsigned long[indexNum];
@@ -141,9 +162,14 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 		m_triangles[m_triangles.size() - 1]->addPoints(m_points[tmpind[i]].get(),
 														m_points[tmpind[i + 1]].get(),
 														m_points[tmpind[i + 2]].get());
-
-		m_triangles[m_triangles.size() - 1]->Init(renderer);
+		m_triangles[m_triangles.size() - 1]->Init(renderer, m_texture);
+		m_triangles[m_triangles.size() - 1]->setKinematic(true);
+		
+		
 	}
+
+	float maxsizeX = distance * cols;
+	float maxsizeY = distance * rows;
 	
 	m_triangle_count = m_triangles.size();
 	//add springs to the mix
@@ -266,6 +292,11 @@ void Cloth::setPosition(Vector3 pos)
 
 		
 	}
+}
+
+Texture * Cloth::getTexture()
+{
+	return m_texture;
 }
 
 void Cloth::selfCollision(float dt)

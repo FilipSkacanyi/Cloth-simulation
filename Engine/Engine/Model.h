@@ -3,6 +3,7 @@
 #include "Vector3.h"
 #include <DirectXCollision.h>
 #include <d3d11.h>
+#include "Texture.h"
 //#include "Renderer.h"
 
 #pragma comment (lib, "d3d11.lib" )
@@ -11,6 +12,7 @@ struct Vertex
 	DirectX::XMFLOAT3 position;
 	DirectX::XMFLOAT4 color;
 	DirectX::XMFLOAT3 normal;
+	DirectX::XMFLOAT2 texture;
 };
 
 class Model
@@ -42,7 +44,8 @@ public:
 	int getVertexCount(); 
 	int getIndexCount();
 
-	
+	void setTexture(Texture* texture) { m_texture = texture; }
+	ID3D11ShaderResourceView* getTexture();
 
 
 private:
@@ -55,5 +58,7 @@ private:
 	int m_vertexCount = 0;
 	ID3D11Buffer* m_vertexBuffer = nullptr;
 	ID3D11Buffer* m_indexBuffer = nullptr;
+
+	Texture* m_texture = nullptr;
 };
 

@@ -2,6 +2,7 @@
 
 #include "Renderer.h"
 #include "CollisionUtilities.h"
+#include "Texture.h"
 
 #include <vector>
 #include <memory>
@@ -28,6 +29,7 @@ public:
 	int getHeigth() { return m_heigth; }
 	int getTriangleCount() { return m_triangle_count; }
 
+	Texture* getTexture();
 private:
 	void selfCollision(float dt);
 
@@ -37,6 +39,8 @@ private:
 	Vector3 m_rotation;
 	Vector3 m_scale;
 	Model* m_model = nullptr;
+
+	Texture* m_texture = nullptr;
 
 	std::vector<std::unique_ptr<ClothPoint>> m_points;
 	std::vector<std::unique_ptr<ClothTriangle>> m_triangles;

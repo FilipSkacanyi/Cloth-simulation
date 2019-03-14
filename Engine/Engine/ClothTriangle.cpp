@@ -2,6 +2,7 @@
 #include "ClothPoint.h"
 #include "TriangleCollider.h"
 #include "Timer.h"
+#include "Texture.h"
 
 
 
@@ -9,6 +10,14 @@ ClothTriangle::ClothTriangle()
 {
 	m_collider = new TriangleCollider();
 	m_collider->Init(ColliderType::TRIANGLE);
+
+	m_texturecoords.reserve(3);
+	m_points.reserve(3);
+	m_texturecoords.push_back(DirectX::XMFLOAT2(0.0f, 1.0f));
+	m_texturecoords.push_back(DirectX::XMFLOAT2(0.5f, 0.0f));
+	m_texturecoords.push_back(DirectX::XMFLOAT2(1.0f, 1.0f));
+	
+
 }
 
 
@@ -27,7 +36,16 @@ void ClothTriangle::addPoints(ClothPoint * a, ClothPoint * b, ClothPoint * c)
 	m_points.push_back(b);
 	m_points.push_back(c);
 }
-bool ClothTriangle::Init(Renderer* renderer)
+
+void ClothTriangle::setTextureCoords(DirectX::XMFLOAT2 a, DirectX::XMFLOAT2 b, DirectX::XMFLOAT2 c)
+{
+	m_texturecoords[0] = a;
+	m_texturecoords[1] = b;
+	m_texturecoords[2] = c;
+
+}
+
+bool ClothTriangle::Init(Renderer* renderer, Texture * texture)
 {
 	Vertex vertices[3];
 	unsigned long indices[3];
@@ -44,6 +62,7 @@ bool ClothTriangle::Init(Renderer* renderer)
 	indices[2] = 2;  // Bottom right.
 
 	m_model = new Model();
+	m_model->setTexture(texture);
 	ID3D11Device* device = renderer->getDevice();
 	ID3D11Buffer* vertexBuffer = nullptr;
 	ID3D11Buffer* indexBuffer = nullptr;

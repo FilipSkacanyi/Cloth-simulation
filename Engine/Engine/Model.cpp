@@ -108,6 +108,11 @@ int Model::getIndexCount()
 	return m_indexCount;
 }
 
+ID3D11ShaderResourceView * Model::getTexture()
+{
+	return m_texture->getTexture();
+}
+
 
 
 int Model::getVertexCount()

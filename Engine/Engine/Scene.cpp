@@ -295,8 +295,8 @@ void Scene::Render()
 
 	m_cloth->Render(m_renderer);
 
-	triangle1->Render(m_renderer);
-	triangle2->Render(m_renderer);
+	//triangle1->Render(m_renderer);
+	//triangle2->Render(m_renderer);
 
 	//m_grid->Render(m_renderer);
 }

@@ -6,6 +6,7 @@
 #include "Model.h"
 #include "Camera.h"
 #include "Light.h"
+#include "WICTextureLoader.h"
 
 #pragma comment (lib, "d3dcompiler.lib")
 
@@ -64,7 +65,8 @@ private :
 	
 	ID3D11Buffer* m_matrixBuffer = nullptr;
 
-	ID3D11RasterizerState* m_WireFrame;
+	ID3D11RasterizerState* m_WireFrame = nullptr;
+	ID3D11SamplerState* m_sampleState = nullptr;
 
 	Light* m_Light = nullptr;
 
