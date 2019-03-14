@@ -266,7 +266,7 @@ bool Renderer::Init(HWND hwnd)
 	ZeroMemory(&wfdesc, sizeof(D3D11_RASTERIZER_DESC));
 	wfdesc.FillMode = D3D11_FILL_SOLID;
 	// D3D11_FILL_SOLID
-	wfdesc.CullMode = D3D11_CULL_NONE;
+	wfdesc.CullMode = D3D11_CULL_BACK;
 	hr = m_device->CreateRasterizerState(&wfdesc, &m_WireFrame);
 
 	m_context->RSSetState(m_WireFrame);
@@ -301,7 +301,7 @@ bool Renderer::Init(HWND hwnd)
 
 	// Initialize the light object.
 	m_Light->setDiffuseColor(0.0f, 1.0f, 0.0f, 1.0f);
-	m_Light->setDirection(1.0f, 0.0f, 1.0f);
+	m_Light->setDirection(0.0f, 0.0f, -1.0f);
 
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	// Lock the light constant buffer so it can be written to.

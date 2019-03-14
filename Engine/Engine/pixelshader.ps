@@ -29,11 +29,11 @@ float4 PS( VS_OUTPUT input ) : SV_Target
 	float4 textureColor;
 
     // Invert the light direction for calculations.
-    lightDir = lightDirection;
+    lightDir = -lightDirection;
 
     // Calculate the amount of light on this pixel.
     lightIntensity = saturate(dot(input.normal, lightDir));
-    lightIntensity = lightIntensity;
+    lightIntensity = lightIntensity * 10;
 
     // Determine the final amount of diffuse color based on      the diffuse color combined with the light intensity.
 

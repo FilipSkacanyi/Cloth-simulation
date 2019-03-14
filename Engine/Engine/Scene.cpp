@@ -241,10 +241,10 @@ void Scene::Tick(float dt)
 		m_grid->addObject(m_objectsInScene[i]);
 	}*/
 
-	for (int i = 0; i < m_objectsInScene.size(); i++)
+	/*for (int i = 0; i < m_objectsInScene.size(); i++)
 	{
 		m_objectsInScene[i]->Tick(dt);
-	}
+	}*/
 
 	m_cloth->Tick(dt, m_renderer);
 	
