@@ -14,10 +14,15 @@ public:
 
 	void addPoints(ClothPoint* a, ClothPoint* b, ClothPoint*c);
 	void setTextureCoords(DirectX::XMFLOAT2 a, DirectX::XMFLOAT2 b, DirectX::XMFLOAT2 c);
+
+	
 	ClothPoint* getClothPointAtIndex(int i);
 	void Tick(float dt) override;
 	bool Init(Renderer* renderer, Texture* texture);
 	void Render(Renderer* renderer) override;
+	void recalculateVertices(Renderer* renderer);
+
+	Vector3 getSurfaceNormal();
 	void AddForce(Vector3 force);
 
 	void collision(GameObject* other) override;

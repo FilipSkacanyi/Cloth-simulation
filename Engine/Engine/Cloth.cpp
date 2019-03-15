@@ -30,10 +30,10 @@ void Cloth::Tick(float dt, Renderer* renderer)
 	//m_points[0]->setPosition(DirectX::XMFLOAT3(m_points[0]->getPosition().x - dt, m_points[0]->getPosition().y+dt, m_points[0]->getPosition().z));
 	//m_points[1]->setPosition(DirectX::XMFLOAT3(m_points[1]->getPosition().x  , m_points[1]->getPosition().y + dt, m_points[1]->getPosition().z));
 
-	/*for (int i = 0; i < m_points.size(); i++)
+	for (int i = 0; i < m_points.size(); i++)
 	{
 		m_points[i]->Tick(dt);
-	}*/
+	}
 	for (int i = 0; i < m_springs.size(); i++)
 	{
 		m_springs[i]->Tick(dt);
@@ -54,45 +54,103 @@ void Cloth::Tick(float dt, Renderer* renderer)
 
 void Cloth::Render(Renderer * renderer)
 {
-	//D3D11_MAPPED_SUBRESOURCE mappedResource;
-	//ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
-	//Vertex* vertices = new Vertex[m_model->getVertexCount()];
+	Vertex* vertices = new Vertex[m_model->getVertexCount()];
 
-	//for (int i = 0; i < m_model->getVertexCount(); i++)
-	//{
-	//	DirectX::XMFLOAT3 temppos = DirectX::XMFLOAT3(m_points[i]->getPosition().x - m_position.x,
-	//		m_points[i]->getPosition().y - m_position.y,
-	//		m_points[i]->getPosition().z - m_position.z);
+	auto m_d3dContext = renderer->getContext();
+	m_d3dContext->Map(m_model->getVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 
-	//	//Vector3 temppos = Vector3(m_points[i]->getPosition() - m_position);
+	Vertex* dataPtr = (Vertex*)mappedResource.pData;
 
-	//	vertices[i].position = temppos;
-	//	vertices[i].color = DirectX::XMFLOAT4(1, 0, 0, 1);
+	Vector3* normals = new Vector3[m_model->getVertexCount()];
 
-	//}
+	int rows = 0;
+
+	for (int i = 0; i < m_triangle_count / 2; i++)
+	{
+		Vector3 triangle_normal = m_triangles[i * 2]->getSurfaceNormal();
+
+		normals[i + rows] = normals[i + rows] + triangle_normal;
+		normals[i + rows + 1] = normals[i + rows + 1] + triangle_normal;
+		normals[i + rows + m_width] = normals[i + rows + m_width] + triangle_normal;
+
+		if (i + 2 == m_width)
+		{
+			rows++;
+		}
+	}
+
+	rows = 0;
+	for (int i = 0; i < m_triangle_count / 2; i++)
+	{
+		Vector3 triangle_normal = m_triangles[(i * 2) + 1]->getSurfaceNormal();
+
+		normals[i + rows + 1] = normals[i + rows + 1] + triangle_normal;
+		normals[i + rows + m_width] = normals[i + rows + m_width] + triangle_normal;
+		normals[i + rows + m_width + 1] = normals[i + rows + m_width + 1] + triangle_normal; 
+
+		if (i + 2 == m_width)
+		{
+			rows++;
+		}
+	}
+
+	for (int i = 0; i < m_model->getVertexCount(); i++)
+	{
+		normals[i].Normalize();
+	}
 
 
-	////  Disable GPU access to the vertex buffer data.
+	for (int i = 0; i < m_model->getVertexCount(); i++)
+	{
+		DirectX::XMFLOAT3 temppos = DirectX::XMFLOAT3(m_points[i]->getPosition().x - m_position.x,
+			m_points[i]->getPosition().y - m_position.y,
+			m_points[i]->getPosition().z - m_position.z);
+
+		//Vector3 temppos = Vector3(m_points[i]->getPosition() - m_position);
+
+		dataPtr[i].position = temppos;
+		dataPtr[i].color = DirectX::XMFLOAT4(1, 0, 0, 1);
+		dataPtr[i].normal = DirectX::XMFLOAT3(normals[i].x, normals[i].y, normals[i].z); //normals[i]
+		dataPtr[i].texture = DirectX::XMFLOAT2(0, 1);
+		
+	}
+
+
+
+	for (int i = 0; i < m_heigth; i++)
+	{
+
+		for (int j = 0; j < m_width; j++)
+		{
+
+			dataPtr[i * m_width + j].texture = DirectX::XMFLOAT2((float)j/ (float)m_width,(float)i/(float)m_heigth );
+
+		}
+
+	}
+
+
+	//  Disable GPU access to the vertex buffer data.
 	//auto m_d3dContext = renderer->getContext();
 	//m_d3dContext->Map(m_model->getVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	////  Update the vertex buffer here.
+	//  Update the vertex buffer here.
 	//memcpy(mappedResource.pData, vertices, sizeof(Vertex) * m_model->getVertexCount());
-	////  Reenable GPU access to the vertex buffer data.
-	//m_d3dContext->Unmap(m_model->getVertexBuffer(), 0);
-	//delete[] vertices;
-	//
-	//renderer->renderModel(m_model);
+	//  Reenable GPU access to the vertex buffer data.
+	m_d3dContext->Unmap(m_model->getVertexBuffer(), 0);
+	delete[] vertices;
+	delete[] normals;
+	
+	renderer->renderModel(m_model);
 
-	for (int i = 0; i < m_triangles.size(); i++)
-	{
-		m_triangles[i]->Render(renderer);
-	}
 }
 
 bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, std::vector<GameObject*>& objects_in_scene)
 {
 	int vertexNum, indexNum;
+	m_distance = distance;
 	m_width = cols;
 	m_heigth = rows;
 	vertexNum = rows * cols;
@@ -231,7 +289,7 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 		}
 	}
 
-	/*m_model = new Model();
+	m_model = new Model();
 	ID3D11Device* device = renderer->getDevice();
 	ID3D11Buffer* vertexBuffer = nullptr;
 	ID3D11Buffer* indexBuffer = nullptr;
@@ -262,9 +320,9 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 	if (FAILED(device->CreateBuffer(&bd, &InitData, &indexBuffer)))
 		return FALSE;
 
-	m_model->Init(vertexBuffer, vertexNum, indexBuffer, indexNum);*/
+	m_model->Init(vertexBuffer, vertexNum, indexBuffer, indexNum);
 
-	
+	m_model->setTexture(m_texture);
 
 	delete[] tmpvert;
 	delete[] tmpind;

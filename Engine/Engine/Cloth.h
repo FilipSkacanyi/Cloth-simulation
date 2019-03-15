@@ -35,6 +35,7 @@ private:
 
 
 	int m_width, m_heigth, m_triangle_count;
+	float m_distance;
 	Vector3 m_position;
 	Vector3 m_rotation;
 	Vector3 m_scale;

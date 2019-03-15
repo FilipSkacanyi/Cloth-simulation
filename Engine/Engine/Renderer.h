@@ -41,6 +41,10 @@ public:
 	Model* createRawModel(Vertex vertices[], int vertexNum, unsigned long indices[], int indexNum);
 
 	void renderModel(Model* model);
+
+	void backfaceCull();
+	void frontfaceCull();
+	void noCull(); 
 	
 	ID3D11Device* getDevice() { return m_device; }
 	ID3D11DeviceContext* getContext() { return m_context; }
@@ -66,6 +70,9 @@ private :
 	ID3D11Buffer* m_matrixBuffer = nullptr;
 
 	ID3D11RasterizerState* m_WireFrame = nullptr;
+	ID3D11RasterizerState* m_backface = nullptr;
+	ID3D11RasterizerState* m_frontface = nullptr;
+
 	ID3D11SamplerState* m_sampleState = nullptr;
 
 	Light* m_Light = nullptr;
