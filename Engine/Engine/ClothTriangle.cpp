@@ -141,7 +141,7 @@ void ClothTriangle::recalculateVertices(Renderer * renderer)
 		Vector3 pos = m_points[i]->getPosition();
 		dataPtr[i].position = DirectX::XMFLOAT3(pos.x, pos.y, pos.z);
 		dataPtr[i].color = DirectX::XMFLOAT4(1, 0, 0, 1);
-		dataPtr[i].normal = DirectX::XMFLOAT3(-normal.x, -normal.y, -normal.z);
+		dataPtr[i].normal = DirectX::XMFLOAT3(normal.x, normal.y, normal.z);
 		dataPtr[i].texture = m_texturecoords[i];
 	}
 
@@ -176,7 +176,7 @@ Vector3 ClothTriangle::getSurfaceNormal()
 
 	normal.Normalize();
 
-	return normal;
+	return Vector3(1,1,0);
 }
 
 void ClothTriangle::AddForce(Vector3 force)

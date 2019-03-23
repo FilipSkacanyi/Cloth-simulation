@@ -1,7 +1,7 @@
 #include "ClothPoint.h"
 #include "Cloth.h"
 #include "SphereCollider.h"
-
+#include "Timer.h"
 
 ClothPoint::ClothPoint()
 {
@@ -73,6 +73,21 @@ void ClothPoint::collision(GameObject * other)
 		distance = distance * radius;
 
 		m_position = DirectX::XMFLOAT3(other_pos.x + distance.x, other_pos.y + distance.y, other_pos.z + distance.z);
+
+
+		
+			
+		Vector3 velocity = m_velocity;
+
+		distance = temp->getPosition() - m_position;
+		float distmag = distance.Magnitude() * 5;
+		distance.Normalize();
+		//this->AddForce(((velocity * (-0.1f) * m_mass) / Timer::Instance()->DeltaTime()));
+		this->AddForce(distance * (-1));
+	
+
+
+
 	}
 	else
 	{
