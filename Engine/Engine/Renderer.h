@@ -19,6 +19,7 @@ struct MatrixBuffer
 
 struct LightBuffer
 {
+	DirectX::XMFLOAT4 ambientColor;
 	DirectX::XMFLOAT4 diffuseColor;
 	DirectX::XMFLOAT3 lightDirection;
 	float padding;  // Added extra padding so structure is a multiple of 16 for CreateBuffer function requirements.

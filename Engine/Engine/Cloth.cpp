@@ -128,6 +128,7 @@ void Cloth::Render(Renderer * renderer)
 
 			dataPtr[i * m_width + j].texture = DirectX::XMFLOAT2((float)j/ (float)m_width,(float)i/(float)m_heigth );
 
+
 		}
 
 	}
@@ -144,6 +145,12 @@ void Cloth::Render(Renderer * renderer)
 	delete[] normals;
 	
 	renderer->renderModel(m_model);
+
+	/*for (int i = 0; i < m_triangles.size(); i++)
+	{
+		m_triangles[i]->recalculateVertices(renderer);
+		m_triangles[i]->Render(renderer);
+	}*/
 
 }
 

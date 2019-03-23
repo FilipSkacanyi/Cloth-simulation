@@ -182,7 +182,7 @@ bool Renderer::Init(HWND hwnd)
 	 hr = S_OK;
 
 	 //compile vertexshader from a file
-	hr = D3DCompileFromFile(L"vertexshader.vs", nullptr, nullptr, "VS", "vs_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_vertexShaderBlob, &errorBlob);
+	hr = D3DCompileFromFile(L"vertexshader.vs", nullptr, nullptr, "VS", "vs_4_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_vertexShaderBlob, &errorBlob);
 	if (FAILED(hr))
 	{
 		if (errorBlob)
@@ -221,7 +221,7 @@ bool Renderer::Init(HWND hwnd)
 	m_vertexShaderBlob->Release();
 	
 	//compile pixelshader from a file
-	hr = D3DCompileFromFile(L"pixelshader.ps", nullptr, nullptr, "PS", "ps_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_pixelShaderBlob, &errorBlob);
+	hr = D3DCompileFromFile(L"pixelshader.ps", nullptr, nullptr, "PS", "ps_4_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_pixelShaderBlob, &errorBlob);
 	if (FAILED(hr))
 	{
 		OutputDebugStringA(reinterpret_cast<const char*>(errorBlob->GetBufferPointer()));
@@ -303,8 +303,9 @@ bool Renderer::Init(HWND hwnd)
 	}
 
 	// Initialize the light object.
-	m_Light->setDiffuseColor(0.0f, 1.0f, 0.0f, 1.0f);
-	m_Light->setDirection(1.0f, 0.0f, -1.0f);
+	m_Light->setDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
+	m_Light->setDirection(0.0f, 0.0f, 1.0f);
+	m_Light->setAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
 
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	// Lock the light constant buffer so it can be written to.
@@ -331,6 +332,7 @@ bool Renderer::Init(HWND hwnd)
 
 
 	D3D11_SAMPLER_DESC samplerDesc;
+	ZeroMemory(&samplerDesc, sizeof(samplerDesc));
 	// Create a texture sampler state description.
 	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -338,7 +340,7 @@ bool Renderer::Init(HWND hwnd)
 	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 	samplerDesc.MipLODBias = 0.0f;
 	samplerDesc.MaxAnisotropy = 1;
-	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
 	samplerDesc.BorderColor[0] = 0;
 	samplerDesc.BorderColor[1] = 0;
 	samplerDesc.BorderColor[2] = 0;
