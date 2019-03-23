@@ -205,7 +205,8 @@ bool Renderer::Init(HWND hwnd)
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 	UINT numElements = ARRAYSIZE(layout);
 
@@ -261,14 +262,17 @@ bool Renderer::Init(HWND hwnd)
 
 	
 	D3D11_RASTERIZER_DESC wfdesc;
-
 	ZeroMemory(&wfdesc, sizeof(D3D11_RASTERIZER_DESC));
-	wfdesc.FillMode = D3D11_FILL_WIREFRAME;
-	// D3D11_FILL_SOLID
+	wfdesc.FillMode = D3D11_FILL_SOLID;
 	wfdesc.CullMode = D3D11_CULL_NONE;
 	hr = m_device->CreateRasterizerState(&wfdesc, &m_WireFrame);
-
 	m_context->RSSetState(m_WireFrame);
+
+	wfdesc.CullMode = D3D11_CULL_BACK;
+	hr = m_device->CreateRasterizerState(&wfdesc, &m_backface);
+
+	wfdesc.CullMode = D3D11_CULL_FRONT;
+	hr = m_device->CreateRasterizerState(&wfdesc, &m_frontface);
 
 
 	D3D11_BUFFER_DESC lightBufferDesc;
@@ -300,7 +304,7 @@ bool Renderer::Init(HWND hwnd)
 
 	// Initialize the light object.
 	m_Light->setDiffuseColor(0.0f, 1.0f, 0.0f, 1.0f);
-	m_Light->setDirection(0.0f, 0.0f, 1.0f);
+	m_Light->setDirection(1.0f, 0.0f, -1.0f);
 
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	// Lock the light constant buffer so it can be written to.
@@ -326,6 +330,34 @@ bool Renderer::Init(HWND hwnd)
 
 
 
+	D3D11_SAMPLER_DESC samplerDesc;
+	// Create a texture sampler state description.
+	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.MipLODBias = 0.0f;
+	samplerDesc.MaxAnisotropy = 1;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+	samplerDesc.BorderColor[0] = 0;
+	samplerDesc.BorderColor[1] = 0;
+	samplerDesc.BorderColor[2] = 0;
+	samplerDesc.BorderColor[3] = 0;
+	samplerDesc.MinLOD = 0;
+	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+	// Create the texture sampler state.
+	hr = m_device->CreateSamplerState(&samplerDesc, &m_sampleState);
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
+
+
+
+
+	return true;
 }
 
 void Renderer::Clear()
@@ -426,6 +458,12 @@ void Renderer::renderModel(Model* model)
 	cb.mProjection = DirectX::XMMatrixTranspose(m_projection);
 	m_context->UpdateSubresource(m_matrixBuffer, 0, NULL, &cb, 0, 0);
 
+
+	// Set shader texture resource in the pixel shader.
+	ID3D11ShaderResourceView* texture = model->getTexture();
+	m_context->PSSetShaderResources(0, 1, &texture);
+	m_context->PSSetSamplers(0, 1, &m_sampleState);
+
 	//set buffers to the ones of this specific object
 	
 	m_context->VSSetConstantBuffers(0, 1, &m_matrixBuffer);
@@ -436,4 +474,19 @@ void Renderer::renderModel(Model* model)
 	//render
 	m_context->DrawIndexed(model->getIndexCount(), 0, 0);
 	
+}
+
+void Renderer::backfaceCull()
+{
+	m_context->RSSetState(m_backface);
+}
+
+void Renderer::frontfaceCull()
+{
+	m_context->RSSetState(m_frontface);
+}
+
+void Renderer::noCull()
+{
+	m_context->RSSetState(m_WireFrame);
 }

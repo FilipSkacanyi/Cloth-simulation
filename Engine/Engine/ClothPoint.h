@@ -17,14 +17,11 @@ public:
 	Vector3 getPosition() override;
 
 	Vector3 getVelocity() { return m_velocity; }
-
-	
 	
 private:
-	
+		
 	Cloth* m_parent = nullptr;
-
-	
+		
 	
 };
 

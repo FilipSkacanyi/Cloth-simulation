@@ -2,6 +2,7 @@
 #include "ClothPoint.h"
 #include "TriangleCollider.h"
 #include "Timer.h"
+#include "Texture.h"
 
 
 
@@ -9,6 +10,14 @@ ClothTriangle::ClothTriangle()
 {
 	m_collider = new TriangleCollider();
 	m_collider->Init(ColliderType::TRIANGLE);
+
+	m_texturecoords.reserve(3);
+	m_points.reserve(3);
+	m_texturecoords.push_back(DirectX::XMFLOAT2(0.0f, 1.0f));
+	m_texturecoords.push_back(DirectX::XMFLOAT2(0.5f, 0.0f));
+	m_texturecoords.push_back(DirectX::XMFLOAT2(1.0f, 1.0f));
+	
+
 }
 
 
@@ -27,7 +36,16 @@ void ClothTriangle::addPoints(ClothPoint * a, ClothPoint * b, ClothPoint * c)
 	m_points.push_back(b);
 	m_points.push_back(c);
 }
-bool ClothTriangle::Init(Renderer* renderer)
+
+void ClothTriangle::setTextureCoords(DirectX::XMFLOAT2 a, DirectX::XMFLOAT2 b, DirectX::XMFLOAT2 c)
+{
+	m_texturecoords[0] = a;
+	m_texturecoords[1] = b;
+	m_texturecoords[2] = c;
+
+}
+
+bool ClothTriangle::Init(Renderer* renderer, Texture * texture)
 {
 	Vertex vertices[3];
 	unsigned long indices[3];
@@ -44,6 +62,7 @@ bool ClothTriangle::Init(Renderer* renderer)
 	indices[2] = 2;  // Bottom right.
 
 	m_model = new Model();
+	m_model->setTexture(texture);
 	ID3D11Device* device = renderer->getDevice();
 	ID3D11Buffer* vertexBuffer = nullptr;
 	ID3D11Buffer* indexBuffer = nullptr;
@@ -87,10 +106,27 @@ bool ClothTriangle::Init(Renderer* renderer)
 void ClothTriangle::Render(Renderer * renderer)
 {
 
+	
+
+	renderer->renderModel(m_model);
+
+
+}
+
+void ClothTriangle::recalculateVertices(Renderer * renderer)
+{
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
-	Vertex* vertices = new Vertex[m_model->getVertexCount()];
+	//  Disable GPU access to the vertex buffer data.
+	auto m_d3dContext = renderer->getContext();
+	m_d3dContext->Map(m_model->getVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+
+	Vertex* dataPtr = (Vertex*)mappedResource.pData;
+
+	//Vertex* vertices = new Vertex[m_model->getVertexCount()];
+
+	//DirectX::XMFLOAT3 pos = dataPtr[0].position;
 
 	//calculate the surface normals
 	Vector3 A = m_points[0]->getPosition() - m_points[1]->getPosition();
@@ -103,25 +139,22 @@ void ClothTriangle::Render(Renderer * renderer)
 	for (int i = 0; i < m_model->getVertexCount(); i++)
 	{
 		Vector3 pos = m_points[i]->getPosition();
-		vertices[i].position = DirectX::XMFLOAT3(pos.x, pos.y, pos.z);
-		vertices[i].color = DirectX::XMFLOAT4(1, 0, 0, 1);
-		vertices[i].normal = DirectX::XMFLOAT3(normal.x, normal.y, normal.z);
-
+		dataPtr[i].position = DirectX::XMFLOAT3(pos.x, pos.y, pos.z);
+		dataPtr[i].color = DirectX::XMFLOAT4(1, 0, 0, 1);
+		dataPtr[i].normal = DirectX::XMFLOAT3(-normal.x, -normal.y, -normal.z);
+		dataPtr[i].texture = m_texturecoords[i];
 	}
 
-	//  Disable GPU access to the vertex buffer data.
-	auto m_d3dContext = renderer->getContext();
-	m_d3dContext->Map(m_model->getVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+
 	//  Update the vertex buffer here.
-	memcpy(mappedResource.pData, vertices, sizeof(Vertex) * m_model->getVertexCount());
+	//memcpy(mappedResource.pData, vertices, sizeof(Vertex) * m_model->getVertexCount());
 	//  Reenable GPU access to the vertex buffer data.
 	m_d3dContext->Unmap(m_model->getVertexBuffer(), 0);
-	delete[] vertices;
-
-	renderer->renderModel(m_model);
+	//delete[] vertices;
 
 
 }
+
 
 ClothPoint * ClothTriangle::getClothPointAtIndex(int i)
 {
@@ -132,6 +165,18 @@ void ClothTriangle::Tick(float dt)
 {
 	TriangleCollider* tmp = static_cast<TriangleCollider*>(m_collider);
 	tmp->setPoints(m_points[0]->getPosition(), m_points[1]->getPosition(), m_points[2]->getPosition());
+}
+
+Vector3 ClothTriangle::getSurfaceNormal()
+{
+	Vector3 A = m_points[0]->getPosition() - m_points[1]->getPosition();
+	Vector3 B = m_points[0]->getPosition() - m_points[2]->getPosition();
+
+	Vector3 normal = CollisionUtilities::cross(A, B);
+
+	normal.Normalize();
+
+	return normal;
 }
 
 void ClothTriangle::AddForce(Vector3 force)

@@ -46,7 +46,15 @@ void Object::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 c
 		vertices1[i].position = DirectX::XMFLOAT3(loader.LoadedVertices[i].Position.X, 
 												loader.LoadedVertices[i].Position.Y,
 												loader.LoadedVertices[i].Position.Z);
-		vertices1[i].color = DirectX::XMFLOAT4(rand() % 2, rand() % 2, rand() % 2, 1.0f);
+		vertices1[i].color = color;
+		vertices1[i].normal = DirectX::XMFLOAT3(loader.LoadedVertices[i].Normal.X,
+			loader.LoadedVertices[i].Normal.Y,
+			loader.LoadedVertices[i].Normal.Z);
+
+		vertices1[i].texture = DirectX::XMFLOAT2(loader.LoadedVertices[i].TextureCoordinate.X,
+			loader.LoadedVertices[i].TextureCoordinate.Y);
+
+		
 	}
 	
 	for (int i = 0; i < loader.LoadedIndices.size(); i++)
@@ -56,8 +64,14 @@ void Object::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 c
 
 	
 	m_model = renderer->createRawModel(vertices1, vertcount, indices1, indcount);
+	Texture* texture = new Texture();
 
+	WCHAR* file = new WCHAR(L'reference_dog.jpg');
+	bool res = texture->Initialize(renderer->getDevice(), file);
+	delete file;
 	
+	m_model->setTexture(texture);
+
 	delete[] vertices1;
 	delete[] indices1;
 

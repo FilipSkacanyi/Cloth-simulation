@@ -231,15 +231,15 @@ void Scene::input(Input * input, double dt)
 
 void Scene::Tick(float dt)
 {
-	for (int i = 0; i < m_cloth->getTriangleCount(); i++)
+	/*for (int i = 0; i < m_cloth->getTriangleCount(); i++)
 	{
 		m_grid->addObject(m_cloth->getClothTriangleAtIndex(i));
-	}
+	}*/
 
-	/*for (int i = 0; i < m_objectsInScene.size(); i++)
+	for (int i = 0; i < m_objectsInScene.size(); i++)
 	{
 		m_grid->addObject(m_objectsInScene[i]);
-	}*/
+	}
 
 	for (int i = 0; i < m_objectsInScene.size(); i++)
 	{
@@ -284,7 +284,7 @@ void Scene::Render()
 {
 	for (int i = 0; i < m_objectsInScene.size(); i++)
 	{
-		Object* obj = dynamic_cast<Object*>(m_objectsInScene[i]);
+		Sphere* obj = dynamic_cast<Sphere*>(m_objectsInScene[i]);
 
 		if (obj)
 		{
@@ -295,8 +295,8 @@ void Scene::Render()
 
 	m_cloth->Render(m_renderer);
 
-	triangle1->Render(m_renderer);
-	triangle2->Render(m_renderer);
+	//triangle1->Render(m_renderer);
+	//triangle2->Render(m_renderer);
 
 	//m_grid->Render(m_renderer);
 }
