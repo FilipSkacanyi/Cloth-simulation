@@ -23,7 +23,7 @@ bool Texture::Initialize(ID3D11Device * device, WCHAR * filename)
 {
 	HRESULT result;
 
-	result = DirectX::CreateWICTextureFromFile(device, L"reference_dog.jpg", (ID3D11Resource**)&m_texture2D, &m_texture);
+	result = DirectX::CreateWICTextureFromFile(device, L"fabric.jpg", (ID3D11Resource**)&m_texture2D, &m_texture);
 
 	if (FAILED(result))
 	{

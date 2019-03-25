@@ -169,14 +169,14 @@ void ClothTriangle::Tick(float dt)
 
 Vector3 ClothTriangle::getSurfaceNormal()
 {
-	Vector3 A = m_points[0]->getPosition() - m_points[1]->getPosition();
-	Vector3 B = m_points[0]->getPosition() - m_points[2]->getPosition();
+	Vector3 A = m_points[1]->getPosition() - m_points[0]->getPosition();
+	Vector3 B = m_points[2]->getPosition() - m_points[0]->getPosition();
 
 	Vector3 normal = CollisionUtilities::cross(A, B);
 
 	normal.Normalize();
 
-	return Vector3(1,1,0);
+	return normal;
 }
 
 void ClothTriangle::AddForce(Vector3 force)

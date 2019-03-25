@@ -24,7 +24,7 @@ VS_OUTPUT VS( float4 Pos : POSITION, float4 Color : COLOR, float3 normal : NORMA
     output.Pos = mul( output.Pos, View );
     output.Pos = mul( output.Pos, Projection );
     output.Color = Color;
-    output.normal = mul(normal, (float3x3)World);
+    output.normal = mul(normal, World);
     output.normal = normalize(output.normal);
     //output.normal = normal;
 	output.tex = tex;
