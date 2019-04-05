@@ -305,7 +305,7 @@ bool Renderer::Init(HWND hwnd)
 	// Initialize the light object.
 	m_Light->setDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Light->setDirection(0.0f, 0.0f, 1.0f);
-	m_Light->setAmbientColor(0.15f, 0.15f, 0.15f, 1.0f);
+	m_Light->setAmbientColor(0.3f, 0.3f, 0.3f, 1.0f);
 
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	// Lock the light constant buffer so it can be written to.
@@ -322,6 +322,7 @@ bool Renderer::Init(HWND hwnd)
 	// Copy the lighting variables into the constant buffer.
 	dataPtr->diffuseColor = m_Light->GetDiffuseColor();
 	dataPtr->lightDirection = m_Light->GetDirection();
+	dataPtr->ambientColor = m_Light->GetAmbientColor();
 	dataPtr->padding = 0.0f;
 
 	// Unlock the constant buffer.

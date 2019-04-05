@@ -63,27 +63,16 @@ bool Scene::Init(Renderer * renderer)
 	
 
 	Cube* cube = new Cube();
-	cube->Init(renderer, "cube.obj", DirectX::XMFLOAT4(1, 0, 0, 1));
+	cube->Init(renderer, "bunny.obj", DirectX::XMFLOAT4(1, 0, 0, 1));
 	cube->setGravity(0);
 	cube->setPosition(Vector3(15, 11, 7));
-	cube->setScale(1, 1, 1);
+	cube->setRotation(0, 180, 0);
+	cube->setScale(10, 10, 10);
 	cube->setKinematic(true);
-
-
-	Cube* cube1 = new Cube();
-	cube1->Init(renderer, "cube.obj", DirectX::XMFLOAT4(1, 0, 0, 1));
-	cube1->setGravity(1);
-	cube1->setPosition(Vector3(15, 1, 7));
-	cube1->setScale(1, 1, 1);
 	
 
-	//objptr = cube1;
-
-	spring = new Spring();
-	spring->assignPoints(cube, cube1, 5);
-
 	m_objectsInScene.push_back(cube);
-	m_objectsInScene.push_back(cube1);
+	
 	//m_grid->addObject(sphere);
 
 	DirectX::XMFLOAT3 t1[] = {
@@ -261,7 +250,7 @@ void Scene::Tick(float dt)
 	//}
 
 
-	spring->Tick(dt);
+	
 		//collisions
 	m_grid->handleCollisions();
 
@@ -284,13 +273,14 @@ void Scene::Render()
 {
 	for (int i = 0; i < m_objectsInScene.size(); i++)
 	{
-		Sphere* obj = dynamic_cast<Sphere*>(m_objectsInScene[i]);
+		Object* obj = dynamic_cast<Object*>(m_objectsInScene[i]);
 
 		if (obj)
 		{
 		obj->Render(m_renderer);
 		}
 		
+		//m_objectsInScene[i]->Render(m_renderer);
 	}
 
 	m_cloth->Render(m_renderer);
