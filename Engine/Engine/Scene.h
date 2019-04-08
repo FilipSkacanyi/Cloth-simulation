@@ -27,6 +27,8 @@ private:
 	std::vector<GameObject*> m_objectsInScene;
 	std::vector<Object*> m_renderables;
 
+	bool useGrid = true;
+
 	Renderer* m_renderer = nullptr;
 	Camera* m_camera = nullptr;
 

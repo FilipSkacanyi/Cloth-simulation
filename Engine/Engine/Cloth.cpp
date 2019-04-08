@@ -27,9 +27,7 @@ Cloth::~Cloth()
 
 void Cloth::Tick(float dt, Renderer* renderer)
 {
-	//m_points[0]->setPosition(DirectX::XMFLOAT3(m_points[0]->getPosition().x - dt, m_points[0]->getPosition().y+dt, m_points[0]->getPosition().z));
-	//m_points[1]->setPosition(DirectX::XMFLOAT3(m_points[1]->getPosition().x  , m_points[1]->getPosition().y + dt, m_points[1]->getPosition().z));
-
+	
 	for (int i = 0; i < m_points.size(); i++)
 	{
 		m_points[i]->Tick(dt);
@@ -44,7 +42,6 @@ void Cloth::Tick(float dt, Renderer* renderer)
 		m_triangles[i]->Tick(dt);
 	}
 	
-	//selfCollision(dt);
 
 	if (m_model)
 	{
@@ -180,7 +177,7 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 
 	m_points[0]->setKinematic(true);
 	m_points[cols - 1]->setKinematic(true);
-	
+	m_point_count = m_points.size();
 	//m_points[12]->setKinematic(true);
 
 	//assign indices

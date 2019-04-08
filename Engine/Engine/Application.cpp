@@ -59,16 +59,13 @@ void Application::Run()
 			timer->Tick();
 			if (timer->DeltaTime() >= 1 / m_frame_rate_cap)
 			{
-				//auto start = std::chrono::high_resolution_clock::now();
 				timer->Reset();
 				Tick(timer->DeltaTime());
-
-				/*std::string string = std::to_string(timer->DeltaTime());
-				string += "\n";
-				OutputDebugString(string.c_str());*/
+				
+				std::string output = std::to_string(timer->DeltaTime()) + "\n";
+				OutputDebugString(output.c_str());
 				Render();
-				//auto end = std::chrono::high_resolution_clock::now();
-				//m_delta_time = end - start;
+			
 			}
 		}
 		

@@ -28,13 +28,14 @@ public:
 	int getWidth() { return m_width; }
 	int getHeigth() { return m_heigth; }
 	int getTriangleCount() { return m_triangle_count; }
+	int getpointCount() { return m_point_count; }
 
 	Texture* getTexture();
 private:
 	void selfCollision(float dt);
 
 
-	int m_width, m_heigth, m_triangle_count;
+	int m_width, m_heigth, m_triangle_count,m_point_count;
 	float m_distance;
 	Vector3 m_position;
 	Vector3 m_rotation;

@@ -159,9 +159,8 @@ void Grid::clearAllCells()
 void Grid::handleCollisions()
 {
 
-	for (int k = 0; k < m_cells.size(); k++)
+	/*for (int k = 0; k < m_cells.size(); k++)
 	{
-		
 		for (int i = 0; i < m_cells[k].objects_in_cell.size(); i++)
 		{
 			for (int j = i + 1; j < m_cells[k].objects_in_cell.size(); j++)
@@ -174,7 +173,67 @@ void Grid::handleCollisions()
 				}
 			}
 		}
+	}*/
+
+
+	for (int x = 0; x < m_numCellsX; x++)
+	{
+		for (int y = 0; y < m_numCellsY; y++)
+		{
+			for (int z = 0; z < m_numCellsZ; z++)
+			{
+				//m_cells[x + m_numCellsX * (y + m_numCellsY * z)];
+				int index = x + m_numCellsX * (y + m_numCellsY * z);
+
+				for (int i = 0; i < m_cells[index].objects_in_cell.size(); i++)
+				{
+					//check all objects within the same cell
+					for (int j = i + 1; j <m_cells[index].objects_in_cell.size(); j++)
+					{
+						if (m_cells[index].objects_in_cell[i]->getCollider()->Intersect(m_cells[index].objects_in_cell[j]->getCollider()))
+						{
+							m_cells[index].objects_in_cell[i]->collision(m_cells[index].objects_in_cell[j]);
+							m_cells[index].objects_in_cell[j]->collision(m_cells[index].objects_in_cell[i]);
+
+						}
+
+						
+
+					}
+
+					//check nearby cells
+					//for the purposes of this simulation, we only need 2 cases
+					//other cases shoudl be probably done with a function rather than copypasting this code
+					//one in front
+					if (z + 1 < m_numCellsZ)
+					{
+						checkNeigbourCells(index, i, x + m_numCellsX * (y + m_numCellsY * (z + 1)));
+						
+					}
+					//one behind
+					if (z - 1 > 0)
+					{
+					
+						checkNeigbourCells(index, i, x + m_numCellsX * (y + m_numCellsY * (z - 1)));
+					}
+					//right
+					if (x + 1 < m_numCellsX)
+					{
+
+						checkNeigbourCells(index, i, (x+1) + m_numCellsX * (y + m_numCellsY * z));
+					}
+					//left
+					if (x - 1 > 0)
+					{
+
+						checkNeigbourCells(index, i, (x-1) + m_numCellsX * (y + m_numCellsY * z));
+					}
+
+				}
+			}
+		}
 	}
+
 
 	//m_cells[x + m_numCellsX * (y + m_numCellsY * z)]
 }
@@ -185,4 +244,17 @@ void Grid::Render(Renderer * renderer)
 	{
 		renderer->renderModel(m_cells[i].model);
 	}
+}
+
+void Grid::checkNeigbourCells(int currentCell, int currentObject, int neigbour)
+{
+		for (int j = 0; j < m_cells[neigbour].objects_in_cell.size(); j++)
+		{
+			if (m_cells[currentCell].objects_in_cell[currentObject]->getCollider()->Intersect(m_cells[neigbour].objects_in_cell[j]->getCollider()))
+			{
+				m_cells[currentCell].objects_in_cell[currentObject]->collision(m_cells[neigbour].objects_in_cell[j]);
+				m_cells[neigbour].objects_in_cell[j]->collision(m_cells[currentCell].objects_in_cell[currentObject]);
+
+			}
+		}
 }

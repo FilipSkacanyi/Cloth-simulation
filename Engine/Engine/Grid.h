@@ -34,6 +34,9 @@ public:
 	void Render(Renderer* renderer);
 
 private:
+
+	void checkNeigbourCells(int currentCell, int currentObject, int neigbour);
+
 	std::vector<Cell> m_cells;
 
 	int m_width,

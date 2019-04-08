@@ -245,6 +245,11 @@ void Scene::Tick(float dt)
 		m_grid->addObject(m_cloth->getClothTriangleAtIndex(i));
 	}
 
+	/*for (int i = 0; i < m_cloth->getpointCount(); i++)
+	{
+		m_grid->addObject(m_cloth->getClothpointAtIndex(i));
+	}*/
+
 	for (int i = 0; i < m_objectsInScene.size(); i++)
 	{
 		m_grid->addObject(m_objectsInScene[i]);

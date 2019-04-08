@@ -23,7 +23,7 @@ private:
 	bool InitWindow();
 
 	std::chrono::duration<float> m_delta_time;
-	float m_frame_rate_cap = 60.0f;
+	float m_frame_rate_cap = 10000.0f;
 	LPCSTR m_applicationName;
 	HINSTANCE m_hInstance;
 	HWND m_hwnd;
