@@ -50,6 +50,13 @@ bool Scene::Init(Renderer * renderer)
 	m_cloth->Initialise(renderer, clothWidth, clothHeigth,0.3, m_objectsInScene);
 	m_cloth->setPosition(Vector3(5, 12, 5));
 	
+	if (!useGrid)
+	{
+		for (int i = 0; i < m_cloth->getTriangleCount(); i++)
+		{
+			m_objectsInScene.push_back(m_cloth->getClothTriangleAtIndex(i));
+		}
+	}
 
 	Sphere* sphere = new Sphere();
 	sphere->Init(renderer, "./Resources/sphere.obj", DirectX::XMFLOAT4(1, 0, 0, 1), L"./Resources/red.png");
@@ -240,50 +247,60 @@ void Scene::input(Input * input, double dt)
 
 void Scene::Tick(float dt)
 {
-	for (int i = 0; i < m_cloth->getTriangleCount(); i++)
-	{
-		m_grid->addObject(m_cloth->getClothTriangleAtIndex(i));
-	}
-
-	/*for (int i = 0; i < m_cloth->getpointCount(); i++)
-	{
-		m_grid->addObject(m_cloth->getClothpointAtIndex(i));
-	}*/
-
-	for (int i = 0; i < m_objectsInScene.size(); i++)
-	{
-		m_grid->addObject(m_objectsInScene[i]);
-	}
-
+	
 	for (int i = 0; i < m_objectsInScene.size(); i++)
 	{
 		m_objectsInScene[i]->Tick(dt);
 	}
-
+	
 	m_cloth->Tick(dt, m_renderer);
-	
-	triangle1->Tick(dt);
-	triangle2->Tick(dt);
 
-	//if (CollisionUtilities::IntersectTriangles(triangle1, triangle2))
-	//{
-	//	OutputDebugString("there was triangle collision\n");
-	//}
-	//else
-	//{
-	//	OutputDebugString("no triangle collision\n");
-	//}
+	if (useGrid)
+	{
 
 
-	
+		for (int i = 0; i < m_cloth->getTriangleCount(); i++)
+		{
+			m_grid->addObject(m_cloth->getClothTriangleAtIndex(i));
+		}
+
+		/*for (int i = 0; i < m_cloth->getpointCount(); i++)
+		{
+		m_grid->addObject(m_cloth->getClothpointAtIndex(i));
+		}*/
+
+		for (int i = 0; i < m_objectsInScene.size(); i++)
+		{
+			m_grid->addObject(m_objectsInScene[i]);
+		}
+
+
 		//collisions
-	m_grid->handleCollisions();
+		m_grid->handleCollisions();
+
+
+		//clear grid
+		m_grid->clearAllCells();
+	}
+	else
+	{
+		for (int i = 0; i < m_objectsInScene.size(); i++)
+		{
+			//check all objects within the same cell
+			for (int j = i + 1; j < m_objectsInScene.size(); j++)
+			{
+				if (m_objectsInScene[i]->getCollider()->Intersect(m_objectsInScene[j]->getCollider()))
+				{
+					m_objectsInScene[i]->collision(m_objectsInScene[j]);
+					m_objectsInScene[j]->collision(m_objectsInScene[i]);
+
+				}
+			}
+		}
+	}
 
 	//generate view matrix
 	m_camera->Tick();
-
-	//clear grid
-	m_grid->clearAllCells();
 
 	//get view matrix from camera
 	DirectX::XMMATRIX viewMatrix;

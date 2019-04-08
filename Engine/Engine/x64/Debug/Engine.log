@@ -1,22 +1,29 @@
-﻿  Scene.cpp
+﻿  Application.cpp
+d:\advanced-technologies-collision-detection\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\advanced-technologies-collision-detection\engine\engine\spring.h(29): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Scene.cpp
 d:\advanced-technologies-collision-detection\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 d:\advanced-technologies-collision-detection\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
 d:\advanced-technologies-collision-detection\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
 d:\advanced-technologies-collision-detection\engine\engine\spring.h(29): warning C4305: 'initializing': truncation from 'double' to 'float'
 d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(50): warning C4305: 'argument': truncation from 'double' to 'float'
-d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(58): warning C4305: 'argument': truncation from 'double' to 'float'
-d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(125): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(131): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(137): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(143): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(149): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(65): warning C4305: 'argument': truncation from 'double' to 'float'
+d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(132): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(138): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(144): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(150): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
 d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(156): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(167): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(175): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(183): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(191): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(196): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(207): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(219): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(231): warning C4305: 'argument': truncation from 'double' to 'float'
+d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(163): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(174): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(182): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(190): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(198): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(203): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(214): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(226): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+d:\advanced-technologies-collision-detection\engine\engine\scene.cpp(238): warning C4305: 'argument': truncation from 'double' to 'float'
+  main.cpp
+d:\advanced-technologies-collision-detection\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\advanced-technologies-collision-detection\engine\engine\spring.h(29): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Generating Code...
   Engine.vcxproj -> D:\Advanced-Technologies-Collision-detection\Engine\x64\Debug\Engine.exe
