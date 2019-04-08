@@ -12,9 +12,9 @@ Cube::~Cube()
 {
 }
 
-void Cube::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 color)
+void Cube::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 color, std::wstring texturefile)
 {
-	Object::Init(renderer, fileName, color);
+	Object::Init(renderer, fileName, color,texturefile);
 
 
 	//create bounding box

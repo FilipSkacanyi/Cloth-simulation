@@ -143,7 +143,7 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 
 	m_texture = new Texture();
 
-	std::wstring file = L"fabric.jpg";
+	std::wstring file = L"./Resources/fabric.jpg";
 	bool res = m_texture->Initialize(renderer->getDevice(),file);
 	
 

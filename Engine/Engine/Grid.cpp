@@ -170,11 +170,13 @@ void Grid::handleCollisions()
 				{
 					m_cells[k].objects_in_cell[i]->collision(m_cells[k].objects_in_cell[j]);
    					m_cells[k].objects_in_cell[j]->collision(m_cells[k].objects_in_cell[i]);
-					//m_objectsInScene[j]->AddForce(DirectX::XMFLOAT3(0, 5, 0));
+					
 				}
 			}
 		}
 	}
+
+	//m_cells[x + m_numCellsX * (y + m_numCellsY * z)]
 }
 
 void Grid::Render(Renderer * renderer)

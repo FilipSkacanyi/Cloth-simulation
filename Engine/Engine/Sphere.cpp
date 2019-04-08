@@ -12,9 +12,9 @@ Sphere::~Sphere()
 {
 }
 
-void Sphere::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 color)
+void Sphere::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 color, std::wstring texturefile)
 {
-	Object::Init(renderer, fileName, color);
+	Object::Init(renderer, fileName, color,texturefile);
 
 	m_collider = new SphereCollider();
 	m_collider->Init(ColliderType::SPHERE);

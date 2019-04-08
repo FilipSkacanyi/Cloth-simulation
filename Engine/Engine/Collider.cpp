@@ -35,8 +35,10 @@ void Collider::setPosition(Vector3 pos)
 
 bool Collider::Intersect(Collider* other)
 {
+	ColliderType othertype = other->getType();
+
 	//sphere - sphere
-	if(m_type == ColliderType::SPHERE && other->getType() == ColliderType::SPHERE)
+	if(m_type == ColliderType::SPHERE && othertype == ColliderType::SPHERE)
 	{
 		SphereCollider* self = (SphereCollider*)(this);
 		SphereCollider* tmpother = (SphereCollider*)(other);
@@ -44,7 +46,7 @@ bool Collider::Intersect(Collider* other)
 	}
 
 	//AABB - AABB
-	if (m_type == ColliderType::AABB && other->getType() == ColliderType::AABB)
+	if (m_type == ColliderType::AABB && othertype == ColliderType::AABB)
 	{
 		AlignedBoxCollider* self = (AlignedBoxCollider*)(this);
 		AlignedBoxCollider* otherbox = (AlignedBoxCollider*)(other);
@@ -53,7 +55,7 @@ bool Collider::Intersect(Collider* other)
 	}
 
 	//AABB - sphere
-	if (m_type == ColliderType::AABB && other->getType() == ColliderType::SPHERE)
+	if (m_type == ColliderType::AABB && othertype == ColliderType::SPHERE)
 		
 	{
 		AlignedBoxCollider* self = (AlignedBoxCollider*)(this);
@@ -61,14 +63,14 @@ bool Collider::Intersect(Collider* other)
 		return CollisionUtilities::IntersectBoxSphere(self, tmpother);
 	}
 	//sphere - AABB
-	if (m_type == ColliderType::SPHERE && other->getType() == ColliderType::AABB)
+	if (m_type == ColliderType::SPHERE && othertype == ColliderType::AABB)
 	{
 		SphereCollider* self = (SphereCollider*)(this);
 		AlignedBoxCollider* otherbox = (AlignedBoxCollider*)(other);
 		return CollisionUtilities::IntersectBoxSphere(self, otherbox);
 	}
 	//OBB - OBB
-	if (m_type == ColliderType::ORIENTED && other->getType() == ColliderType::ORIENTED)
+	if (m_type == ColliderType::ORIENTED && othertype == ColliderType::ORIENTED)
 	{
 		OrientedBoxCollider* self = (OrientedBoxCollider*)(this);
 		OrientedBoxCollider* otherbox = (OrientedBoxCollider*)(other);
@@ -76,7 +78,7 @@ bool Collider::Intersect(Collider* other)
 	}
 
 	//OBB - AABB
-	if (m_type == ColliderType::AABB && other->getType() == ColliderType::ORIENTED)
+	if (m_type == ColliderType::AABB && othertype == ColliderType::ORIENTED)
 	{
 		AlignedBoxCollider* self = (AlignedBoxCollider*)(this);
 		OrientedBoxCollider* otherbox = (OrientedBoxCollider*)(other);
@@ -84,7 +86,7 @@ bool Collider::Intersect(Collider* other)
 		return CollisionUtilities::IntersectAABB_OBB(self, otherbox);
 	}
 
-	if(m_type == ColliderType::ORIENTED && other->getType() == ColliderType::AABB)
+	if(m_type == ColliderType::ORIENTED && othertype == ColliderType::AABB)
 	{
 		OrientedBoxCollider* self = (OrientedBoxCollider*)(this);
 		AlignedBoxCollider* otherbox = (AlignedBoxCollider*)(other);
@@ -92,33 +94,33 @@ bool Collider::Intersect(Collider* other)
 	}
 	
 	//OBB - sphere
-	if (m_type == ColliderType::ORIENTED && other->getType() == ColliderType::SPHERE)
+	if (m_type == ColliderType::ORIENTED && othertype == ColliderType::SPHERE)
 	{
 		OrientedBoxCollider* self = (OrientedBoxCollider*)(this);
 		SphereCollider* tmpsphere = (SphereCollider*)(other);
 		return CollisionUtilities::IntersectOrientedBoxSphere(self, tmpsphere);
 	}
 	
-	if (m_type == ColliderType::SPHERE && other->getType() == ColliderType::ORIENTED)
+	if (m_type == ColliderType::SPHERE && othertype == ColliderType::ORIENTED)
 	{
 		OrientedBoxCollider* tmpsphere = (OrientedBoxCollider*)(other);
 		SphereCollider* self = (SphereCollider*)(this);
 		return CollisionUtilities::IntersectOrientedBoxSphere(self, tmpsphere);
 	}
 
-	if (m_type == ColliderType::SINGLE_POINT && other->getType() == ColliderType::SPHERE)
+	if (m_type == ColliderType::SINGLE_POINT && othertype == ColliderType::SPHERE)
 	{
 		SphereCollider* tmpsphere = (SphereCollider*)(other);
 		return CollisionUtilities::IntersectPointSphere(this, tmpsphere);
 	}
 
-	if (m_type == ColliderType::SPHERE && other->getType() == ColliderType::SINGLE_POINT)
+	if (m_type == ColliderType::SPHERE && othertype == ColliderType::SINGLE_POINT)
 	{
 		SphereCollider* self = (SphereCollider*)(other);
 		return CollisionUtilities::IntersectPointSphere(other, self);
 	}
 
-	if (m_type == ColliderType::TRIANGLE && other->getType() == ColliderType::TRIANGLE)
+	if (m_type == ColliderType::TRIANGLE && othertype == ColliderType::TRIANGLE)
 	{
 		TriangleCollider* other_ = (TriangleCollider*)(other);
 		TriangleCollider* self_ = (TriangleCollider*)(this);

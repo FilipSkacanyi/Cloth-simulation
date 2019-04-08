@@ -25,6 +25,7 @@ public:
 private:
 
 	std::vector<GameObject*> m_objectsInScene;
+	std::vector<Object*> m_renderables;
 
 	Renderer* m_renderer = nullptr;
 	Camera* m_camera = nullptr;

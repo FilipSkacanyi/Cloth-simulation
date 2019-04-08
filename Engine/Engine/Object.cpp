@@ -26,7 +26,7 @@ Object::~Object()
 	}
 }
 
-void Object::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 color)
+void Object::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 color, std::wstring texturefile)
 {
 	
 
@@ -66,8 +66,7 @@ void Object::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 c
 	m_model = renderer->createRawModel(vertices1, vertcount, indices1, indcount);
 	Texture* texture = new Texture();
 
-	std::wstring file = L"red.png";
-	bool res = texture->Initialize(renderer->getDevice(), file);
+	bool res = texture->Initialize(renderer->getDevice(), texturefile);
 	
 	
 	m_model->setTexture(texture);

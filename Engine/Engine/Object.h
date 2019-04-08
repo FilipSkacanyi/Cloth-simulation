@@ -21,7 +21,7 @@ public:
 	Object();
 	~Object();
 
-	virtual void Init(Renderer* renderer, std::string fileName, DirectX::XMFLOAT4 color);
+	virtual void Init(Renderer* renderer, std::string fileName, DirectX::XMFLOAT4 color, std::wstring texturefile);
 	void Tick(float dt) override;
 	virtual void Render(Renderer* renderer);
 	

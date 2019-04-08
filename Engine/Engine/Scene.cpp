@@ -52,27 +52,45 @@ bool Scene::Init(Renderer * renderer)
 	
 
 	Sphere* sphere = new Sphere();
-	sphere->Init(renderer, "sphere.obj", DirectX::XMFLOAT4(1, 0, 0, 1));
+	sphere->Init(renderer, "./Resources/sphere.obj", DirectX::XMFLOAT4(1, 0, 0, 1), L"./Resources/red.png");
 	sphere->setGravity(0);
 	sphere->setPosition(Vector3(5, 11, 7));
 	sphere->setScale(0.7, 0.7, 0.7);
+	sphere->setKinematic(true);
 
 	objptr = sphere;
 
 	m_objectsInScene.push_back(sphere);
 	
 
-	Cube* cube = new Cube();
-	cube->Init(renderer, "bunny.obj", DirectX::XMFLOAT4(1, 0, 0, 1));
-	cube->setGravity(0);
-	cube->setPosition(Vector3(15, 11, 7));
-	cube->setRotation(0, 180, 0);
-	cube->setScale(10, 10, 10);
-	cube->setKinematic(true);
-	
+	Cube* bed = new Cube();
+	bed->Init(renderer, "./Resources/RPG-bed.obj", DirectX::XMFLOAT4(1, 0, 0, 1), L"./Resources/Wooden.jpg");
+	bed->setGravity(0);
+	bed->setPosition(Vector3(8, 5, 7));
+	bed->setRotation(0, 180, 0);
+	bed->setScale(2, 2, 2);
+	bed->setKinematic(true);
 
-	m_objectsInScene.push_back(cube);
+	Cube* drawer = new Cube();
+	drawer->Init(renderer, "./Resources/drawer.obj", DirectX::XMFLOAT4(1, 0, 0, 1), L"./Resources/Wooden.jpg");
+	drawer->setGravity(0);
+	drawer->setPosition(Vector3(-8, 2, 2));
+	drawer->setRotation(0, 90, 0);
+	drawer->setScale(0.1f, 0.1f, 0.1f);
+	drawer->setKinematic(true);
 	
+	Cube* room = new Cube();
+	room->Init(renderer, "./Resources/cube.obj", DirectX::XMFLOAT4(1, 0, 0, 1), L"./Resources/wall.png");
+	room->setGravity(0);
+	room->setPosition(Vector3(2, 15, 2));
+	room->setRotation(0, 0, 0);
+	room->setScale(25, 25, 25);
+	room->setKinematic(true);
+
+
+	m_objectsInScene.push_back(bed);
+	m_objectsInScene.push_back(drawer);
+	m_objectsInScene.push_back(room);
 	//m_grid->addObject(sphere);
 
 	DirectX::XMFLOAT3 t1[] = {
@@ -203,27 +221,29 @@ void Scene::input(Input * input, double dt)
 		{
 			ball_throw = 0;
 
-			Sphere* obj = new Sphere();
-			obj->Init(m_renderer, "cube.obj", DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+			Sphere* obj = static_cast<Sphere*>(objptr);
+			
+			obj->setKinematic(false);
+			obj->resetVelocity(VelocityAxis::ALL_AXIS);
 			obj->setGravity(1);
 			obj->setPosition(Vector3(m_camera->getPosition().x, m_camera->getPosition().y, m_camera->getPosition().z));
 			obj->setRotation(0, 0, 0);
-			obj->setScale(2,2, 2);
+			obj->setScale(0.7,0.7,0.7);
 
 			Vector3 force;
-			force = force * 100000;
+			force = m_camera->getForward();
+			force = force * 100;
 			obj->AddForce(force);
-			m_objectsInScene.push_back(obj);
 		}
 	}
 }
 
 void Scene::Tick(float dt)
 {
-	/*for (int i = 0; i < m_cloth->getTriangleCount(); i++)
+	for (int i = 0; i < m_cloth->getTriangleCount(); i++)
 	{
 		m_grid->addObject(m_cloth->getClothTriangleAtIndex(i));
-	}*/
+	}
 
 	for (int i = 0; i < m_objectsInScene.size(); i++)
 	{
@@ -281,6 +301,11 @@ void Scene::Render()
 		}
 		
 		//m_objectsInScene[i]->Render(m_renderer);
+	}
+
+	for (int i = 0; i < m_renderables.size(); i++)
+	{
+		m_renderables[i]->Render(m_renderer);
 	}
 
 	m_cloth->Render(m_renderer);

@@ -1,7 +1,9 @@
 #include "ClothPoint.h"
 #include "Cloth.h"
 #include "SphereCollider.h"
+#include "Sphere.h"
 #include "Timer.h"
+
 
 ClothPoint::ClothPoint()
 {
@@ -54,10 +56,12 @@ void ClothPoint::Tick(float dt)
 
 void ClothPoint::collision(GameObject * other)
 {
-	SphereCollider* temp =nullptr;
+	SphereCollider* temp = nullptr;
 	temp = dynamic_cast<SphereCollider*> (other->getCollider());
 	if (temp)
 	{
+		Sphere*  sphere = static_cast<Sphere*>(other);
+
 		Vector3 pos;
 		Vector3 other_pos;
 
@@ -80,12 +84,12 @@ void ClothPoint::collision(GameObject * other)
 		Vector3 velocity = m_velocity;
 
 		distance = temp->getPosition() - m_position;
-		float distmag = distance.Magnitude() * 5;
+		float distmag = distance.Magnitude() * 25;
 		distance.Normalize();
 		//this->AddForce(((velocity * (-0.1f) * m_mass) / Timer::Instance()->DeltaTime()));
 		this->AddForce(distance * (-1));
 	
-
+		sphere->AddForce(distance * Timer::Instance()->DeltaTime() );
 
 
 	}
