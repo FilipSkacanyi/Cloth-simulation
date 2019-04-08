@@ -36,7 +36,7 @@ bool Scene::Init(Renderer * renderer)
 {
 	m_renderer = renderer;
 
-	m_grid = std::make_unique<Grid>(18, 27, 9,3, renderer);
+	m_grid = std::make_unique<Grid>(30, 30, 15,1, renderer);
 
 	m_camera = new Camera();
 	m_camera->setPosition(5.0f, 13.0f, 1.0f);
@@ -45,7 +45,8 @@ bool Scene::Init(Renderer * renderer)
 	
 	m_cloth = new Cloth();
 
-	int clothWidth = 9, clothHeigth = 9;
+	int clothWidth = 17, clothHeigth = 17;
+	useGrid = true;
 
 	m_cloth->Initialise(renderer, clothWidth, clothHeigth,0.3, m_objectsInScene);
 	m_cloth->setPosition(Vector3(5, 12, 5));
@@ -264,10 +265,10 @@ void Scene::Tick(float dt)
 			m_grid->addObject(m_cloth->getClothTriangleAtIndex(i));
 		}
 
-		/*for (int i = 0; i < m_cloth->getpointCount(); i++)
+		for (int i = 0; i < m_cloth->getpointCount(); i++)
 		{
 		m_grid->addObject(m_cloth->getClothpointAtIndex(i));
-		}*/
+		}
 
 		for (int i = 0; i < m_objectsInScene.size(); i++)
 		{

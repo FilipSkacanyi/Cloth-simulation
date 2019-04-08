@@ -170,7 +170,7 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 			m_points[m_points.size() - 1]->setPosition(Vector3(j*distance - centerX * distance + m_position.x, -i * distance + centerY * distance + m_position.y, 0+ m_position.z));
 			m_points[m_points.size() - 1]->setParent(this);
 			m_points[m_points.size() - 1]->Init();
-			objects_in_scene.push_back(m_points[m_points.size() - 1].get());
+			//objects_in_scene.push_back(m_points[m_points.size() - 1].get());
 			
 		}
 	}
