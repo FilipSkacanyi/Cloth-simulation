@@ -1,5 +1,5 @@
 #pragma once
-
+#include <string>
 #include <d3d11.h>
 
 class Texture
@@ -10,7 +10,7 @@ public:
 
 
 
-	bool Initialize(ID3D11Device*, WCHAR*);
+	bool Initialize(ID3D11Device*, std::wstring);
 
 	ID3D11ShaderResourceView* getTexture();
 

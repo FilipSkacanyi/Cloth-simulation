@@ -1,5 +1,5 @@
 ﻿  Renderer.cpp
 d:\advanced-technologies-collision-detection\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 d:\advanced-technologies-collision-detection\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-d:\advanced-technologies-collision-detection\engine\engine\renderer.cpp(447): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\advanced-technologies-collision-detection\engine\engine\renderer.cpp(448): warning C4305: 'initializing': truncation from 'double' to 'float'
   Engine.vcxproj -> D:\Advanced-Technologies-Collision-detection\Engine\x64\Debug\Engine.exe

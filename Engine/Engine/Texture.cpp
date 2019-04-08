@@ -2,6 +2,7 @@
 #include "WICTextureLoader.h"
 
 
+
 Texture::Texture()
 {
 	m_texture = nullptr;
@@ -19,11 +20,11 @@ Texture::~Texture()
 
 }
 
-bool Texture::Initialize(ID3D11Device * device, WCHAR * filename)
+bool Texture::Initialize(ID3D11Device * device, std::wstring filename)
 {
 	HRESULT result;
 
-	result = DirectX::CreateWICTextureFromFile(device, L"fabric.jpg", (ID3D11Resource**)&m_texture2D, &m_texture);
+	result = DirectX::CreateWICTextureFromFile(device, filename.c_str(), (ID3D11Resource**)&m_texture2D, &m_texture);
 
 	if (FAILED(result))
 	{

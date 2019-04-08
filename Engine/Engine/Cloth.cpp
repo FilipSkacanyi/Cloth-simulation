@@ -57,100 +57,78 @@ void Cloth::Render(Renderer * renderer)
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
-	Vertex* vertices = new Vertex[m_model->getVertexCount()];
-
+	//  Disable GPU access to the vertex buffer data.
 	auto m_d3dContext = renderer->getContext();
 	m_d3dContext->Map(m_model->getVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 
 	Vertex* dataPtr = (Vertex*)mappedResource.pData;
 
-	Vector3* normals = new Vector3[m_model->getVertexCount()];
+	Vector3* normals = new Vector3[m_width * m_heigth];
 
+	//  Update the vertex buffer here
+	//this for loop handles the surface normal calculation
+	//sum all the triangle normals that each vertex is part of
 	int rows = 0;
-
-	for (int i = 0; i < m_triangle_count / 2; i++)
+	for (int i = 0, j = 0; i < m_triangle_count / 2; i++,j++)
 	{
+		//even triangles
 		Vector3 triangle_normal = m_triangles[i * 2]->getSurfaceNormal();
-
 		normals[i + rows] = normals[i + rows] + triangle_normal;
 		normals[i + rows + 1] = normals[i + rows + 1] + triangle_normal;
 		normals[i + rows + m_width] = normals[i + rows + m_width] + triangle_normal;
 
-		if (i + 2 == m_width)
+		//odd triangles
+		triangle_normal = m_triangles[(j * 2) + 1]->getSurfaceNormal();
+		normals[j + rows + 1] = normals[j + rows + 1] + triangle_normal;
+		normals[j + rows + m_width] = normals[j + rows + m_width] + triangle_normal;
+		normals[j + rows + m_width + 1] = normals[j + rows + m_width + 1] + triangle_normal;
+		
+		//drop a row
+		if (i != 0)
 		{
-			rows++;
+			//+2 because there are always 2 odd triangles less than vertices in each row 
+			if ((i+2) % m_width == 0) 
+			{
+				rows++;
+			}
 		}
 	}
-
-	rows = 0;
-	for (int i = 0; i < m_triangle_count / 2; i++)
-	{
-		Vector3 triangle_normal = m_triangles[(i * 2) + 1]->getSurfaceNormal();
-
-		normals[i + rows + 1] = normals[i + rows + 1] + triangle_normal;
-		normals[i + rows + m_width] = normals[i + rows + m_width] + triangle_normal;
-		normals[i + rows + m_width + 1] = normals[i + rows + m_width + 1] + triangle_normal; 
-
-		if (i + 2 == m_width)
-		{
-			rows++;
-		}
-	}
-
+	//normalise the normals so they are of size 1
 	for (int i = 0; i < m_model->getVertexCount(); i++)
 	{
 		normals[i].Normalize();
 	}
 
-
+	//update values
 	for (int i = 0; i < m_model->getVertexCount(); i++)
 	{
 		DirectX::XMFLOAT3 temppos = DirectX::XMFLOAT3(m_points[i]->getPosition().x - m_position.x,
 			m_points[i]->getPosition().y - m_position.y,
 			m_points[i]->getPosition().z - m_position.z);
-
-		//Vector3 temppos = Vector3(m_points[i]->getPosition() - m_position);
-
 		dataPtr[i].position = temppos;
 		dataPtr[i].color = DirectX::XMFLOAT4(1, 0, 0, 1);
-		dataPtr[i].normal = DirectX::XMFLOAT3(normals[i].x, normals[i].y, normals[i].z); //normals[i]
-		dataPtr[i].texture = DirectX::XMFLOAT2(0, 1);
-		
+		dataPtr[i].normal = DirectX::XMFLOAT3(normals[i].x, normals[i].y, normals[i].z);
+		//dataPtr[i].texture = DirectX::XMFLOAT2(dataPtr[i].texture.x, dataPtr[i].texture.y);
 	}
 
-
-
+	//update the texture coords
+	//even tho they are always the same, they need to be set again
+	//otherwise the texture flickers
 	for (int i = 0; i < m_heigth; i++)
 	{
-
 		for (int j = 0; j < m_width; j++)
 		{
-
-			dataPtr[i * m_width + j].texture = DirectX::XMFLOAT2((float)j/ (float)m_width,(float)i/(float)m_heigth );
-
-
+			dataPtr[i * m_width + j].texture = DirectX::XMFLOAT2((float)j / (float)m_width, (float)i / (float)m_heigth);
 		}
-
 	}
-
-
-	//  Disable GPU access to the vertex buffer data.
-	//auto m_d3dContext = renderer->getContext();
-	//m_d3dContext->Map(m_model->getVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	//  Update the vertex buffer here.
-	//memcpy(mappedResource.pData, vertices, sizeof(Vertex) * m_model->getVertexCount());
+	
 	//  Reenable GPU access to the vertex buffer data.
 	m_d3dContext->Unmap(m_model->getVertexBuffer(), 0);
-	delete[] vertices;
+	
+	//delete the temporary array
 	delete[] normals;
 	
 	renderer->renderModel(m_model);
-
-	/*for (int i = 0; i < m_triangles.size(); i++)
-	{
-		m_triangles[i]->recalculateVertices(renderer);
-		m_triangles[i]->Render(renderer);
-	}*/
 
 }
 
@@ -165,9 +143,9 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 
 	m_texture = new Texture();
 
-	WCHAR* file = new WCHAR(L'reference_dog.jpg');
+	std::wstring file = L"fabric.jpg";
 	bool res = m_texture->Initialize(renderer->getDevice(),file);
-	delete file;
+	
 
 	if (!res)
 	{
@@ -188,6 +166,7 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 			//create a vertex
 			tmpvert[i*cols + j].position = DirectX::XMFLOAT3(j*distance -centerX * distance, i*distance - centerY * distance, 0);
 		    tmpvert[i*cols + j].color = DirectX::XMFLOAT4(1, 0, 0, 1);
+			tmpvert[i * cols + j].texture = DirectX::XMFLOAT2((float)j / (float)cols, (float)i / (float)rows);
 
 			//create a cloth point based on the same values as the vertex
 			m_points.push_back(std::make_unique<ClothPoint>());
