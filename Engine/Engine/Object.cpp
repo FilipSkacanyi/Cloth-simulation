@@ -1,4 +1,5 @@
 #include "Object.h"
+#include "OBJ_Loader.h"
 
 
 
@@ -12,10 +13,10 @@ Object::Object()
 
 Object::~Object()
 {
-	if (m_boundingBox)
+	if (m_collider)
 	{
-		delete m_boundingBox;
-		m_boundingBox = nullptr;
+		delete m_collider;
+		m_collider = nullptr;
 	}
 
 	if (m_model)
@@ -25,119 +26,178 @@ Object::~Object()
 	}
 }
 
-void Object::Init(Renderer * renderer)
+void Object::Init(Renderer * renderer, std::string fileName, DirectX::XMFLOAT4 color, std::wstring texturefile)
 {
-	Vertex vertices[] =
-	{
-		{ DirectX::XMFLOAT3(-1.0f,  1.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(1.0f,  1.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(1.0f,  1.0f,  1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(-1.0f,  1.0f,  1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(1.0f, -1.0f, -1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(1.0f, -1.0f,  1.0f), DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },
-		{ DirectX::XMFLOAT3(-1.0f, -1.0f,  1.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
-	};
-
-	// Create index buffer
-	WORD indices[] =
-	{
-		3,1,0,
-		2,1,3,
-
-		0,5,4,
-		1,5,0,
-
-		3,4,7,
-		0,4,3,
-
-		1,6,5,
-		2,6,1,
-
-		2,7,6,
-		3,7,2,
-
-		6,4,5,
-		7,4,6,
-	};
-
-
-	m_model = renderer->createRawModel(vertices, 8, indices, 36);
-
-	//create bounding box
-	m_boundingBox = new DirectX::BoundingOrientedBox();
-	//init bounding box
-	m_boundingBox->Center = m_position;
-	m_boundingBox->Extents = m_scale;
-	DirectX::XMStoreFloat4(&m_boundingBox->Orientation, DirectX::XMQuaternionRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z));
 	
+
+	objl::Loader loader;
+	loader.LoadFile(fileName);
+
+	//go trough the loaded data and translate it to my dat types;
+	
+	int vertcount = loader.LoadedVertices.size();
+	int indcount = loader.LoadedIndices.size();
+	Vertex* vertices1 = new Vertex[vertcount];
+	unsigned long* indices1 = new unsigned long[indcount];
+
+	for (int i = 0; i < loader.LoadedVertices.size(); i++)
+	{
+		//loader.LoadedVertices[i].Position;
+		vertices1[i].position = DirectX::XMFLOAT3(loader.LoadedVertices[i].Position.X, 
+												loader.LoadedVertices[i].Position.Y,
+												loader.LoadedVertices[i].Position.Z);
+		vertices1[i].color = color;
+		vertices1[i].normal = DirectX::XMFLOAT3(loader.LoadedVertices[i].Normal.X,
+			loader.LoadedVertices[i].Normal.Y,
+			loader.LoadedVertices[i].Normal.Z);
+
+		vertices1[i].texture = DirectX::XMFLOAT2(loader.LoadedVertices[i].TextureCoordinate.X,
+			loader.LoadedVertices[i].TextureCoordinate.Y);
+
+		
+	}
+	
+	for (int i = 0; i < loader.LoadedIndices.size(); i++)
+	{
+		indices1[i] = loader.LoadedIndices[i];
+	}
+
+	
+	m_model = renderer->createRawModel(vertices1, vertcount, indices1, indcount);
+	Texture* texture = new Texture();
+
+	bool res = texture->Initialize(renderer->getDevice(), texturefile);
+	
+	
+	m_model->setTexture(texture);
+
+	delete[] vertices1;
+	delete[] indices1;
+
+	
+
 }
 
-void Object::Tick()
-{
-	m_rotation.y += 0.0001;
 
-	m_model->setPosition(m_position);
-	m_model->setRotation(m_rotation);
-	m_model->setScale(m_scale);
+void Object::Tick(float dt)
+{ 
+	
 
-	//update bounding box
-	m_boundingBox->Center = m_position;
-	m_boundingBox->Extents = m_scale;
-	DirectX::XMStoreFloat4(&m_boundingBox->Orientation, DirectX::XMQuaternionRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z));
+	if (m_isKinematic)
+	{
+		m_velocity = Vector3(0, 0, 0);
+	}
+	else
+	{
+		//gravity
+		AddForce(Vector3(0, -9.80 * m_mass, 0) * dt * m_gravity);
+		//AddForce(m_acceleration * (-1) * (m_velocity.Magnitude() * m_velocity.Magnitude()));
+
+		//force = mass * acceleration;
+		//acceleration = force / mass
+		m_acceleration = m_force / m_mass;
+
+		//velocity
+		m_velocity = m_velocity + m_acceleration * dt;
+		
+		//m_velocity = m_force;
+		m_position = m_position + (m_velocity * dt);
+
+		
+		//air ressistance
+		m_velocity = m_velocity - m_velocity * m_drag*dt;
+
+		m_force = Vector3(0, 0, 0);
+
+
+	}
+
+	m_collider->setPosition(m_position);
+	
+
+	if (m_model)
+	{
+		m_model->setPosition(m_position);
+		m_model->setRotation(m_rotation);
+		m_model->setScale(m_scale);
+	}
+
 }
 
 void Object::Render(Renderer * renderer)
 {
-	renderer->renderModel(m_model);
+	if (m_model)
+	{
+		renderer->renderModel(m_model);
+	}
 }
 
-void Object::setPosition(float x, float y, float z)
+
+
+void Object::resetVelocity(VelocityAxis axis)
 {
-	m_position = DirectX::XMFLOAT3(x, y, z);
+	switch (axis)
+	{
+	case VelocityAxis::X_AXIS:
+	{
+		
+		break;
+	}
+	case VelocityAxis::Y_AXIS:
+	{
+		break;
+	}
+	case VelocityAxis::Z_AXIS:
+	{
+		break;
+	}
+	case VelocityAxis::ALL_AXIS:
+	{
+		m_velocity = DirectX::XMFLOAT3(0, 0, 0);
+		break;
+	}
+
+	}
 }
 
-void Object::setPosition(DirectX::XMFLOAT3 pos)
+
+
+float Object::getMass()
 {
-	m_position = pos;
+	return m_mass;
 }
 
-void Object::setRotation(float x, float y, float z)
+void Object::setGravity(float grav)
 {
-	m_rotation = DirectX::XMFLOAT3(x, y, z);
+	m_gravity = grav;
 }
 
-void Object::setRotation(DirectX::XMFLOAT3 rot)
+
+void Object::AddForce(Vector3 force)
 {
-	m_rotation = rot;
+	m_force = m_force + force;
 }
 
-void Object::setScale(float x, float y, float z)
+void Object::collision(GameObject * other)
 {
-	m_scale = DirectX::XMFLOAT3(x, y, z);
+	//other->AddForce(Vector3(-m_velocity.x * (1  ), -m_velocity.y * (1 ), -m_velocity.z* (1 )/1000));
+	Vector3 dir;
+	dir = DirectX::XMFLOAT3((other->getPosition().x - m_position.x), (other->getPosition().y - m_position.y), (other->getPosition().z - m_position.z));
+	//other->AddForce(dir / 10);
+
+	//other->AddForce(m_velocity);
+
+	//Vector3 normal = Vector3(m_position.x - other->getPosition().x, m_position.y - other->getPosition().y, m_position.z - other->getPosition().z);
+	//normal.Normalize();
+	//float mag = sqrt(m_velocity.x * m_velocity.x + m_velocity.y * m_velocity.y + m_velocity.z * m_velocity.z);
+
+	////normal = normal * mag;
+	//normal = normal * m_bounciness;
+
+	//DirectX::XMFLOAT3 v = DirectX::XMFLOAT3(normal.x, normal.y, normal.z);
+	//AddForce(v);
 }
 
-void Object::setScale(DirectX::XMFLOAT3 scale)
-{
-	m_scale = scale;
-}
 
-DirectX::XMFLOAT3 Object::getPosition()
-{
-	return m_position;
-}
 
-DirectX::XMFLOAT3 Object::getRotation()
-{
-	return m_rotation;
-}
 
-DirectX::XMFLOAT3 Object::getScale()
-{
-	return m_scale;
-}
-
-DirectX::BoundingOrientedBox * Object::getBoundingBox()
-{
-	return m_boundingBox;
-}

@@ -5,7 +5,7 @@
 Camera::Camera()
 {
 	m_position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_rotation = DirectX::XMFLOAT3(0.0f,0.0f, 0.0f);
+	m_rotation = DirectX::XMFLOAT3(0.0f,45.0f, 0.0f);
 }
 
 
@@ -47,6 +47,8 @@ void Camera::Tick()
 
 	m_viewMatrix = DirectX::XMMatrixLookAtLH(camPosition, camTarget, camUp);
 
+	m_cameraForward = DirectX::XMFLOAT3(DirectX::XMVectorGetX(camForward), DirectX::XMVectorGetY(camForward), DirectX::XMVectorGetZ(camForward));
+	m_cameraRight = DirectX::XMFLOAT3(DirectX::XMVectorGetX(camRight), DirectX::XMVectorGetY(camRight), DirectX::XMVectorGetZ(camRight));
 }
 
 void Camera::setPosition(float x, float y, float z)
@@ -81,4 +83,14 @@ DirectX::XMFLOAT3 Camera::getRotation()
 void Camera::getViewMatrix(DirectX::XMMATRIX& viewMatrix)
 {
 	viewMatrix = m_viewMatrix;
+}
+
+DirectX::XMFLOAT3 Camera::getForward()
+{
+	return m_cameraForward;
+}
+
+DirectX::XMFLOAT3 Camera::getRight()
+{
+	return m_cameraRight;
 }

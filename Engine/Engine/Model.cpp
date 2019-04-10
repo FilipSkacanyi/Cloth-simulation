@@ -4,9 +4,9 @@
 
 Model::Model()
 {
-	m_position = DirectX::XMFLOAT3(0, 0, 0);
-	m_rotation = DirectX::XMFLOAT3(0, 0, 0);
-	m_scale = DirectX::XMFLOAT3(1, 1, 1);
+	m_position = Vector3(0, 0, 0);
+	m_rotation = Vector3(0, 0, 0);
+	m_scale = Vector3(1, 1, 1);
 }
 
 
@@ -49,42 +49,42 @@ void Model::setPosition(float x, float y, float z)
 	m_position = DirectX::XMFLOAT3(x, y, z);
 }
 
-void Model::setPosition(DirectX::XMFLOAT3 pos)
+void Model::setPosition(Vector3 pos)
 {
 	m_position = pos;
 }
 
 void Model::setRotation(float x, float y, float z)
 {
-	m_rotation = DirectX::XMFLOAT3(x, y, z);
+	m_rotation = Vector3(x, y, z);
 }
 
-void Model::setRotation(DirectX::XMFLOAT3 rot)
+void Model::setRotation(Vector3 rot)
 {
 	m_rotation = rot;
 }
 
 void Model::setScale(float x, float y, float z)
 {
-	m_scale = DirectX::XMFLOAT3(x, y, z);
+	m_scale = Vector3(x, y, z);
 }
 
-void Model::setScale(DirectX::XMFLOAT3 scale)
+void Model::setScale(Vector3 scale)
 {
 	m_scale = scale;
 }
 
-DirectX::XMFLOAT3 Model::getPosition()
+Vector3 Model::getPosition()
 {
 	return m_position;
 }
 
-DirectX::XMFLOAT3 Model::getRotation()
+Vector3 Model::getRotation()
 {
 	return m_rotation;
 }
 
-DirectX::XMFLOAT3 Model::getScale()
+Vector3 Model::getScale()
 {
 	return m_scale;
 }
@@ -106,6 +106,11 @@ ID3D11Buffer * Model::getIndexBuffer()
 int Model::getIndexCount()
 {
 	return m_indexCount;
+}
+
+ID3D11ShaderResourceView * Model::getTexture()
+{
+	return m_texture->getTexture();
 }
 
 

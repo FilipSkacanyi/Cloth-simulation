@@ -71,6 +71,19 @@ Renderer::~Renderer()
 		m_depthStencilView->Release();
 		m_depthStencilView = nullptr;
 	}
+
+	if (m_WireFrame)
+	{
+		m_WireFrame->Release();
+		m_WireFrame = nullptr;
+	}
+
+	if (m_Light)
+	{
+		delete m_Light;
+		m_Light = nullptr;
+
+	}
 	
 }
 
@@ -169,7 +182,7 @@ bool Renderer::Init(HWND hwnd)
 	 hr = S_OK;
 
 	 //compile vertexshader from a file
-	hr = D3DCompileFromFile(L"shaders.fx", nullptr, nullptr, "VS", "vs_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_vertexShaderBlob, &errorBlob);
+	hr = D3DCompileFromFile(L"vertexshader.vs", nullptr, nullptr, "VS", "vs_4_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_vertexShaderBlob, &errorBlob);
 	if (FAILED(hr))
 	{
 		if (errorBlob)
@@ -191,7 +204,9 @@ bool Renderer::Init(HWND hwnd)
 	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 	UINT numElements = ARRAYSIZE(layout);
 
@@ -206,7 +221,7 @@ bool Renderer::Init(HWND hwnd)
 	m_vertexShaderBlob->Release();
 	
 	//compile pixelshader from a file
-	hr = D3DCompileFromFile(L"shaders.fx", nullptr, nullptr, "PS", "ps_5_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_pixelShaderBlob, &errorBlob);
+	hr = D3DCompileFromFile(L"pixelshader.ps", nullptr, nullptr, "PS", "ps_4_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_pixelShaderBlob, &errorBlob);
 	if (FAILED(hr))
 	{
 		OutputDebugStringA(reinterpret_cast<const char*>(errorBlob->GetBufferPointer()));
@@ -246,6 +261,111 @@ bool Renderer::Init(HWND hwnd)
 	m_projection = DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, 800 / (FLOAT)600, 0.01f, 100.0f); //800 and 600 are window size
 
 	
+	D3D11_RASTERIZER_DESC wfdesc;
+	ZeroMemory(&wfdesc, sizeof(D3D11_RASTERIZER_DESC));
+	wfdesc.FillMode = D3D11_FILL_WIREFRAME;
+	wfdesc.CullMode = D3D11_CULL_NONE;
+	hr = m_device->CreateRasterizerState(&wfdesc, &m_WireFrame);
+	
+
+	wfdesc.FillMode = D3D11_FILL_SOLID;
+
+	hr = m_device->CreateRasterizerState(&wfdesc, &m_Solid);
+	m_context->RSSetState(m_Solid);
+
+	wfdesc.CullMode = D3D11_CULL_BACK;
+	hr = m_device->CreateRasterizerState(&wfdesc, &m_backface);
+
+	wfdesc.CullMode = D3D11_CULL_FRONT;
+	hr = m_device->CreateRasterizerState(&wfdesc, &m_frontface);
+
+
+	D3D11_BUFFER_DESC lightBufferDesc;
+
+	// Setup the description of the light dynamic constant buffer that is in the pixel shader.
+	// Note that ByteWidth always needs to be a multiple of 16 if using D3D11_BIND_CONSTANT_BUFFER or CreateBuffer will fail.
+	lightBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	lightBufferDesc.ByteWidth = sizeof(LightBuffer);
+	lightBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	lightBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	lightBufferDesc.MiscFlags = 0;
+	lightBufferDesc.StructureByteStride = 0;
+
+	// Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
+	hr = m_device->CreateBuffer(&lightBufferDesc, NULL, &m_lightBuffer);
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
+
+
+	// Create the light object.
+	m_Light = new Light();
+	if (!m_Light)
+	{
+		return false;
+	}
+
+	// Initialize the light object.
+	m_Light->setDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
+	m_Light->setDirection(0.0f, 0.0f, 1.0f);
+	m_Light->setAmbientColor(0.3f, 0.3f, 0.3f, 1.0f);
+
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	// Lock the light constant buffer so it can be written to.
+	hr = m_context->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
+	LightBuffer* dataPtr = nullptr;
+	// Get a pointer to the data in the constant buffer.
+	dataPtr = (LightBuffer*)mappedResource.pData;
+
+	// Copy the lighting variables into the constant buffer.
+	dataPtr->diffuseColor = m_Light->GetDiffuseColor();
+	dataPtr->lightDirection = m_Light->GetDirection();
+	dataPtr->ambientColor = m_Light->GetAmbientColor();
+	dataPtr->padding = 0.0f;
+
+	// Unlock the constant buffer.
+	m_context->Unmap(m_lightBuffer, 0);
+
+	m_context->PSSetConstantBuffers(0, 1, &m_lightBuffer);
+
+
+
+	D3D11_SAMPLER_DESC samplerDesc;
+	ZeroMemory(&samplerDesc, sizeof(samplerDesc));
+	// Create a texture sampler state description.
+	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.MipLODBias = 0.0f;
+	samplerDesc.MaxAnisotropy = 1;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	samplerDesc.BorderColor[0] = 0;
+	samplerDesc.BorderColor[1] = 0;
+	samplerDesc.BorderColor[2] = 0;
+	samplerDesc.BorderColor[3] = 0;
+	samplerDesc.MinLOD = 0;
+	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+	// Create the texture sampler state.
+	hr = m_device->CreateSamplerState(&samplerDesc, &m_sampleState);
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
+
+
+
+
+	return true;
 }
 
 void Renderer::Clear()
@@ -281,7 +401,7 @@ void Renderer::updateViewMatrix(DirectX::XMMATRIX view)
 
 
 
-Model * Renderer::createRawModel(Vertex vertices[], int vertexNum, WORD indices[], int indexNum)
+Model * Renderer::createRawModel(Vertex vertices[], int vertexNum, unsigned long indices[], int indexNum)
 {
 	Model* model = new Model();
 
@@ -304,7 +424,7 @@ Model * Renderer::createRawModel(Vertex vertices[], int vertexNum, WORD indices[
 
 	ZeroMemory(&bd, sizeof(bd));
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(WORD) * indexNum;        
+	bd.ByteWidth = sizeof(unsigned long) * indexNum;        
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	bd.MiscFlags = 0;
@@ -326,15 +446,19 @@ void Renderer::renderModel(Model* model)
 
 	//create the matrix from all info the model has
 	//could also do this in the model itself
-	DirectX::XMFLOAT3 pos = model->getPosition();
-	DirectX::XMFLOAT3 rot = model->getRotation();
-	DirectX::XMFLOAT3 scale = model->getScale();
+	Vector3 pos = model->getPosition();
+	Vector3 rot = model->getRotation();
+	Vector3 scale = model->getScale();
 
-	DirectX::XMMATRIX mSpin = DirectX::XMMatrixRotationRollPitchYaw(rot.x,rot.y, rot.z);
+	float rad = 0.0174533;
+
+	DirectX::XMMATRIX mSpin = DirectX::XMMatrixRotationRollPitchYaw(rot.x* rad,rot.y * rad, rot.z *rad);
 	DirectX::XMMATRIX mTranslate = DirectX::XMMatrixTranslation(pos.x, pos.y,pos.z);
 	DirectX::XMMATRIX mScale = DirectX::XMMatrixScaling(scale.x,scale.y, scale.z);
 	DirectX::XMMATRIX modelMatrix = mScale * mSpin * mTranslate;
 
+
+	//float f = DirectX::XMVectorGetX(modelMatrix.r[0]);
 	//update our constant buffers
 	MatrixBuffer cb;
 	cb.mWorld = DirectX::XMMatrixTranspose(modelMatrix);
@@ -342,12 +466,40 @@ void Renderer::renderModel(Model* model)
 	cb.mProjection = DirectX::XMMatrixTranspose(m_projection);
 	m_context->UpdateSubresource(m_matrixBuffer, 0, NULL, &cb, 0, 0);
 
+
+	// Set shader texture resource in the pixel shader.
+	ID3D11ShaderResourceView* texture = model->getTexture();
+	m_context->PSSetShaderResources(0, 1, &texture);
+	m_context->PSSetSamplers(0, 1, &m_sampleState);
+
 	//set buffers to the ones of this specific object
+	
 	m_context->VSSetConstantBuffers(0, 1, &m_matrixBuffer);
+	m_context->PSSetConstantBuffers(0, 1, &m_lightBuffer);
 	m_context->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
-	m_context->IASetIndexBuffer(model->getIndexBuffer(), DXGI_FORMAT_R16_UINT, 0);
+	m_context->IASetIndexBuffer(model->getIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 	
 	//render
-	m_context->DrawIndexed(36, 0, 0);
+	m_context->DrawIndexed(model->getIndexCount(), 0, 0);
 	
+}
+
+void Renderer::backfaceCull()
+{
+	m_context->RSSetState(m_backface);
+}
+
+void Renderer::frontfaceCull()
+{
+	m_context->RSSetState(m_frontface);
+}
+
+void Renderer::WireframeRendering()
+{
+	m_context->RSSetState(m_WireFrame);
+}
+
+void Renderer::SolidRendering()
+{
+	m_context->RSSetState(m_Solid);
 }
