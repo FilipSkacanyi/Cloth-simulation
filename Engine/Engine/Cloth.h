@@ -18,7 +18,7 @@ public:
 	~Cloth();
 	void Tick(float dt, Renderer* renderer);
 	void Render(Renderer* renderer);
-	bool Initialise(Renderer* renderer,int rows, int cols, float distannce, std::vector<GameObject*>& objects_in_scene);
+	bool Initialise(Renderer* renderer,int rows, int cols, float distannce);
 
 	ClothPoint* getClothpointAtIndex(int i);
 	ClothTriangle* getClothTriangleAtIndex(int i);
@@ -32,9 +32,7 @@ public:
 
 	Texture* getTexture();
 private:
-	void selfCollision(float dt);
-
-
+	
 	int m_width, m_heigth, m_triangle_count,m_point_count;
 	float m_distance;
 	Vector3 m_position;
@@ -44,6 +42,9 @@ private:
 
 	Texture* m_texture = nullptr;
 
+	//vectors of unique pointers
+	//no worries about releasing
+	//this gets done automatically
 	std::vector<std::unique_ptr<ClothPoint>> m_points;
 	std::vector<std::unique_ptr<ClothTriangle>> m_triangles;
 	std::vector<std::unique_ptr<Spring>> m_springs;

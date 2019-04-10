@@ -89,7 +89,7 @@ Renderer::~Renderer()
 
 bool Renderer::Init(HWND hwnd)
 {
-
+	//create the swapchain
 	DXGI_SWAP_CHAIN_DESC sd;
 	ZeroMemory(&sd, sizeof(sd));
 	sd.BufferCount = 1;
@@ -182,7 +182,7 @@ bool Renderer::Init(HWND hwnd)
 	 hr = S_OK;
 
 	 //compile vertexshader from a file
-	hr = D3DCompileFromFile(L"vertexshader.vs", nullptr, nullptr, "VS", "vs_4_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_vertexShaderBlob, &errorBlob);
+	hr = D3DCompileFromFile(L"./Shaders/vertexshader.vs", nullptr, nullptr, "VS", "vs_4_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_vertexShaderBlob, &errorBlob);
 	if (FAILED(hr))
 	{
 		if (errorBlob)
@@ -200,6 +200,7 @@ bool Renderer::Init(HWND hwnd)
 		m_vertexShaderBlob->Release();
 		return false;
 	}
+
 	// Define the input layout
 	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
@@ -221,7 +222,7 @@ bool Renderer::Init(HWND hwnd)
 	m_vertexShaderBlob->Release();
 	
 	//compile pixelshader from a file
-	hr = D3DCompileFromFile(L"pixelshader.ps", nullptr, nullptr, "PS", "ps_4_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_pixelShaderBlob, &errorBlob);
+	hr = D3DCompileFromFile(L"./Shaders/pixelshader.ps", nullptr, nullptr, "PS", "ps_4_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &m_pixelShaderBlob, &errorBlob);
 	if (FAILED(hr))
 	{
 		OutputDebugStringA(reinterpret_cast<const char*>(errorBlob->GetBufferPointer()));
@@ -261,24 +262,24 @@ bool Renderer::Init(HWND hwnd)
 	m_projection = DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV2, 800 / (FLOAT)600, 0.01f, 100.0f); //800 and 600 are window size
 
 	
+	//create the rasterizer states
+	//for different types of rendering
 	D3D11_RASTERIZER_DESC wfdesc;
 	ZeroMemory(&wfdesc, sizeof(D3D11_RASTERIZER_DESC));
 	wfdesc.FillMode = D3D11_FILL_WIREFRAME;
 	wfdesc.CullMode = D3D11_CULL_NONE;
 	hr = m_device->CreateRasterizerState(&wfdesc, &m_WireFrame);
 	
-
 	wfdesc.FillMode = D3D11_FILL_SOLID;
-
 	hr = m_device->CreateRasterizerState(&wfdesc, &m_Solid);
-	m_context->RSSetState(m_Solid);
 
 	wfdesc.CullMode = D3D11_CULL_BACK;
 	hr = m_device->CreateRasterizerState(&wfdesc, &m_backface);
 
 	wfdesc.CullMode = D3D11_CULL_FRONT;
 	hr = m_device->CreateRasterizerState(&wfdesc, &m_frontface);
-
+	//set the defoault rasterizer state
+	m_context->RSSetState(m_Solid);
 
 	D3D11_BUFFER_DESC lightBufferDesc;
 
@@ -370,10 +371,6 @@ bool Renderer::Init(HWND hwnd)
 
 void Renderer::Clear()
 {
-	
-	
-	
-	
 }
 
 void Renderer::Render()
@@ -384,9 +381,6 @@ void Renderer::Render()
 
 void Renderer::Tick()
 {
-	
-	
-
 	//clear back buffer 
 	float ClearColor[4] = { 0.0f, 0.125f, 0.6f, 1.0f }; // RGBA
 	m_context->ClearRenderTargetView(m_renderTargetView, ClearColor);
@@ -403,6 +397,8 @@ void Renderer::updateViewMatrix(DirectX::XMMATRIX view)
 
 Model * Renderer::createRawModel(Vertex vertices[], int vertexNum, unsigned long indices[], int indexNum)
 {
+	//this function takes in the vertex and index buffer and returns a pointer to a model
+	//this model can then be rendered by calling RenderModel() function
 	Model* model = new Model();
 
 	ID3D11Buffer* vertexBuffer = nullptr;

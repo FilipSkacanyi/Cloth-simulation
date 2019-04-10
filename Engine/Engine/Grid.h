@@ -28,7 +28,6 @@ public:
 
 	void addObject(GameObject* obj);
 	void addObjectToCell( GameObject * obj, Cell * cell);
-	void removeObjectFromCell(GameObject * obj);
 	void clearAllCells();
 	void handleCollisions();
 

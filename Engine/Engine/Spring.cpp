@@ -25,18 +25,20 @@ void Spring::Tick(float dt)
 
 	direction = posB - posA;
 
+	//depending on the springs orientation
+	//calculate the offset
 	float offset = 0;
 	if (m_type == SpringType::STRAIT)
 	{
 		offset = m_offset_distance;
-		//offset = offset * m_offset_distance;
 	}
 	else if (m_type == SpringType::DIAGONAL)
 	{
 		offset = m_offset_distance * sqrt(2);
-		//offset = offset * m_offset_distance * sqrt(2);
+		
 	}
 
+	//Hooke's law
 	float current_length = direction.Magnitude();
 	direction.Normalize();
 	float stretch = current_length - offset;
@@ -47,6 +49,9 @@ void Spring::Tick(float dt)
 
 	distance = posB - posA;
 
+	//max stretch distance
+	//multiple cases of points being kinematic
+	//kinematic object do not get pulled 
 	if (distance.Magnitude() > offset * m_max_stretch)
 	{
 		if (!(m_point_A->isKinematic() && m_point_B->isKinematic()))

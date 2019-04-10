@@ -9,6 +9,7 @@
 
 Grid::Grid(int width, int heigth, int depth, int cellSize)
 {
+	//create grid
 	m_width = width;
 	m_heigth = heigth;
 	m_depth = depth;
@@ -17,6 +18,9 @@ Grid::Grid(int width, int heigth, int depth, int cellSize)
 	m_numCellsY = ceil((float)heigth / cellSize);
 	m_numCellsZ = ceil((float)depth / cellSize);
 
+	//since the cells are being created on stack
+	//there is no need to worry about memory deletion
+	//create cells by resizing the vector
 	m_cells.resize(m_numCellsX * m_numCellsY * m_numCellsZ);
 
 	for (int i = 0; i < m_cells.size(); i++)
@@ -29,6 +33,7 @@ Grid::Grid(int width, int heigth, int depth, int cellSize)
 
 Grid::Grid(int width, int heigth, int depth, int cellSize, Renderer * renderer)
 {
+	//create grid and cube for rendering
 	m_width = width;
 	m_heigth = heigth;
 	m_depth = depth;
@@ -39,6 +44,10 @@ Grid::Grid(int width, int heigth, int depth, int cellSize, Renderer * renderer)
 	m_tex = new Texture();
 	m_tex->Initialize(renderer->getDevice(), L"./Resources/red.png");
 	m_cells.resize(m_numCellsX * m_numCellsY * m_numCellsZ);
+
+	//create one vertex and index buffer and use it to create multiple cubes
+	//since the cubes are all the same there could be just one model and other boxes just get a pointer to it
+
 	Vertex vertices[] =
 	{
 		{ DirectX::XMFLOAT3(-1.0f,  1.0f, -1.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
@@ -80,6 +89,7 @@ Grid::Grid(int width, int heigth, int depth, int cellSize, Renderer * renderer)
 	{
 		for (int j = 0; j < m_numCellsY; j++)
 		{
+			//set up cubes for rendering
 			for (int k = 0; k < m_numCellsZ; k++)
 			{
 				m_cells[i + m_numCellsX * (j + m_numCellsY * k)].model = renderer->createRawModel(vertices, 8, indices,36);
@@ -96,6 +106,11 @@ Grid::Grid(int width, int heigth, int depth, int cellSize, Renderer * renderer)
 
 Grid::~Grid()
 {
+	if (m_tex)
+	{
+		delete m_tex;
+		m_tex = nullptr;
+	}
 }
 
 Cell * Grid::getCell(int x, int y, int z)
@@ -141,13 +156,6 @@ void Grid::addObjectToCell( GameObject * obj, Cell * cell)
 	
 }
 
-void Grid::removeObjectFromCell(GameObject * obj)
-{
-	
-
-
-}
-
 void Grid::clearAllCells()
 {
 	for (int i = 0; i < m_cells.size(); i++)
@@ -160,22 +168,6 @@ void Grid::clearAllCells()
 
 void Grid::handleCollisions()
 {
-
-	/*for (int k = 0; k < m_cells.size(); k++)
-	{
-		for (int i = 0; i < m_cells[k].objects_in_cell.size(); i++)
-		{
-			for (int j = i + 1; j < m_cells[k].objects_in_cell.size(); j++)
-			{
-				if (m_cells[k].objects_in_cell[i]->getCollider()->Intersect(m_cells[k].objects_in_cell[j]->getCollider()))
-				{
-					m_cells[k].objects_in_cell[i]->collision(m_cells[k].objects_in_cell[j]);
-   					m_cells[k].objects_in_cell[j]->collision(m_cells[k].objects_in_cell[i]);
-					
-				}
-			}
-		}
-	}*/
 
 
 	for (int x = 0; x < m_numCellsX; x++)
@@ -204,8 +196,8 @@ void Grid::handleCollisions()
 					}
 
 					//check nearby cells
-					//for the purposes of this simulation, we only need 2 cases
-					//other cases shoudl be probably done with a function rather than copypasting this code
+					//for the purposes of this simulation, we only need 4 cases
+					//other cases should be done with a for loop in 3x3x3 space around the original cell
 					//one in front
 					if (z + 1 < m_numCellsZ)
 					{
@@ -237,7 +229,7 @@ void Grid::handleCollisions()
 	}
 
 
-	//m_cells[x + m_numCellsX * (y + m_numCellsY * z)]
+	
 }
 
 void Grid::Render(Renderer * renderer)

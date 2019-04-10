@@ -25,7 +25,6 @@ public:
 private:
 
 	std::vector<GameObject*> m_objectsInScene;
-	std::vector<Object*> m_renderables;
 
 	bool useGrid = true;
 
@@ -35,11 +34,6 @@ private:
 	GameObject * objptr = nullptr;
 
 	Cloth* m_cloth = nullptr;
-
-	Spring* spring = nullptr;
-
-	Triangle * triangle1 = nullptr;
-	Triangle * triangle2 = nullptr;
 
 	std::unique_ptr<Grid> m_grid = nullptr;
 

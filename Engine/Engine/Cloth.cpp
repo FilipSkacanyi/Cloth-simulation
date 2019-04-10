@@ -28,15 +28,16 @@ Cloth::~Cloth()
 void Cloth::Tick(float dt, Renderer* renderer)
 {
 	
+	//update all components of the cloth
 	for (int i = 0; i < m_points.size(); i++)
 	{
+		m_points[i]->Tick(dt);
 		m_points[i]->Tick(dt);
 	}
 	for (int i = 0; i < m_springs.size(); i++)
 	{
 		m_springs[i]->Tick(dt);
 	}
-
 	for (int i = 0; i < m_triangles.size(); i++)
 	{
 		m_triangles[i]->Tick(dt);
@@ -66,7 +67,7 @@ void Cloth::Render(Renderer * renderer)
 	//this for loop handles the surface normal calculation
 	//sum all the triangle normals that each vertex is part of
 	int rows = 0;
-	for (int i = 0, j = 0; i < m_triangle_count / 2; i++,j++)
+	for (int i = 0; i < m_triangle_count / 2; i++)
 	{
 		//even triangles
 		Vector3 triangle_normal = m_triangles[i * 2]->getSurfaceNormal();
@@ -75,10 +76,10 @@ void Cloth::Render(Renderer * renderer)
 		normals[i + rows + m_width] = normals[i + rows + m_width] + triangle_normal;
 
 		//odd triangles
-		triangle_normal = m_triangles[(j * 2) + 1]->getSurfaceNormal();
-		normals[j + rows + 1] = normals[j + rows + 1] + triangle_normal;
-		normals[j + rows + m_width] = normals[j + rows + m_width] + triangle_normal;
-		normals[j + rows + m_width + 1] = normals[j + rows + m_width + 1] + triangle_normal;
+		triangle_normal = m_triangles[(i * 2) + 1]->getSurfaceNormal();
+		normals[i + rows + 1] = normals[i + rows + 1] + triangle_normal;
+		normals[i + rows + m_width] = normals[i + rows + m_width] + triangle_normal;
+		normals[i + rows + m_width + 1] = normals[i + rows + m_width + 1] + triangle_normal;
 		
 		//drop a row
 		if (i != 0)
@@ -105,11 +106,11 @@ void Cloth::Render(Renderer * renderer)
 		dataPtr[i].position = temppos;
 		dataPtr[i].color = m_points[i]->getColor();
 		dataPtr[i].normal = DirectX::XMFLOAT3(normals[i].x, normals[i].y, normals[i].z);
-		//dataPtr[i].texture = DirectX::XMFLOAT2(dataPtr[i].texture.x, dataPtr[i].texture.y);
+		
 	}
 
 	//update the texture coords
-	//even tho they are always the same, they need to be set again
+	//even tho they are always the same, they need to be updated here
 	//otherwise the texture flickers
 	for (int i = 0; i < m_heigth; i++)
 	{
@@ -129,7 +130,7 @@ void Cloth::Render(Renderer * renderer)
 
 }
 
-bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, std::vector<GameObject*>& objects_in_scene)
+bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance)
 {
 	int vertexNum, indexNum;
 	m_distance = distance;
@@ -138,8 +139,8 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 	vertexNum = rows * cols;
 	indexNum = ((rows - 1) * (cols - 1)) * 6;
 
+	//initialise the texture
 	m_texture = new Texture();
-
 	std::wstring file = L"./Resources/fabric.jpg";
 	bool res = m_texture->Initialize(renderer->getDevice(),file);
 	
@@ -153,9 +154,10 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 
 	//find the center of cloth given;
 	float centerX = 0, centerY = 0;
-
 	centerX = (float)cols / 2 - 0.5f;
 	centerY = (float)rows / 2 - 0.5f;
+
+	//create the vertex buffer
 	for (int i = 0; i < rows; i++)
 	{
 		for (int j = 0; j < cols; j++)
@@ -170,7 +172,7 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 			m_points[m_points.size() - 1]->setPosition(Vector3(j*distance - centerX * distance + m_position.x, -i * distance + centerY * distance + m_position.y, 0+ m_position.z));
 			m_points[m_points.size() - 1]->setParent(this);
 			m_points[m_points.size() - 1]->Init();
-			objects_in_scene.push_back(m_points[m_points.size() - 1].get());
+			
 			
 		}
 	}
@@ -224,10 +226,7 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 			ClothPoint* A = nullptr;
 			ClothPoint* B = nullptr;
 			Spring* currentSpring = nullptr;
-			//  i * cols+j;
-
-			/*m_springs.push_back(std::make_unique<Spring>());
-			currentSpring = m_springs[m_springs.size() - 1].get();*/
+			
 			//the current spring is the last element since we just pushed one back
 			//such is life with using unique pointers
 
@@ -272,6 +271,8 @@ bool Cloth::Initialise(Renderer * renderer, int rows, int cols,float distance, s
 		}
 	}
 
+	//create the model
+	//can't use the renderers createRawModel func because we need dynamic vertex buffer here
 	m_model = new Model();
 	ID3D11Device* device = renderer->getDevice();
 	ID3D11Buffer* vertexBuffer = nullptr;
@@ -327,11 +328,10 @@ void Cloth::setPosition(Vector3 pos)
 {
 	m_position = pos;
 
+	//cheesy way of parenting
 	for (int i = 0; i < m_points.size(); i++)
 	{
 		m_points[i]->setPosition(m_points[i]->getPosition() + m_position);
-
-		
 	}
 }
 
@@ -340,18 +340,3 @@ Texture * Cloth::getTexture()
 	return m_texture;
 }
 
-void Cloth::selfCollision(float dt)
-{
-
-	for (int i = 0; i < m_triangles.size(); i++)
-	{
-		for (int j = i + 1; j < m_triangles.size(); j++)
-		{
-			if (CollisionUtilities::IntersectTriangles(m_triangles[i].get(), m_triangles[j].get()))
-			{
-
-				//add force yo
-			}
-		}
-	}
-}

@@ -185,16 +185,10 @@ bool CollisionUtilities::IntersectOrientedBoxes(OrientedBoxCollider * obox1, Ori
 	WB = tmp.x;
 	HB = tmp.y;
 	DB = tmp.z;
-	//pull the separating axis from rotation matrix
-	//DirectX::XMFLOAT3 Ax, Ay, Az, Bx, By, Bz;
 
+	//pull the separating axis from rotation matrix
 	Vector3 Ax, Ay, Az, Bx, By, Bz; 
 	Vector3 cross_product;
-	//if you are wondering why Vector3 and not XMFLOAT3, that is because i was tired of setting all individual components
-	//of XMFLOAT3 when doing sum, subtract etc. operations
-	//would implemet it into XMFLOAT3 but dammit the library would not let me save it
-	//probably gonna replace XMFLOAT3 with Vector3 everywhere I can
-
 
 	Ax = Vector3(DirectX::XMVectorGetX(rotation_matrix1.r[0]),
 							DirectX::XMVectorGetY(rotation_matrix1.r[0]),
@@ -359,8 +353,7 @@ bool CollisionUtilities::IntersectOrientedBoxSphere(OrientedBoxCollider * obox, 
 	}
 	else
 	{
-		//I mean...
-		//if their positions are overlapping, you can always consider it as collision right?
+		//if their positions are overlapping, you can always consider it as collision 
 		return true;
 
 	}
@@ -424,33 +417,6 @@ bool CollisionUtilities::IntersectOrientedBoxSphere(OrientedBoxCollider * obox, 
 		
 		return false;
 	}
-
-	/*if (!fabs(dot(distance, Vector3(1,0,0)) >= fabs(dot(Ax * WA, Vector3(1, 0, 0))) +
-												fabs(dot(Ay * HA, Vector3(1, 0, 0))) +
-												fabs(dot(Az * DA, Vector3(1, 0, 0))) +
-												fabs(dot(sphere_vector_towards_center_of_cube, Vector3(1, 0, 0)))))
-	{
-		OutputDebugStringA("X \n");
-		return false;
-	}
-
-	if (!fabs(dot(distance, Vector3(0, 1, 0))) >= fabs(dot(Ax * WA, Vector3(0, 1, 0))) +
-													fabs(dot(Ay * HA, Vector3(0, 1, 0))) +
-													fabs(dot(Az * DA, Vector3(0, 1, 0))) +
-													fabs(dot(sphere_vector_towards_center_of_cube, Vector3(0, 1, 0))))
-	{
-		OutputDebugStringA("Y \n");
-		return false;
-	}
-
-	if (!fabs(dot(distance, Vector3(0, 0, 1))) >= fabs(dot(Ax * WA, Vector3(0, 0, 1))) +
-													fabs(dot(Ay * HA, Vector3(0, 0, 1))) +
-													fabs(dot(Az * DA, Vector3(0, 0, 1))) +
-													fabs(dot(sphere_vector_towards_center_of_cube, Vector3(0, 0, 1))))
-	{
-		OutputDebugStringA("Z \n");
-		return false;
-	}*/
 
 	
 	return true;
@@ -571,6 +537,7 @@ bool CollisionUtilities::IntersectTriangles(Triangle * A, Triangle * B)
 		T2t2 = tmp;
 	}
 
+	//collision check
 	if (T1t2 < T2t1 || T2t2 < T1t1)
 	{
 		
@@ -579,42 +546,6 @@ bool CollisionUtilities::IntersectTriangles(Triangle * A, Triangle * B)
 	
 	return true;
 
-
- //   Vector3 posA = A->getPosition();
-	//Vector3 posB = B->getPosition();
-
-	//Vector3 t1_points[3];
-	//Vector3 t2_points[3];
-	//
-	//double v1[3], v2[3], v3[3], u1[3], u2[3], u3[3], source[3], target[3];
-	//for (int i = 0; i < 3; i++)
-	//{
-	//	t1_points[i] = A->getPoints()[i] + posA;
-	//	t2_points[i] = B->getPoints()[i] + posB;
-	//}
-
-	//Vector3tofloatArray(v1, t1_points[0]);
-	//Vector3tofloatArray(v2, t1_points[1]);
-	//Vector3tofloatArray(v3, t1_points[2]);
-	//Vector3tofloatArray(u1, t2_points[0]);
-	//Vector3tofloatArray(u2, t2_points[1]);
-	//Vector3tofloatArray(u3, t2_points[2]);
-
-	//int* coplanar = nullptr;
-	//if (tri_tri_overlap_test_3d(v1, v2, v3, u1, u2, u3) == 0)
-	//{
-	//	return false;
-	//}
-
-	//	/*if (NoDivTriTriIsect(v1, v2, v3, u1, u2, u3) == 0)
-	//	{
-	//		return false;
-	//	}
-	//	else
-	//	{
-	//		return true;
-	//	}*/
-	//	return true;
 }
 
 bool CollisionUtilities::IntersectTriangles(ClothTriangle * A, ClothTriangle * B)

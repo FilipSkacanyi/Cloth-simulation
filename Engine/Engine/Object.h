@@ -49,8 +49,11 @@ protected:
 	Vector3 m_velocity = Vector3(0, 0, 0);
 	Vector3 m_force = Vector3(0, 0, 0);
 	
+	//air resistance
 	float m_drag = 0.4f;
 	float m_gravity = 1;
+
+	//kinematic object cant be moved by forces
 	bool m_isKinematic = false;
 	
 
