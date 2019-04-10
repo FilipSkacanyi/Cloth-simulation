@@ -36,7 +36,8 @@ Grid::Grid(int width, int heigth, int depth, int cellSize, Renderer * renderer)
 	m_numCellsX = ceil((float)width / cellSize);
 	m_numCellsY = ceil((float)heigth / cellSize);
 	m_numCellsZ = ceil((float)depth / cellSize);
-
+	m_tex = new Texture();
+	m_tex->Initialize(renderer->getDevice(), L"./Resources/red.png");
 	m_cells.resize(m_numCellsX * m_numCellsY * m_numCellsZ);
 	Vertex vertices[] =
 	{
@@ -84,6 +85,7 @@ Grid::Grid(int width, int heigth, int depth, int cellSize, Renderer * renderer)
 				m_cells[i + m_numCellsX * (j + m_numCellsY * k)].model = renderer->createRawModel(vertices, 8, indices,36);
 				m_cells[i + m_numCellsX * (j + m_numCellsY * k)].model->setPosition(i*cellSize + (float)m_cellSize / 2, j*cellSize + (float)m_cellSize / 2, k*cellSize + (float)m_cellSize / 2);
 				m_cells[i + m_numCellsX * (j + m_numCellsY * k)].model->setScale((float)m_cellSize/2 , (float)m_cellSize /2, (float)m_cellSize/2 );
+				m_cells[i + m_numCellsX * (j + m_numCellsY * k)].model->setTexture(m_tex);
 			}
 		}
 	}

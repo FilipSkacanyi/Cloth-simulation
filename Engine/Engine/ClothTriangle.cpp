@@ -205,7 +205,7 @@ void ClothTriangle::collision(GameObject * other)
 	{
 		ClothPoint* point = tmp->getClothPointAtIndex(i);
 		Vector3 velocity = point->getVelocity();
-
+		point->setColor(0, 1, 0);
 		Vector3 distance = tmp->getPosition() - getPosition();
 		float distmag = distance.Magnitude() * 5;
 		distance.Normalize();

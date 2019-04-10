@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "CollisionUtilities.h"
+#include "Texture.h"
 
 class GameObject;
 class Renderer;
@@ -38,7 +39,7 @@ private:
 	void checkNeigbourCells(int currentCell, int currentObject, int neigbour);
 
 	std::vector<Cell> m_cells;
-
+	Texture* m_tex = nullptr;
 	int m_width,
 		m_heigth,
 		m_depth,

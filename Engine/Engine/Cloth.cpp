@@ -103,7 +103,7 @@ void Cloth::Render(Renderer * renderer)
 			m_points[i]->getPosition().y - m_position.y,
 			m_points[i]->getPosition().z - m_position.z);
 		dataPtr[i].position = temppos;
-		dataPtr[i].color = DirectX::XMFLOAT4(1, 0, 0, 1);
+		dataPtr[i].color = m_points[i]->getColor();
 		dataPtr[i].normal = DirectX::XMFLOAT3(normals[i].x, normals[i].y, normals[i].z);
 		//dataPtr[i].texture = DirectX::XMFLOAT2(dataPtr[i].texture.x, dataPtr[i].texture.y);
 	}

@@ -17,11 +17,12 @@ public:
 	Vector3 getPosition() override;
 
 	Vector3 getVelocity() { return m_velocity; }
-	
+	DirectX::XMFLOAT4 getColor() { return m_color; }
+	void setColor(float r, float g, float b);
 private:
 		
 	Cloth* m_parent = nullptr;
-		
+	DirectX::XMFLOAT4 m_color = DirectX::XMFLOAT4(1, 0, 0, 1);
 	
 };
 

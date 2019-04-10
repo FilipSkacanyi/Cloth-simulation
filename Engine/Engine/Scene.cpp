@@ -39,7 +39,7 @@ bool Scene::Init(Renderer * renderer)
 	m_grid = std::make_unique<Grid>(18, 27, 9,3, renderer);
 
 	m_camera = new Camera();
-	m_camera->setPosition(5.0f, 13.0f, 1.0f);
+	m_camera->setPosition(13.0f, 13.0f, 1.0f);
 	m_camera->setRotation(0, 0, 0);
 
 	
@@ -48,13 +48,13 @@ bool Scene::Init(Renderer * renderer)
 	int clothWidth = 9, clothHeigth = 9;
 
 	m_cloth->Initialise(renderer, clothWidth, clothHeigth,0.3, m_objectsInScene);
-	m_cloth->setPosition(Vector3(5, 12, 5));
+	m_cloth->setPosition(Vector3(13, 12, 5));
 	
 
 	Sphere* sphere = new Sphere();
 	sphere->Init(renderer, "./Resources/sphere.obj", DirectX::XMFLOAT4(1, 0, 0, 1), L"./Resources/red.png");
 	sphere->setGravity(0);
-	sphere->setPosition(Vector3(5, 11, 7));
+	sphere->setPosition(Vector3(13, 11, 7));
 	sphere->setScale(0.7, 0.7, 0.7);
 	sphere->setKinematic(true);
 
@@ -66,7 +66,7 @@ bool Scene::Init(Renderer * renderer)
 	Cube* bed = new Cube();
 	bed->Init(renderer, "./Resources/RPG-bed.obj", DirectX::XMFLOAT4(1, 0, 0, 1), L"./Resources/Wooden.jpg");
 	bed->setGravity(0);
-	bed->setPosition(Vector3(8, 5, 7));
+	bed->setPosition(Vector3(16, 5, 7));
 	bed->setRotation(0, 180, 0);
 	bed->setScale(2, 2, 2);
 	bed->setKinematic(true);
@@ -74,7 +74,7 @@ bool Scene::Init(Renderer * renderer)
 	Cube* drawer = new Cube();
 	drawer->Init(renderer, "./Resources/drawer.obj", DirectX::XMFLOAT4(1, 0, 0, 1), L"./Resources/Wooden.jpg");
 	drawer->setGravity(0);
-	drawer->setPosition(Vector3(-8, 2, 2));
+	drawer->setPosition(Vector3(0, 2, 2));
 	drawer->setRotation(0, 90, 0);
 	drawer->setScale(0.1f, 0.1f, 0.1f);
 	drawer->setKinematic(true);
@@ -82,7 +82,7 @@ bool Scene::Init(Renderer * renderer)
 	Cube* room = new Cube();
 	room->Init(renderer, "./Resources/cube.obj", DirectX::XMFLOAT4(1, 0, 0, 1), L"./Resources/wall.png");
 	room->setGravity(0);
-	room->setPosition(Vector3(2, 15, 2));
+	room->setPosition(Vector3(10, 15, 2));
 	room->setRotation(0, 0, 0);
 	room->setScale(25, 25, 25);
 	room->setKinematic(true);
@@ -315,8 +315,7 @@ void Scene::Render()
 
 	m_cloth->Render(m_renderer);
 
-	//triangle1->Render(m_renderer);
-	//triangle2->Render(m_renderer);
-
-	//m_grid->Render(m_renderer);
+	/*m_renderer->WireframeRendering();
+	m_grid->Render(m_renderer);
+	m_renderer->SolidRendering();*/
 }

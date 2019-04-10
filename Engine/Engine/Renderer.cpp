@@ -263,10 +263,15 @@ bool Renderer::Init(HWND hwnd)
 	
 	D3D11_RASTERIZER_DESC wfdesc;
 	ZeroMemory(&wfdesc, sizeof(D3D11_RASTERIZER_DESC));
-	wfdesc.FillMode = D3D11_FILL_SOLID;
+	wfdesc.FillMode = D3D11_FILL_WIREFRAME;
 	wfdesc.CullMode = D3D11_CULL_NONE;
 	hr = m_device->CreateRasterizerState(&wfdesc, &m_WireFrame);
-	m_context->RSSetState(m_WireFrame);
+	
+
+	wfdesc.FillMode = D3D11_FILL_SOLID;
+
+	hr = m_device->CreateRasterizerState(&wfdesc, &m_Solid);
+	m_context->RSSetState(m_Solid);
 
 	wfdesc.CullMode = D3D11_CULL_BACK;
 	hr = m_device->CreateRasterizerState(&wfdesc, &m_backface);
@@ -489,7 +494,12 @@ void Renderer::frontfaceCull()
 	m_context->RSSetState(m_frontface);
 }
 
-void Renderer::noCull()
+void Renderer::WireframeRendering()
 {
 	m_context->RSSetState(m_WireFrame);
+}
+
+void Renderer::SolidRendering()
+{
+	m_context->RSSetState(m_Solid);
 }

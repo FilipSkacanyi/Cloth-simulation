@@ -45,7 +45,9 @@ public:
 
 	void backfaceCull();
 	void frontfaceCull();
-	void noCull(); 
+	void WireframeRendering(); 
+	void SolidRendering();
+
 	
 	ID3D11Device* getDevice() { return m_device; }
 	ID3D11DeviceContext* getContext() { return m_context; }
@@ -71,6 +73,7 @@ private :
 	ID3D11Buffer* m_matrixBuffer = nullptr;
 
 	ID3D11RasterizerState* m_WireFrame = nullptr;
+	ID3D11RasterizerState* m_Solid = nullptr;
 	ID3D11RasterizerState* m_backface = nullptr;
 	ID3D11RasterizerState* m_frontface = nullptr;
 

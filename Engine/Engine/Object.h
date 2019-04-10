@@ -37,7 +37,7 @@ public:
 	virtual void collision(GameObject* other) override;
 
 	void resetVelocity(VelocityAxis axis);
-	
+	Vector3 getVelocity() { return m_velocity; }
 	
 protected:
 	Model* m_model = nullptr;
@@ -48,7 +48,8 @@ protected:
 	Vector3 m_acceleration = Vector3(0, 0, 0);
 	Vector3 m_velocity = Vector3(0, 0, 0);
 	Vector3 m_force = Vector3(0, 0, 0);
-
+	
+	float m_drag = 0.4f;
 	float m_gravity = 1;
 	bool m_isKinematic = false;
 	

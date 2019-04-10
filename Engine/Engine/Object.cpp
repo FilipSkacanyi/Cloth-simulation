@@ -103,8 +103,9 @@ void Object::Tick(float dt)
 		//m_velocity = m_force;
 		m_position = m_position + (m_velocity * dt);
 
-		//m_velocity = m_velocity - m_velocity * 0.95 *dt;
+		
 		//air ressistance
+		m_velocity = m_velocity - m_velocity * m_drag*dt;
 
 		m_force = Vector3(0, 0, 0);
 

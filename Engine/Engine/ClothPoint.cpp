@@ -9,6 +9,7 @@ ClothPoint::ClothPoint()
 {
 	m_mass = 1;
 	m_gravity = 1;
+	m_drag = 0.0f;
 }
 
 
@@ -24,31 +25,7 @@ void ClothPoint::Init()
 
 void ClothPoint::Tick(float dt)
 {
-	/*m_position = DirectX::XMFLOAT3(m_parent->getPosition().x + m_object_position.x,
-		m_parent->getPosition().y + m_object_position.y,
-		m_parent->getPosition().z + m_object_position.z);*/
-
-	
-
-	//if (m_isKinematic)
-	//{
-	//	m_velocity = Vector3(0, 0, 0);
-	//}
-	//else
-	//{
-	//	//gravity
-	//	AddForce(Vector3(0, -1, 0) * (m_mass*9.80) * dt * m_gravity);
-
-	//	m_velocity = m_force;
-	//	//velocity
-	//	//m_position = DirectX::XMFLOAT3(m_position.x + dt * m_velocity.x, m_position.y + dt * 1 * m_velocity.y, m_position.z + dt * m_velocity.z);
-	//	m_position = m_position + (m_velocity * dt);
-
-	//	//AddForce(Vector3(-m_velocity.x * 0.9 * dt, -m_velocity.y * 0.9 * dt, -m_velocity.z * 0.9 * dt));
-	//	AddForce(m_velocity * (-0.9) * dt);
-	//}
-
-	//m_collider->setPosition(m_position);
+	m_color = DirectX::XMFLOAT4(1, 0, 0, 1);
 
 
 	Object::Tick(dt);
@@ -79,17 +56,17 @@ void ClothPoint::collision(GameObject * other)
 		m_position = DirectX::XMFLOAT3(other_pos.x + distance.x, other_pos.y + distance.y, other_pos.z + distance.z);
 
 
-		
-			
 		Vector3 velocity = m_velocity;
-
 		distance = temp->getPosition() - m_position;
-		float distmag = distance.Magnitude() * 25;
+		float distmag = distance.Magnitude() * 10;
 		distance.Normalize();
-		//this->AddForce(((velocity * (-0.1f) * m_mass) / Timer::Instance()->DeltaTime()));
-		this->AddForce(distance * (-1));
-	
-		sphere->AddForce(distance * Timer::Instance()->DeltaTime() );
+
+
+		//apply a bit of force so the points do not get stuck on the surface
+		this->AddForce(distance * (-2));
+		distance = distance * distmag;
+		//slow the sphere down as a result of collision
+		sphere->AddForce(distance * sphere->getVelocity().Magnitude() * Timer::Instance()->DeltaTime() );
 
 
 	}
@@ -102,6 +79,11 @@ void ClothPoint::collision(GameObject * other)
 Vector3 ClothPoint::getPosition()
 {
 	return m_position;
+}
+
+void ClothPoint::setColor(float r, float g, float b)
+{
+	m_color = DirectX::XMFLOAT4(r, g, b, 1);
 }
 
 
