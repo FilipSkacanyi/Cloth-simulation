@@ -1,22 +1,122 @@
-﻿  Scene.cpp
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\spring.h(29): warning C4305: 'initializing': truncation from 'double' to 'float'
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(50): warning C4305: 'argument': truncation from 'double' to 'float'
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(58): warning C4305: 'argument': truncation from 'double' to 'float'
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(125): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(131): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(137): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(143): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(149): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(156): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(167): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(175): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(183): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(191): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(196): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(207): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(219): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-d:\school\advanced technilogies\advanced-technologies-collision-detection\engine\engine\scene.cpp(231): warning C4305: 'argument': truncation from 'double' to 'float'
-  Engine.vcxproj -> D:\School\Advanced technilogies\Advanced-Technologies-Collision-detection\Engine\x64\Debug\Engine.exe
+﻿  AlignedBoxCollider.cpp
+d:\cloth-simulation\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  Application.cpp
+d:\cloth-simulation\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\cloth-simulation\engine\engine\spring.h(29): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Camera.cpp
+d:\cloth-simulation\engine\engine\camera.cpp(20): warning C4101: 'rotationMatrix': unreferenced local variable
+d:\cloth-simulation\engine\engine\camera.cpp(32): warning C4101: 'groundWorld': unreferenced local variable
+  Cloth.cpp
+d:\cloth-simulation\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\cloth-simulation\engine\engine\spring.h(29): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\cloth-simulation\engine\engine\cloth.cpp(182): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+d:\cloth-simulation\engine\engine\cloth.cpp(217): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  ClothPoint.cpp
+d:\cloth-simulation\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
+  ClothTriangle.cpp
+d:\cloth-simulation\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Collider.cpp
+d:\cloth-simulation\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  CollisionUtilities.cpp
+d:\cloth-simulation\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\cloth-simulation\engine\engine\tricol2.h(78): warning C4005: 'CROSS': macro redefinition
+  d:\cloth-simulation\engine\engine\trianglecol.h(33): note: see previous definition of 'CROSS'
+d:\cloth-simulation\engine\engine\tricol2.h(86): warning C4005: 'SUB': macro redefinition
+  d:\cloth-simulation\engine\engine\trianglecol.h(40): note: see previous definition of 'SUB'
+d:\cloth-simulation\engine\engine\collisionutilities.cpp(161): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\cloth-simulation\engine\engine\collisionutilities.cpp(339): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\cloth-simulation\engine\engine\collisionutilities.cpp(823): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Cube.cpp
+d:\cloth-simulation\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
+  GameObject.cpp
+d:\cloth-simulation\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  Grid.cpp
+d:\cloth-simulation\engine\engine\grid.cpp(17): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\cloth-simulation\engine\engine\grid.cpp(18): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\cloth-simulation\engine\engine\grid.cpp(19): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\cloth-simulation\engine\engine\grid.cpp(41): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\cloth-simulation\engine\engine\grid.cpp(42): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+d:\cloth-simulation\engine\engine\grid.cpp(43): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  Input.cpp
+  Light.cpp
+  main.cpp
+d:\cloth-simulation\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\cloth-simulation\engine\engine\spring.h(29): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Model.cpp
+d:\cloth-simulation\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  Object.cpp
+d:\cloth-simulation\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\cloth-simulation\engine\engine\obj_loader.h(949): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\object.cpp(38): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+d:\cloth-simulation\engine\engine\object.cpp(39): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+d:\cloth-simulation\engine\engine\object.cpp(93): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  OrientedBoxCollider.cpp
+d:\cloth-simulation\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  Renderer.cpp
+d:\cloth-simulation\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\renderer.cpp(449): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Scene.cpp
+d:\cloth-simulation\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\cloth-simulation\engine\engine\spring.h(29): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\cloth-simulation\engine\engine\scene.cpp(43): warning C4305: 'argument': truncation from 'double' to 'float'
+d:\cloth-simulation\engine\engine\scene.cpp(51): warning C4305: 'argument': truncation from 'double' to 'float'
+d:\cloth-simulation\engine\engine\scene.cpp(96): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\scene.cpp(102): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\scene.cpp(108): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\scene.cpp(114): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\scene.cpp(120): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\scene.cpp(127): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\scene.cpp(138): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\scene.cpp(146): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\scene.cpp(154): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\scene.cpp(162): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\scene.cpp(167): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\scene.cpp(174): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\scene.cpp(183): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\scene.cpp(195): warning C4305: 'argument': truncation from 'double' to 'float'
+  Sphere.cpp
+d:\cloth-simulation\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\cloth-simulation\engine\engine\sphere.cpp(28): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+  Compiling...
+  SphereCollider.cpp
+d:\cloth-simulation\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  Spring.cpp
+d:\cloth-simulation\engine\engine\spring.h(29): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\cloth-simulation\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\cloth-simulation\engine\engine\spring.cpp(37): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Texture.cpp
+  Timer.cpp
+  Triangle.cpp
+d:\cloth-simulation\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\object.h(46): warning C4305: 'initializing': truncation from 'double' to 'float'
+  TriangleCollider.cpp
+d:\cloth-simulation\engine\engine\vector3.h(24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\cloth-simulation\engine\engine\vector3.h(36): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  WICTextureLoader.cpp
+  Generating Code...
+  Engine.vcxproj -> D:\Cloth-simulation\Engine\x64\Debug\Engine.exe

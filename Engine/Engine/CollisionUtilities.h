@@ -36,15 +36,14 @@ public:
 	static bool IntersectTriangles(TriangleCollider * A, TriangleCollider* B);
 
 
+	//helper math functions
 	static Vector3 cross(Vector3 A, Vector3 B);
-private:
 
 	static float Min(float f1, float f2);
 	static float Max(float f1, float f2);
 	static float dot(DirectX::XMFLOAT3 A, DirectX::XMFLOAT3 B);
 	static float dot(Vector3 A, Vector3 B);
 	static DirectX::XMFLOAT3 cross(DirectX::XMFLOAT3 A, DirectX::XMFLOAT3 B);
-	
 	static float absoluteValue(float f);
 	static bool intersectRange(float min0, float max0, float min1, float max1);
 	static bool checkSeparatingAxes(Vector3 distance, Vector3 current_axis, 
@@ -52,7 +51,6 @@ private:
 									float WA, float HA, float DA, float WB, float HB, float DB);
 
 	static void computeTriangleIntersectionIntervals(Vector3 projections, float dist[], float &t1, float &t2);
-
 	static void Vector3tofloatArray(float arr[], Vector3 vec);
 };
 

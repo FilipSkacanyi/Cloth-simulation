@@ -11,12 +11,7 @@ ClothTriangle::ClothTriangle()
 	m_collider = new TriangleCollider();
 	m_collider->Init(ColliderType::TRIANGLE);
 
-	m_texturecoords.reserve(3);
 	m_points.reserve(3);
-	m_texturecoords.push_back(DirectX::XMFLOAT2(0.0f, 1.0f));
-	m_texturecoords.push_back(DirectX::XMFLOAT2(0.5f, 0.0f));
-	m_texturecoords.push_back(DirectX::XMFLOAT2(1.0f, 1.0f));
-	
 
 }
 
@@ -47,57 +42,59 @@ void ClothTriangle::setTextureCoords(DirectX::XMFLOAT2 a, DirectX::XMFLOAT2 b, D
 
 bool ClothTriangle::Init(Renderer* renderer, Texture * texture)
 {
-	Vertex vertices[3];
-	unsigned long indices[3];
-
-	for (int i = 0; i < 3; i++)
-	{
-		Vector3 pos = m_points[i]->getPosition();
-		vertices[i].position = DirectX::XMFLOAT3(pos.x, pos.y, pos.z);
-		vertices[i].color = DirectX::XMFLOAT4(1, 0, 0, 1);
-	}
-
-	indices[0] = 0;  // Bottom left.
-	indices[1] = 1;  // Top middle.
-	indices[2] = 2;  // Bottom right.
-
-	m_model = new Model();
-	m_model->setTexture(texture);
-	ID3D11Device* device = renderer->getDevice();
-	ID3D11Buffer* vertexBuffer = nullptr;
-	ID3D11Buffer* indexBuffer = nullptr;
-
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory(&bd, sizeof(bd));
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(Vertex) * 3;
-	bd.Usage = D3D11_USAGE_DYNAMIC;
-	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	bd.MiscFlags = 0;
-
-	D3D11_SUBRESOURCE_DATA InitData;
-	ZeroMemory(&InitData, sizeof(InitData));
-	InitData.pSysMem = vertices;
-	if (FAILED(device->CreateBuffer(&bd, &InitData, &vertexBuffer)))
-		return FALSE;
-
-	ZeroMemory(&bd, sizeof(bd));
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(unsigned long) * 3;
-	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	bd.CPUAccessFlags = 0;
-	bd.MiscFlags = 0;
-	bd.StructureByteStride = 0;
-	InitData.pSysMem = indices;
-	if (FAILED(device->CreateBuffer(&bd, &InitData, &indexBuffer)))
-		return FALSE;
-
-	m_model->Init(vertexBuffer, 3, indexBuffer, 3);
+	//In case of going back to rendering each triangle individually
+	//the code to initialise its model is here
 
 
 
-	//m_model = renderer->createRawModel(vertices, 3, indices, 3);
+	//Vertex vertices[3];
+	//unsigned long indices[3];
+
+	//for (int i = 0; i < 3; i++)
+	//{
+	//	Vector3 pos = m_points[i]->getPosition();
+	//	vertices[i].position = DirectX::XMFLOAT3(pos.x, pos.y, pos.z);
+	//	vertices[i].color = DirectX::XMFLOAT4(1, 0, 0, 1);
+	//}
+
+	//indices[0] = 0;  // Bottom left.
+	//indices[1] = 1;  // Top middle.
+	//indices[2] = 2;  // Bottom right.
+
+	//m_model = new Model();
+	//m_model->setTexture(texture);
+	//ID3D11Device* device = renderer->getDevice();
+	//ID3D11Buffer* vertexBuffer = nullptr;
+	//ID3D11Buffer* indexBuffer = nullptr;
+
+	//D3D11_BUFFER_DESC bd;
+	//ZeroMemory(&bd, sizeof(bd));
+	//bd.Usage = D3D11_USAGE_DEFAULT;
+	//bd.ByteWidth = sizeof(Vertex) * 3;
+	//bd.Usage = D3D11_USAGE_DYNAMIC;
+	//bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	//bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	//bd.MiscFlags = 0;
+
+	//D3D11_SUBRESOURCE_DATA InitData;
+	//ZeroMemory(&InitData, sizeof(InitData));
+	//InitData.pSysMem = vertices;
+	//if (FAILED(device->CreateBuffer(&bd, &InitData, &vertexBuffer)))
+	//	return FALSE;
+
+	//ZeroMemory(&bd, sizeof(bd));
+	//bd.Usage = D3D11_USAGE_DEFAULT;
+	//bd.ByteWidth = sizeof(unsigned long) * 3;
+	//bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	//bd.CPUAccessFlags = 0;
+	//bd.MiscFlags = 0;
+	//bd.StructureByteStride = 0;
+	//InitData.pSysMem = indices;
+	//if (FAILED(device->CreateBuffer(&bd, &InitData, &indexBuffer)))
+	//	return FALSE;
+
+	//m_model->Init(vertexBuffer, 3, indexBuffer, 3);
+
 
 
 	return false;
@@ -115,6 +112,8 @@ void ClothTriangle::Render(Renderer * renderer)
 
 void ClothTriangle::recalculateVertices(Renderer * renderer)
 {
+
+
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
@@ -124,10 +123,6 @@ void ClothTriangle::recalculateVertices(Renderer * renderer)
 
 	Vertex* dataPtr = (Vertex*)mappedResource.pData;
 
-	//Vertex* vertices = new Vertex[m_model->getVertexCount()];
-
-	//DirectX::XMFLOAT3 pos = dataPtr[0].position;
-
 	//calculate the surface normals
 	Vector3 A = m_points[0]->getPosition() - m_points[1]->getPosition();
 	Vector3 B = m_points[0]->getPosition() - m_points[2]->getPosition();
@@ -136,6 +131,8 @@ void ClothTriangle::recalculateVertices(Renderer * renderer)
 
 	normal.Normalize();
 
+
+	//  Update the vertex buffer here.
 	for (int i = 0; i < m_model->getVertexCount(); i++)
 	{
 		Vector3 pos = m_points[i]->getPosition();
@@ -146,8 +143,7 @@ void ClothTriangle::recalculateVertices(Renderer * renderer)
 	}
 
 
-	//  Update the vertex buffer here.
-	//memcpy(mappedResource.pData, vertices, sizeof(Vertex) * m_model->getVertexCount());
+	
 	//  Reenable GPU access to the vertex buffer data.
 	m_d3dContext->Unmap(m_model->getVertexBuffer(), 0);
 	//delete[] vertices;
@@ -169,6 +165,7 @@ void ClothTriangle::Tick(float dt)
 
 Vector3 ClothTriangle::getSurfaceNormal()
 {
+	//crossproduct of edges
 	Vector3 A = m_points[1]->getPosition() - m_points[0]->getPosition();
 	Vector3 B = m_points[2]->getPosition() - m_points[0]->getPosition();
 
@@ -190,7 +187,7 @@ void ClothTriangle::AddForce(Vector3 force)
 void ClothTriangle::collision(GameObject * other)
 {
 	ClothTriangle* tmp = static_cast<ClothTriangle*>(other);
-	//tmp->AddForce();
+	//calculate the repulsion force depending on the timestep taken and the objects velocity
 
 	//force = mass * acceleration;
 	//acceleration = force / mass
